@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SNACESTER Makhana</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header>
+    <h1>SNACESTER</h1>
+    <nav>
+      <ul>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#order">Order</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><button id="cart-btn">🛒 Cart (<span id="cart-count">0</span>)</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Healthy & Tasty Makhana</h2>
+    <p>Try our exciting flavours – Tangy Tomato & Magic Masala</p>
+  </section>
+
+  <section id="products" class="products">
+    <div class="product-card">
+      <h3>Tangy Tomato</h3>
+      <p>Zesty tomato flavour with a crunch you’ll love.</p>
+      <button class="add-cart" data-name="Tangy Tomato" data-price="150">Add to Cart - ₹150</button>
+    </div>
+
+    <div class="product-card">
+      <h3>Magic Masala</h3>
+      <p>A burst of spices for your perfect snack time.</p>
+      <button class="add-cart" data-name="Magic Masala" data-price="160">Add to Cart - ₹160</button>
+    </div>
+  </section>
+
+  <section id="order" class="order">
+    <h2>Quick Order</h2>
+    <form id="order-form">
+      <input type="text" name="name" placeholder="Your Name" required/>
+      <input type="tel" name="phone" placeholder="Phone Number" required/>
+      <textarea name="address" placeholder="Delivery Address" required></textarea>
+      <button type="submit">Place Order</button>
+    </form>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2>Contact Us</h2>
+    <p>Email: support@snacester.com</p>
+    <p>Phone: +91 98765 43210</p>
+  </section>
+
+  <div id="cart-panel" class="cart-panel">
+    <h3>Your Cart</h3>
+    <ul id="cart-items"></ul>
+    <p>Total: ₹<span id="cart-total">0</span></p>
+    <button id="checkout">Checkout</button>
+    <button id="close-cart">Close</button>
+  </div>
+
+  <footer>
+    <p>© 2025 SNACESTER. All Rights Reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
