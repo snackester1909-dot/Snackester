@@ -1,318 +1,71 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SNACESTER — Makhana (Tangy Tomato & Magic Masal)</title>
-  <meta name="description" content="Buy tasty Makhana from SNACESTER — Tangy Tomato & Magic Masal flavours. Fresh, crunchy, healthy snack delivered to your door." />
-  <style>
-    :root{
-      --accent:#ff6b35;
-      --accent-dark:#e1531a;
-      --muted:#6b7280;
-      --bg:#fafafa;
-      --card:#ffffff;
-      --glass: rgba(255,255,255,0.6);
-      --radius:14px;
-      --max-width:1100px;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:linear-gradient(180deg,#fff 0%, #f8fafc 100%);color:#111}
-    .container{max-width:var(--max-width);margin:28px auto;padding:20px}
-
-    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-    .brand{display:flex;gap:14px;align-items:center}
-    .logo{width:60px;height:60px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#ffd1b3);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:20px;box-shadow: 0 6px 20px rgba(17,24,39,0.08)}
-    .brand h1{margin:0;font-size:20px}
-    .brand p{margin:0;color:var(--muted);font-size:13px}
-
-    nav a{margin-left:16px;color:var(--muted);text-decoration:none;font-weight:600}
-    nav a.cta{background:var(--accent);color:#fff;padding:10px 14px;border-radius:10px}
-
-    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin-bottom:28px}
-    @media (max-width:920px){.hero{grid-template-columns:1fr;}}
-
-    .hero-card{background:var(--card);padding:28px;border-radius:var(--radius);box-shadow:0 10px 30px rgba(15,23,42,0.06)}
-    .hero h2{margin:0 0 10px;font-size:28px}
-    .hero p{color:var(--muted);line-height:1.5}
-    .features{display:flex;gap:12px;margin-top:18px}
-    .chip{background:linear-gradient(90deg,#fff,#fff);padding:8px 12px;border-radius:999px;border:1px solid #f1f5f9;font-weight:700}
-
-    .product-preview{background:linear-gradient(180deg,#fff 0,#fff0);padding:18px;border-radius:14px;display:flex;flex-direction:column;gap:12px;align-items:center}
-    .product-preview img{width:100%;border-radius:12px;max-width:360px;object-fit:cover}
-    .price{font-weight:800;font-size:22px;color:var(--accent)}
-    .buybtn{background:var(--accent);border:none;color:#fff;padding:12px 18px;border-radius:12px;font-weight:700;cursor:pointer}
-
-    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:20px}
-    @media (max-width:720px){.grid{grid-template-columns:1fr}}
-
-    .card{background:var(--card);padding:16px;border-radius:12px;box-shadow: 0 6px 18px rgba(15,23,42,0.04);display:flex;gap:14px;align-items:center}
-    .card img{width:120px;height:120px;border-radius:10px;object-fit:cover}
-    .card h3{margin:0}
-    .card p{margin:6px 0;color:var(--muted)}
-    .tag{background:#fff6f3;color:var(--accent-dark);padding:6px 8px;border-radius:8px;font-weight:700;font-size:13px}
-
-    footer{margin-top:32px;padding:18px;border-radius:12px;background:linear-gradient(90deg,#fff,#fff);display:flex;align-items:center;justify-content:space-between}
-    .small{color:var(--muted);font-size:13px}
-
-    /* Cart drawer */
-    .cart-btn{position:fixed;right:22px;bottom:22px;background:var(--accent);color:#fff;border-radius:999px;padding:14px 18px;border:none;box-shadow:0 8px 28px rgba(17,24,39,0.12);font-weight:800;cursor:pointer}
-    .drawer{position:fixed;right:20px;bottom:80px;width:320px;max-height:70vh;background:var(--card);border-radius:12px;box-shadow:0 20px 60px rgba(15,23,42,0.12);overflow:auto;padding:12px;transform:translateY(10px);}
-    .drawer h4{margin:6px 0 12px}
-    .cart-item{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px}
-    .qty{display:flex;gap:6px;align-items:center}
-    .qty button{padding:6px 8px;border-radius:8px;border:1px solid #eee;background:white}
-
-    /* badges */
-    .badge{background:linear-gradient(90deg,#fff,#fff);padding:6px 8px;border-radius:6px;border:1px solid #f4f4f6;font-weight:700}
-
-    /* small form */
-    .contact-form{display:flex;flex-direction:column;gap:8px}
-    .contact-form input,.contact-form textarea{padding:10px;border-radius:8px;border:1px solid #e6e9ef}
-    .contact-form button{padding:10px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-weight:700}
-
-    /* subtle animations */
-    .logo, .card, .hero-card{transition:transform .28s cubic-bezier(.2,.9,.3,1)}
-    .logo:hover,.card:hover,.hero-card:hover{transform:translateY(-6px)}
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SNACESTER Makhana</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="brand">
-        <div class="logo">SN</div>
-        <div>
-          <h1>SNACESTER</h1>
-          <p>Crunchy Makhana • Tangy Tomato • Magic Masal</p>
-        </div>
-      </div>
-      <nav>
-        <a href="#products">Products</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-        <a class="cta" id="view-cart">Cart (<span id="cart-count">0</span>)</a>
-      </nav>
-    </header>
+  <header>
+    <h1>SNACESTER</h1>
+    <nav>
+      <ul>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#order">Order</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><button id="cart-btn">🛒 Cart (<span id="cart-count">0</span>)</button></li>
+      </ul>
+    </nav>
+  </header>
 
-    <section class="hero">
-      <div class="hero-card">
-        <h2>Healthy snacking, elevated — SNACESTER Makhana</h2>
-        <p>Hand-roasted foxnuts (makhana) in two irresistible flavours: <strong>Tangy Tomato</strong> and <strong>Magic Masal</strong>. Low-calorie, high-crunch — perfect for work, travel, or movie nights.</p>
-        <div class="features" aria-hidden>
-          <span class="chip">Zero Trans Fat</span>
-          <span class="chip">Gluten Free</span>
-          <span class="chip">No Artificial Colors</span>
-        </div>
+  <section class="hero">
+    <h2>Healthy & Tasty Makhana</h2>
+    <p>Try our exciting flavours – Tangy Tomato & Magic Masala</p>
+  </section>
 
-        <div style="display:flex;gap:12px;margin-top:18px;align-items:center">
-          <button class="buybtn" onclick="addToCart('Tangy Tomato',129)">Add Tangy Tomato — ₹129</button>
-          <button class="buybtn" style="background:#2dd4bf" onclick="addToCart('Magic Masal',139)">Add Magic Masal — ₹139</button>
-        </div>
-
-        <div style="margin-top:16px;color:var(--muted);font-size:14px">Weight: 80g pack • Freshly packed • Free shipping over ₹499</div>
-      </div>
-
-      <aside class="product-preview">
-        <img src="https://images.unsplash.com/photo-1604908177522-4b0c8ec9e6b0?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=6f0c3b54bf0d1a1b45d053e57d5a0d95" alt="Makhana bowl" />
-        <div style="text-align:center">
-          <div class="price">From ₹129</div>
-          <div style="margin-top:8px;color:var(--muted)">Choose your flavour and order now</div>
-        </div>
-      </aside>
-    </section>
-
-    <section id="products">
-      <h3 style="margin-bottom:10px">Our Flavours</h3>
-      <div class="grid">
-        <article class="card">
-          <img src="https://images.unsplash.com/photo-1615883916917-5f3e30c2b4f3?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=5b1b0ffb1f7d6b5c65f8aa3f3f6f8c1e" alt="Tangy Tomato Makhana" />
-          <div style="flex:1">
-            <h3>Tangy Tomato</h3>
-            <p class="small">Zesty tomato coating with a hint of black pepper. Loved by kids and adults.</p>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">
-              <div>
-                <div class="price">₹129</div>
-                <div class="small">80g pack</div>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
-                <button class="buybtn" onclick="addToCart('Tangy Tomato',129)">Add</button>
-                <div class="tag">Best Seller</div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article class="card">
-          <img src="https://images.unsplash.com/photo-1579878813725-9d0a9f1db1ec?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=8a2d7d3b8f6e6b1a6ab3f2c1a2b4c0d3" alt="Magic Masal Makhana" />
-          <div style="flex:1">
-            <h3>Magic Masal</h3>
-            <p class="small">A complex, savory spice blend for those who like their snacks bold and flavorful.</p>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">
-              <div>
-                <div class="price">₹139</div>
-                <div class="small">80g pack</div>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
-                <button class="buybtn" onclick="addToCart('Magic Masal',139)">Add</button>
-                <div class="tag">Chef's Choice</div>
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <footer id="about">
-      <div>
-        <strong>About SNACESTER</strong>
-        <div class="small">Small batch makhana made with care. Founded to make snacking healthier without compromising taste.</div>
-      </div>
-      <div style="text-align:right">
-        <div class="small">Have questions? <a href="#contact">Contact us</a></div>
-        <div style="margin-top:6px" class="small">© SNACESTER — Fresh Snacks</div>
-      </div>
-    </footer>
-
-    <section id="contact" style="margin-top:18px">
-      <h3>Contact & Order</h3>
-      <div style="display:grid;grid-template-columns:1fr 320px;gap:18px;margin-top:12px">
-        <div>
-          <p class="small">Send us your order details or questions. We'll reply within 24 hours.</p>
-          <form class="contact-form" onsubmit="event.preventDefault();submitContact()">
-            <input id="name" placeholder="Your name" required />
-            <input id="email" placeholder="Email or phone" required />
-            <textarea id="message" rows="4" placeholder="Message (address, order, questions)"></textarea>
-            <button type="submit">Send Message</button>
-          </form>
-        </div>
-        <aside style="background:var(--card);border-radius:12px;padding:16px;box-shadow:0 6px 18px rgba(15,23,42,0.04)">
-          <h4>Quick Order</h4>
-          <p class="small">Tell us which flavour and how many packs. We'll confirm payment options.</p>
-          <div style="margin-top:8px">
-            <label class="small">Select Flavor</label>
-            <select id="quick-flavour" style="width:100%;padding:10px;border-radius:8px;margin-top:6px;border:1px solid #e6e9ef">
-              <option>Tangy Tomato</option>
-              <option>Magic Masal</option>
-            </select>
-            <label class="small" style="margin-top:8px">Quantity</label>
-            <input id="quick-qty" type="number" min="1" value="1" style="width:100%;padding:10px;border-radius:8px;margin-top:6px;border:1px solid #e6e9ef" />
-            <button class="buybtn" style="width:100%;margin-top:10px" onclick="quickOrder()">Place Quick Order</button>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-  </div>
-
-  <button class="cart-btn" id="open-cart">Cart (<span id="cart-count-bottom">0</span>)</button>
-
-  <!-- Drawer (hidden by default) -->
-  <div id="cart-drawer" class="drawer" style="display:none">
-    <h4>Your Cart</h4>
-    <div id="cart-items"></div>
-    <div style="border-top:1px dashed #eee;margin-top:10px;padding-top:10px;display:flex;justify-content:space-between;align-items:center">
-      <strong>Total: ₹<span id="cart-total">0</span></strong>
-      <div>
-        <button onclick="clearCart()" style="margin-right:8px;padding:8px 10px;border-radius:8px;border:1px solid #eee;background:white">Clear</button>
-        <button class="buybtn" onclick="checkout()">Checkout</button>
-      </div>
+  <section id="products" class="products">
+    <div class="product-card">
+      <h3>Tangy Tomato</h3>
+      <p>Zesty tomato flavour with a crunch you’ll love.</p>
+      <button class="add-cart" data-name="Tangy Tomato" data-price="150">Add to Cart - ₹150</button>
     </div>
+
+    <div class="product-card">
+      <h3>Magic Masala</h3>
+      <p>A burst of spices for your perfect snack time.</p>
+      <button class="add-cart" data-name="Magic Masala" data-price="160">Add to Cart - ₹160</button>
+    </div>
+  </section>
+
+  <section id="order" class="order">
+    <h2>Quick Order</h2>
+    <form id="order-form">
+      <input type="text" name="name" placeholder="Your Name" required/>
+      <input type="tel" name="phone" placeholder="Phone Number" required/>
+      <textarea name="address" placeholder="Delivery Address" required></textarea>
+      <button type="submit">Place Order</button>
+    </form>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2>Contact Us</h2>
+    <p>Email: snackeste1909@gmail.com</p>
+    <p>Phone: +91-8603523912</p>
+  </section>
+
+  <div id="cart-panel" class="cart-panel">
+    <h3>Your Cart</h3>
+    <ul id="cart-items"></ul>
+    <p>Total: ₹<span id="cart-total">0</span></p>
+    <button id="checkout">Checkout</button>
+    <button id="close-cart">Close</button>
   </div>
 
-  <script>
-    // Simple cart logic stored in memory (no backend). Good for prototype/demo.
-    const cart = [];
-    const cartCountEls = [document.getElementById('cart-count'), document.getElementById('cart-count-bottom')];
-    const cartItemsEl = document.getElementById('cart-items');
-    const cartTotalEl = document.getElementById('cart-total');
+  <footer>
+    <p>© 2025 SNACESTER. All Rights Reserved.</p>
+  </footer>
 
-    function updateCartUI(){
-      const totalCount = cart.reduce((s,i)=>s+i.qty,0);
-      cartCountEls.forEach(el=>el.textContent = totalCount);
-      document.getElementById('cart-count').textContent = totalCount;
-      document.getElementById('cart-count-bottom').textContent = totalCount;
-
-      // render items
-      cartItemsEl.innerHTML = '';
-      if(cart.length===0){cartItemsEl.innerHTML = '<div class="small">Cart is empty — add some delicious makhana!</div>';cartTotalEl.textContent='0';return}
-
-      let total = 0;
-      cart.forEach((item,idx)=>{
-        const row = document.createElement('div');
-        row.className = 'cart-item';
-        row.innerHTML = `
-          <img src="https://images.unsplash.com/photo-1604908177522-4b0c8ec9e6b0?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&s=6f0c3b54bf0d1a1b45d053e57d5a0d95" width="54" style="border-radius:8px;object-fit:cover" />
-          <div style="flex:1">
-            <div style="font-weight:700">${item.name}</div>
-            <div class="small">₹${item.price} × ${item.qty} = ₹${item.price*item.qty}</div>
-          </div>
-          <div class="qty">
-            <button onclick="changeQty(${idx}, -1)">-</button>
-            <div style="min-width:20px;text-align:center">${item.qty}</div>
-            <button onclick="changeQty(${idx}, 1)">+</button>
-            <button onclick="removeItem(${idx})" style="margin-left:8px;padding:6px;border-radius:8px;border:1px solid #eee;background:white">✕</button>
-          </div>
-        `;
-        cartItemsEl.appendChild(row);
-        total += item.price*item.qty;
-      })
-      cartTotalEl.textContent = total;
-    }
-
-    function addToCart(name,price){
-      const found = cart.find(i=>i.name===name);
-      if(found){found.qty+=1}else{cart.push({name,price,qty:1})}
-      updateCartUI();
-      showDrawer();
-    }
-
-    function changeQty(idx, delta){
-      cart[idx].qty += delta;
-      if(cart[idx].qty <= 0) cart.splice(idx,1);
-      updateCartUI();
-    }
-    function removeItem(idx){cart.splice(idx,1);updateCartUI();}
-    function clearCart(){if(confirm('Clear the cart?')){cart.length=0;updateCartUI();}}
-
-    function checkout(){
-      if(cart.length===0){alert('Your cart is empty. Add some makhana!');return}
-      // Placeholder: in a real site you'd integrate payment + backend
-      const orderSummary = cart.map(i=>`${i.name} x${i.qty} = ₹${i.price*i.qty}`).join('\n');
-      alert('Order placed!\n\n' + orderSummary + '\n\nWe will contact you to confirm. (Prototype only)');
-      cart.length=0;updateCartUI();hideDrawer();
-    }
-
-    // drawer controls
-    function showDrawer(){document.getElementById('cart-drawer').style.display='block';}
-    function hideDrawer(){document.getElementById('cart-drawer').style.display='none';}
-
-    document.getElementById('open-cart').addEventListener('click', ()=>{
-      const d = document.getElementById('cart-drawer');
-      d.style.display = d.style.display === 'none' ? 'block' : 'none';
-    });
-    document.getElementById('view-cart').addEventListener('click', showDrawer);
-
-    // contact form
-    function submitContact(){
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const message = document.getElementById('message').value.trim();
-      if(!name||!email){alert('Please fill name and contact.');return}
-      alert('Thanks ' + name + '! We received your message. (Prototype — no backend)');
-      document.getElementById('name').value='';document.getElementById('email').value='';document.getElementById('message').value='';
-    }
-
-    function quickOrder(){
-      const flavour = document.getElementById('quick-flavour').value;
-      const qty = Number(document.getElementById('quick-qty').value)||1;
-      const price = flavour.includes('Tangy')?129:139;
-      for(let i=0;i<qty;i++) addToCart(flavour, price);
-      alert('Added ' + qty + ' × ' + flavour + ' to cart');
-    }
-
-    // initial
-    updateCartUI();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
