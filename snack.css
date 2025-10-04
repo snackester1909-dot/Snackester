@@ -1,0 +1,185 @@
+/* --- 1. Global Styles and Color Palette --- */
+:root {
+    --color-primary: #e6a700; /* Rich Golden Yellow/Ochre - Snackester main color */
+    --color-secondary: #4caf50; /* Fresh Green - For health/vegan highlights */
+    --color-background: #fff8e1; /* Light Cream/Beige */
+    --color-dark: #333;
+    --color-light: #fefefe;
+    --font-heading: 'Poppins', sans-serif;
+    --font-body: 'Roboto', sans-serif;
+}
+
+/* Reset basic browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    line-height: 1.6;
+    color: var(--color-dark);
+    background-color: var(--color-background);
+}
+
+h1, h2, h3 {
+    font-family: var(--font-heading);
+    color: var(--color-dark);
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-dark);
+}
+
+/* --- 2. Header and Navigation --- */
+
+.main-header {
+    background-color: var(--color-light);
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+.main-header nav ul {
+    list-style: none;
+    display: flex;
+}
+
+.main-header nav ul li {
+    margin-left: 30px;
+}
+
+.main-header nav ul li a:hover {
+    color: var(--color-primary);
+}
+
+/* --- 3. Hero Section --- */
+
+.hero-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 80px 5%;
+    background-color: var(--color-background);
+}
+
+.hero-content {
+    max-width: 50%;
+}
+
+.hero-section h1 {
+    font-size: 3em;
+    color: var(--color-primary);
+    margin-bottom: 15px;
+}
+
+.hero-section .subhead {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.hero-image-placeholder {
+    width: 40%;
+    height: 300px;
+    background: linear-gradient(135deg, var(--color-primary), #ffc107);
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: white;
+    font-size: 1.5em;
+    /* In a real site, this would be your main product shot */
+}
+
+/* Primary CTA Button Style */
+.cta-button {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: var(--color-secondary);
+    color: var(--color-light);
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.cta-button:hover {
+    background-color: #388e3c; /* Darker green on hover */
+}
+
+/* --- 4. Core Highlights Section --- */
+
+.highlights-section {
+    display: flex;
+    justify-content: space-around;
+    padding: 40px 5%;
+    text-align: center;
+    background-color: var(--color-light);
+    border-top: 1px solid #eee;
+}
+
+.highlight-item {
+    max-width: 30%;
+}
+
+.highlight-item .icon {
+    font-size: 2em;
+    color: var(--color-primary); /* Use a relevant color for the icons */
+    display: block;
+    margin-bottom: 10px;
+}
+
+.highlight-item h3 {
+    color: var(--color-secondary);
+    margin-bottom: 5px;
+}
+
+/* --- 5. Flavour Showcase --- */
+
+.flavour-showcase {
+    padding: 60px 5%;
+    text-align: center;
+}
+
+.flavour-showcase h2 {
+    font-size: 2.5em;
+    margin-bottom: 40px;
+    color: var(--color-dark);
+}
+
+.flavour-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns for 4 flavors */
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.flavour-card {
+    background-color: var(--color-light);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.flavour-card:hover {
+    transform: translateY(-5px); /* Lift card on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.flavour-image {
+    font-size: 3em; /* Emojis as*/
+}
