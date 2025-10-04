@@ -3,328 +3,688 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snackester - Premium Snacks</title>
+    <title>Snackester - Premium Online Snacks</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#fdf4ff',
-                            100: '#fae8ff',
-                            200: '#f5d0fe',
-                            300: '#f0abfc',
-                            400: '#e879f9',
-                            500: '#d946ef',
-                            600: '#c026d3',
-                            700: '#a21caf',
-                            800: '#86198f',
-                            900: '#701a75',
-                            950: '#4a044e',
-                        },
-                        accent: {
-                            50: '#fff7ed',
-                            100: '#ffedd5',
-                            200: '#fed7aa',
-                            300: '#fdba74',
-                            400: '#fb923c',
-                            500: '#f97316',
-                            600: '#ea580c',
-                            700: '#c2410c',
-                            800: '#9a3412',
-                            900: '#7c2d12',
-                            950: '#431407',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
     <style>
         body {
             box-sizing: border-box;
         }
-        .gradient-bg {
-            background: linear-gradient(135deg, #d946ef 0%, #f97316 100%);
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
+        
         .product-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
         }
+        
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s ease;
+            z-index: 1;
+        }
+        
+        .product-card:hover::before {
+            left: 100%;
+        }
+        
         .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-        .scroll-smooth {
-            scroll-behavior: smooth;
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(102, 126, 234, 0.25), 0 10px 25px rgba(0,0,0,0.1);
         }
         
-        /* Responsive Design - Mobile First Approach */
-        @media (max-width: 640px) {
-            .hero-title {
-                font-size: 2.5rem;
-                line-height: 1.1;
-            }
-            .hero-subtitle {
-                font-size: 1.125rem;
-            }
-            .product-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-            .payment-methods {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 0.75rem;
-            }
-            .modal-content {
-                margin: 1rem;
-                max-height: 90vh;
-                overflow-y: auto;
-            }
+        .product-card .gradient-bg {
+            transition: all 0.4s ease;
         }
         
-        /* Tablet Design */
-        @media (min-width: 641px) and (max-width: 1024px) {
-            .hero-title {
-                font-size: 3.5rem;
-            }
-            .hero-subtitle {
-                font-size: 1.5rem;
-            }
-            .product-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1.5rem;
-            }
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1.5rem;
-            }
-            .payment-methods {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 1rem;
-            }
+        .product-card:hover .gradient-bg {
+            transform: scale(1.1);
         }
         
-        /* Desktop Design */
-        @media (min-width: 1025px) {
-            .hero-title {
-                font-size: 4rem;
-            }
-            .hero-subtitle {
-                font-size: 1.875rem;
-            }
-            .product-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 2rem;
-            }
-            .contact-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 3rem;
-            }
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1.5rem;
-            }
-            .payment-methods {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 1rem;
-            }
+        .product-card .product-emoji {
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
         
-        /* Large Desktop */
-        @media (min-width: 1440px) {
-            .hero-title {
-                font-size: 5rem;
-            }
-            .hero-subtitle {
-                font-size: 2rem;
-            }
-            .container-max {
-                max-width: 1400px;
-            }
+        .product-card:hover .product-emoji {
+            transform: scale(1.2) rotate(10deg);
         }
         
-        /* Auto-detect device and adjust */
-        @media (hover: none) and (pointer: coarse) {
-            /* Touch devices - larger touch targets */
-            .touch-target {
-                min-height: 44px;
-                min-width: 44px;
-            }
-            .mobile-padding {
-                padding: 1rem;
-            }
+        .cart-count {
+            animation: bounce 0.5s ease;
         }
         
-        @media (hover: hover) and (pointer: fine) {
-            /* Mouse devices - hover effects */
-            .hover-scale:hover {
-                transform: scale(1.05);
+        @keyframes bounce {
+            0%, 20%, 60%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            80% { transform: translateY(-5px); }
+        }
+        
+        .floating-cart {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            animation: floatBounce 3s ease-in-out infinite;
+        }
+
+        @keyframes floatBounce {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating-cart button {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .floating-cart button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Premium Section Animations */
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
+        }
+
+        /* Staggered Animation for Cards */
+        .product-card:nth-child(1) { animation-delay: 0.1s; }
+        .product-card:nth-child(2) { animation-delay: 0.2s; }
+        .product-card:nth-child(3) { animation-delay: 0.3s; }
+        .product-card:nth-child(4) { animation-delay: 0.4s; }
+        .product-card:nth-child(5) { animation-delay: 0.5s; }
+        .product-card:nth-child(6) { animation-delay: 0.6s; }
+
+        /* Premium Auth Modal Styles */
+        .auth-modal {
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .auth-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .auth-form {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-slide-enter {
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        .form-slide-exit {
+            animation: slideOutLeft 0.5s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutLeft {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .floating-shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-shape:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-shape:nth-child(2) {
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-shape:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group input:focus + label,
+        .input-group input:not(:placeholder-shown) + label {
+            transform: translateY(-25px) scale(0.8);
+            color: #667eea;
+        }
+
+        .input-group label {
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            color: #6b7280;
+        }
+
+        .social-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .social-btn:hover::before {
+            left: 100%;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        /* Premium Button Styles */
+        .btn-premium {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .btn-premium::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-premium:hover::before {
+            left: 100%;
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-premium:active {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Navigation Link Animations */
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            transform: translateY(-1px);
+        }
+
+        .success-animation {
+            animation: successPulse 0.6s ease-out;
+        }
+
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
-<body class="scroll-smooth">
+<body class="bg-gray-50">
     <!-- Navigation -->
-    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <h1 class="text-2xl font-bold text-brand-600">🍿 Snackester</h1>
+                    <h1 class="text-2xl font-bold text-purple-600">🍿 Snackester</h1>
                 </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#home" class="text-gray-700 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
-                        <a href="#products" class="text-gray-700 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Products</a>
-                        <a href="#about" class="text-gray-700 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">About Us</a>
-                        <a href="#contact" class="text-gray-700 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contact</a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-link text-gray-700 hover:text-purple-600 font-medium">Home</a>
+                    <a href="#products" class="nav-link text-gray-700 hover:text-purple-600 font-medium">Products</a>
+                    <a href="#about" class="nav-link text-gray-700 hover:text-purple-600 font-medium">About</a>
+                    <a href="#contact" class="nav-link text-gray-700 hover:text-purple-600 font-medium">Contact</a>
+                    <button onclick="openTrackOrderModal()" class="nav-link text-gray-700 hover:text-purple-600 font-medium">Track Order</button>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- User Account Section -->
+                    <div id="userSection" class="hidden flex items-center space-x-3">
+                        <span id="userWelcome" class="text-gray-700 font-medium"></span>
+                        <button id="logoutBtn" class="text-purple-600 hover:text-purple-700 transition-colors">
+                            Logout
+                        </button>
                     </div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <button onclick="openLoginModal()" class="text-brand-600 hover:text-brand-700 px-4 py-2 rounded-md text-sm font-medium transition-colors">Login</button>
-                    <button onclick="openSignupModal()" class="bg-brand-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-brand-700 transition-colors">Sign Up</button>
-                </div>
-                <div class="md:hidden">
-                    <button id="mobile-menu-btn" class="text-gray-700 hover:text-brand-600">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
+                    
+                    <!-- Auth Buttons -->
+                    <div id="authButtons" class="flex items-center space-x-3">
+                        <button id="loginBtn" class="text-purple-600 hover:text-purple-700 transition-colors font-medium">
+                            Login
+                        </button>
+                        <button id="signupBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                            Sign Up
+                        </button>
+                    </div>
+                    
+                    <button id="cartBtn" class="relative bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                        🛒 Cart (<span id="cartCount">0</span>)
                     </button>
                 </div>
             </div>
         </div>
-        <div id="mobile-menu" class="md:hidden hidden">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
-                <a href="#home" class="text-gray-700 hover:text-brand-600 block px-3 py-2 rounded-md text-base font-medium">Home</a>
-                <a href="#products" class="text-gray-700 hover:text-brand-600 block px-3 py-2 rounded-md text-base font-medium">Products</a>
-                <a href="#about" class="text-gray-700 hover:text-brand-600 block px-3 py-2 rounded-md text-base font-medium">About Us</a>
-                <a href="#contact" class="text-gray-700 hover:text-brand-600 block px-3 py-2 rounded-md text-base font-medium">Contact</a>
-            </div>
-        </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="gradient-bg min-h-screen flex items-center justify-center pt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="text-white">
-                <h1 class="hero-title font-bold mb-6">Premium Healthy Snacks</h1>
-                <p class="hero-subtitle mb-8 opacity-90">Discover our delicious range of makhana and healthy snacks</p>
-                <div class="space-x-4">
-                    <a href="#products" class="bg-white text-brand-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors inline-block">Shop Now</a>
-                    <a href="#about" class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-brand-600 transition-colors inline-block">Learn More</a>
+    <!-- Premium Auth Modal -->
+    <div id="authModal" class="fixed inset-0 auth-modal hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="auth-container rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
+                <!-- Floating Background Shapes -->
+                <div class="floating-shapes">
+                    <div class="floating-shape text-6xl">🍿</div>
+                    <div class="floating-shape text-4xl">🥜</div>
+                    <div class="floating-shape text-5xl">🌶️</div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
+                    <!-- Left Side - Branding -->
+                    <div class="hidden lg:flex flex-col justify-center items-center p-12 text-white relative z-10">
+                        <div class="text-center">
+                            <div class="text-6xl mb-6">🍿</div>
+                            <h2 class="text-4xl font-bold mb-4">Welcome to Snackester</h2>
+                            <p class="text-xl opacity-90 mb-8">Premium snacks delivered fresh to your doorstep</p>
+                            <div class="space-y-4 text-left">
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-2xl">✨</span>
+                                    <span>Premium Quality Ingredients</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-2xl">🚚</span>
+                                    <span>Fast & Fresh Delivery</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-2xl">💚</span>
+                                    <span>Healthy & Delicious</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side - Forms -->
+                    <div class="flex items-center justify-center p-8 relative">
+                        <button id="closeAuth" class="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl z-20">
+                            ✕
+                        </button>
+
+                        <!-- Login Form -->
+                        <div id="loginForm" class="auth-form w-full max-w-md p-8 rounded-xl relative z-10">
+                            <div class="text-center mb-8">
+                                <h3 class="text-2xl font-bold text-gray-800 mb-2">Welcome Back!</h3>
+                                <p class="text-gray-600">Sign in to your account</p>
+                            </div>
+
+                            <form id="loginFormElement" class="space-y-6">
+                                <div class="input-group">
+                                    <input type="email" id="loginEmail" placeholder=" " required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                                    <label for="loginEmail">Email Address</label>
+                                </div>
+
+                                <div class="input-group">
+                                    <input type="password" id="loginPassword" placeholder=" " required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                                    <label for="loginPassword">Password</label>
+                                </div>
+
+                                <div class="flex items-center justify-between">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                                        <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                                    </label>
+                                    <a href="#" class="text-sm text-purple-600 hover:text-purple-700">Forgot password?</a>
+                                </div>
+
+                                <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-3 rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all transform hover:scale-105 font-semibold">
+                                    Sign In
+                                </button>
+                            </form>
+
+                            <div class="mt-6">
+                                <div class="relative">
+                                    <div class="absolute inset-0 flex items-center">
+                                        <div class="w-full border-t border-gray-300"></div>
+                                    </div>
+                                    <div class="relative flex justify-center text-sm">
+                                        <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-6 grid grid-cols-2 gap-3">
+                                    <button class="social-btn w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                        <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                                        </svg>
+                                        <span class="ml-2">Google</span>
+                                    </button>
+
+                                    <button class="social-btn w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                        <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                        </svg>
+                                        <span class="ml-2">Facebook</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <p class="mt-8 text-center text-sm text-gray-600">
+                                Don't have an account?
+                                <button id="switchToSignup" class="font-medium text-purple-600 hover:text-purple-700">Sign up</button>
+                            </p>
+                        </div>
+
+                        <!-- Signup Form -->
+                        <div id="signupForm" class="auth-form w-full max-w-md p-8 rounded-xl relative z-10 hidden">
+                            <div class="text-center mb-8">
+                                <h3 class="text-2xl font-bold text-gray-800 mb-2">Create Account</h3>
+                                <p class="text-gray-600">Join the Snackester family</p>
+                            </div>
+
+                            <form id="signupFormElement" class="space-y-6">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="input-group">
+                                        <input type="text" id="signupFirstName" placeholder=" " required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                                        <label for="signupFirstName">First Name</label>
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" id="signupLastName" placeholder=" " required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                                        <label for="signupLastName">Last Name</label>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <input type="email" id="signupEmail" placeholder=" " required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                                    <label for="signupEmail">Email Address</label>
+                                </div>
+
+                                <div class="input-group">
+                                    <input type="tel" id="signupPhone" placeholder=" " required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                                    <label for="signupPhone">Phone Number</label>
+                                </div>
+
+                                <div class="input-group">
+                                    <input type="password" id="signupPassword" placeholder=" " required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                                    <label for="signupPassword">Password</label>
+                                </div>
+
+                                <div class="input-group">
+                                    <input type="password" id="signupConfirmPassword" placeholder=" " required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                                    <label for="signupConfirmPassword">Confirm Password</label>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="agreeTerms" required class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                                    <label for="agreeTerms" class="ml-2 text-sm text-gray-600">
+                                        I agree to the <a href="#" class="text-purple-600 hover:text-purple-700">Terms of Service</a> and <a href="#" class="text-purple-600 hover:text-purple-700">Privacy Policy</a>
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-3 rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all transform hover:scale-105 font-semibold">
+                                    Create Account
+                                </button>
+                            </form>
+
+                            <div class="mt-6">
+                                <div class="relative">
+                                    <div class="absolute inset-0 flex items-center">
+                                        <div class="w-full border-t border-gray-300"></div>
+                                    </div>
+                                    <div class="relative flex justify-center text-sm">
+                                        <span class="px-2 bg-white text-gray-500">Or sign up with</span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-6 grid grid-cols-2 gap-3">
+                                    <button class="social-btn w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                        <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                                        </svg>
+                                        <span class="ml-2">Google</span>
+                                    </button>
+
+                                    <button class="social-btn w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                        <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                        </svg>
+                                        <span class="ml-2">Facebook</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <p class="mt-8 text-center text-sm text-gray-600">
+                                Already have an account?
+                                <button id="switchToLogin" class="font-medium text-purple-600 hover:text-purple-700">Sign in</button>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-gradient text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-5xl font-bold mb-6">Premium Snacks Delivered Fresh</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Discover our handcrafted makhana and premium snacks, made with love and delivered to your doorstep</p>
+            <button onclick="document.getElementById('products').scrollIntoView({behavior: 'smooth'})" class="btn-premium bg-white text-purple-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100">
+                Shop Now
+            </button>
         </div>
     </section>
 
     <!-- Products Section -->
-    <section id="products" class="py-20 bg-gray-50">
+    <section id="products" class="py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Premium Snacks</h2>
-                <p class="text-xl text-gray-600">Healthy, tasty, and made with love</p>
-            </div>
+            <h3 class="text-3xl font-bold text-center mb-12 text-gray-800">Our Premium Collection</h3>
             
-            <div class="product-grid">
-                <!-- Peri Peri Makhana -->
-                <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div class="h-48 bg-gradient-to-br from-red-400 to-orange-500 flex items-center justify-center">
-                        <span class="text-6xl">🌶</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Peri Peri Makhana</h3>
-                        <p class="text-gray-600 mb-4">Spicy and flavorful roasted fox nuts with authentic peri peri seasoning</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-2xl font-bold text-brand-600">₹299</span>
-                            <button class="bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-700 transition-colors" onclick="openPaymentModal('Peri Peri Makhana', 299)">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Tangy Tomato Makhana -->
                 <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div class="h-48 bg-gradient-to-br from-red-500 to-pink-500 flex items-center justify-center">
-                        <span class="text-6xl">🍅</span>
+                    <div class="gradient-bg h-48 bg-gradient-to-br from-red-400 to-orange-500 flex items-center justify-center">
+                        <span class="product-emoji text-6xl">🍅</span>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Tangy Tomato Makhana</h3>
-                        <p class="text-gray-600 mb-4">Crispy makhana with tangy tomato flavor that melts in your mouth</p>
+                        <h4 class="text-xl font-semibold mb-2">Tangy Tomato Makhana</h4>
+                        <p class="text-gray-600 mb-4">Crispy fox nuts with a burst of tangy tomato flavor. Perfect healthy snacking option.</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-2xl font-bold text-brand-600">₹279</span>
-                            <button class="bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-700 transition-colors" onclick="openPaymentModal('Tangy Tomato Makhana', 279)">Buy Now</button>
+                            <span class="text-2xl font-bold text-purple-600">₹149</span>
+                            <button onclick="addToCart('Tangy Tomato Makhana', 149)" class="btn-premium bg-purple-600 text-white px-4 py-2 rounded-lg">
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Classic Salted Makhana -->
+                <!-- Peri Peri Makhana -->
                 <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div class="h-48 bg-gradient-to-br from-yellow-400 to-orange-400 flex items-center justify-center">
-                        <span class="text-6xl">🥜</span>
+                    <div class="gradient-bg h-48 bg-gradient-to-br from-red-500 to-yellow-500 flex items-center justify-center">
+                        <span class="product-emoji text-6xl">🌶️</span>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Classic Salted Makhana</h3>
-                        <p class="text-gray-600 mb-4">Traditional roasted fox nuts with perfect salt seasoning</p>
+                        <h4 class="text-xl font-semibold mb-2">Peri Peri Makhana</h4>
+                        <p class="text-gray-600 mb-4">Spicy and flavorful peri peri seasoned makhana for those who love a kick!</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-2xl font-bold text-brand-600">₹249</span>
-                            <button class="bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-700 transition-colors" onclick="openPaymentModal('Classic Salted Makhana', 249)">Buy Now</button>
+                            <span class="text-2xl font-bold text-purple-600">₹159</span>
+                            <button onclick="addToCart('Peri Peri Makhana', 159)" class="btn-premium bg-purple-600 text-white px-4 py-2 rounded-lg">
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Cheese & Herbs Makhana -->
+                <!-- Mixed Nuts Premium -->
                 <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div class="h-48 bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center">
-                        <span class="text-6xl">🧀</span>
+                    <div class="gradient-bg h-48 bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
+                        <span class="product-emoji text-6xl">🥜</span>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Cheese & Herbs Makhana</h3>
-                        <p class="text-gray-600 mb-4">Rich cheese flavor with aromatic herbs for a gourmet experience</p>
+                        <h4 class="text-xl font-semibold mb-2">Premium Mixed Nuts</h4>
+                        <p class="text-gray-600 mb-4">A delightful mix of roasted almonds, cashews, and walnuts with special seasoning.</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-2xl font-bold text-brand-600">₹329</span>
-                            <button class="bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-700 transition-colors" onclick="openPaymentModal('Cheese & Herbs Makhana', 329)">Buy Now</button>
+                            <span class="text-2xl font-bold text-purple-600">₹299</span>
+                            <button onclick="addToCart('Premium Mixed Nuts', 299)" class="btn-premium bg-purple-600 text-white px-4 py-2 rounded-lg">
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Chocolate Coated Makhana -->
+                <!-- Masala Chickpeas -->
                 <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div class="h-48 bg-gradient-to-br from-amber-600 to-yellow-600 flex items-center justify-center">
-                        <span class="text-6xl">🍫</span>
+                    <div class="gradient-bg h-48 bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center">
+                        <span class="product-emoji text-6xl">🫘</span>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Chocolate Coated Makhana</h3>
-                        <p class="text-gray-600 mb-4">Sweet treat with premium dark chocolate coating</p>
+                        <h4 class="text-xl font-semibold mb-2">Masala Chickpeas</h4>
+                        <p class="text-gray-600 mb-4">Crunchy roasted chickpeas with authentic Indian spices. High protein snack.</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-2xl font-bold text-brand-600">₹349</span>
-                            <button class="bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-700 transition-colors" onclick="openPaymentModal('Chocolate Coated Makhana', 349)">Buy Now</button>
+                            <span class="text-2xl font-bold text-purple-600">₹129</span>
+                            <button onclick="addToCart('Masala Chickpeas', 129)" class="btn-premium bg-purple-600 text-white px-4 py-2 rounded-lg">
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Mixed Nuts Combo -->
+                <!-- Honey Roasted Almonds -->
                 <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div class="h-48 bg-gradient-to-br from-brand-500 to-accent-500 flex items-center justify-center">
-                        <span class="text-6xl">🥨</span>
+                    <div class="gradient-bg h-48 bg-gradient-to-br from-yellow-400 to-amber-500 flex items-center justify-center">
+                        <span class="product-emoji text-6xl">🍯</span>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Mixed Nuts Combo</h3>
-                        <p class="text-gray-600 mb-4">Perfect blend of roasted nuts and makhana varieties</p>
+                        <h4 class="text-xl font-semibold mb-2">Honey Roasted Almonds</h4>
+                        <p class="text-gray-600 mb-4">Sweet and crunchy almonds roasted with pure honey. A healthy indulgence.</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-2xl font-bold text-brand-600">₹399</span>
-                            <button class="bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-700 transition-colors" onclick="openPaymentModal('Mixed Nuts Combo', 399)">Buy Now</button>
+                            <span class="text-2xl font-bold text-purple-600">₹249</span>
+                            <button onclick="addToCart('Honey Roasted Almonds', 249)" class="btn-premium bg-purple-600 text-white px-4 py-2 rounded-lg">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spicy Trail Mix -->
+                <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="gradient-bg h-48 bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center">
+                        <span class="product-emoji text-6xl">🥨</span>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-semibold mb-2">Spicy Trail Mix</h4>
+                        <p class="text-gray-600 mb-4">Perfect blend of nuts, seeds, and dried fruits with a spicy twist.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-purple-600">₹199</span>
+                            <button onclick="addToCart('Spicy Trail Mix', 199)" class="btn-premium bg-purple-600 text-white px-4 py-2 rounded-lg">
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -332,494 +692,1184 @@
         </div>
     </section>
 
-    <!-- About Us Section -->
-    <section id="about" class="py-20 bg-white">
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">About Snackester</h2>
-                    <p class="text-lg text-gray-600 mb-6">
-                        At Snackester, we're passionate about bringing you the finest quality healthy snacks. Our journey began with a simple mission: to make nutritious snacking delicious and accessible to everyone.
-                    </p>
-                    <p class="text-lg text-gray-600 mb-6">
-                        We specialize in premium makhana (fox nuts) - a superfood that's naturally gluten-free, high in protein, and packed with essential nutrients. Each batch is carefully roasted and seasoned with authentic spices to create flavors that will keep you coming back for more.
-                    </p>
-                    <div class="stats-grid mt-8">
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-brand-600">100%</div>
-                            <div class="text-gray-600">Natural</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-brand-600">5⭐</div>
-                            <div class="text-gray-600">Rating</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-brand-600">10K+</div>
-                            <div class="text-gray-600">Happy Customers</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-brand-600">24/7</div>
-                            <div class="text-gray-600">Support</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-gradient-to-br from-brand-100 to-accent-100 rounded-2xl p-8 text-center">
-                    <div class="text-8xl mb-4">🌟</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Our Promise</h3>
-                    <p class="text-gray-600">
-                        We promise to deliver only the highest quality snacks made with premium ingredients, no artificial preservatives, and lots of love. Your health and satisfaction are our top priorities.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Get In Touch</h2>
-                <p class="text-xl text-gray-600">We'd love to hear from you!</p>
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold mb-6 text-gray-800">Why Choose Snackester?</h3>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">We're passionate about bringing you the finest quality snacks made with premium ingredients and traditional recipes.</p>
             </div>
             
-            <div class="contact-grid">
-                <!-- Contact Form -->
-                <div class="bg-white rounded-xl shadow-lg p-8">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Send us a message</h3>
-                    <form id="contact-form" class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
-                            <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent" placeholder="Your Name" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                            <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent" placeholder="your@email.com" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
-                            <textarea id="message" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent" placeholder="Your message..." required></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-brand-600 text-white py-3 rounded-lg font-semibold hover:bg-brand-700 transition-colors">Send Message</button>
-                    </form>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center p-6">
+                    <div class="text-4xl mb-4">🌟</div>
+                    <h4 class="text-xl font-semibold mb-2">Premium Quality</h4>
+                    <p class="text-gray-600">Hand-selected ingredients and traditional recipes ensure the best taste and quality.</p>
                 </div>
+                <div class="text-center p-6">
+                    <div class="text-4xl mb-4">🚚</div>
+                    <h4 class="text-xl font-semibold mb-2">Fresh Delivery</h4>
+                    <p class="text-gray-600">Made fresh and delivered quickly to maintain crispiness and flavor.</p>
+                </div>
+                <div class="text-center p-6">
+                    <div class="text-4xl mb-4">💚</div>
+                    <h4 class="text-xl font-semibold mb-2">Healthy Choice</h4>
+                    <p class="text-gray-600">Nutritious snacks that don't compromise on taste. Perfect for guilt-free snacking.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                <!-- Social Media -->
-                <div class="bg-white rounded-xl shadow-lg p-8">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Follow Us</h3>
-                    <p class="text-gray-600 mb-6">Stay connected with us on social media for the latest updates and offers!</p>
-                    <div class="flex space-x-4 justify-center">
-                        <a href="https://www.instagram.com/snackester_offical?igsh=eTdmbXk1Z2QyNnZ4" rel="noopener noreferrer" class="bg-gradient-to-r from-brand-500 to-accent-500 text-white p-4 rounded-full hover:shadow-lg transition-all">
-                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+
+
+    <!-- Premium Footer -->
+    <footer class="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-800 text-white">
+        <!-- Main Footer Content -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-3xl">🍿</span>
+                        <h3 class="text-2xl font-bold">Snackester</h3>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed">
+                        Premium handcrafted snacks made with love and delivered fresh to your doorstep. Experience the perfect blend of taste and health.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.instagram.com/snackester_offical?igsh=eTdmbXk1Z2QyNnZ4" target="_blank" rel="noopener noreferrer" class="social-btn bg-gradient-to-r from-pink-500 to-purple-600 p-3 rounded-full group">
+                            <svg class="w-5 h-5 text-white transition-transform group-hover:rotate-12" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                             </svg>
                         </a>
-                        <a href="https://facebook.com/snackester" target="_blank" rel="noopener noreferrer" class="bg-blue-600 text-white p-4 rounded-full hover:shadow-lg transition-all">
-                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        <a href="mailto:snackester1909@gmail.com" class="social-btn bg-gradient-to-r from-red-500 to-red-600 p-3 rounded-full group">
+                            <svg class="w-5 h-5 text-white transition-transform group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.91L12 10.09l9.455-6.269h.909c.904 0 1.636.732 1.636 1.636z"/>
                             </svg>
                         </a>
-                        <a href="https://twitter.com/snackester" target="_blank" rel="noopener noreferrer" class="bg-blue-400 text-white p-4 rounded-full hover:shadow-lg transition-all">
-                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                        <a href="tel:+918603523912" class="social-btn bg-gradient-to-r from-blue-500 to-blue-600 p-3 rounded-full group">
+                            <svg class="w-5 h-5 text-white transition-transform group-hover:rotate-12" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
                             </svg>
                         </a>
-                        <a href="https://youtube.com/snackester" target="_blank" rel="noopener noreferrer" class="bg-red-600 text-white p-4 rounded-full hover:shadow-lg transition-all">
-                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        <a href="https://wa.me/918603523912" target="_blank" rel="noopener noreferrer" class="social-btn bg-gradient-to-r from-green-400 to-green-600 p-3 rounded-full group">
+                            <svg class="w-5 h-5 text-white transition-transform group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-btn bg-gradient-to-r from-blue-600 to-blue-700 p-3 rounded-full group">
+                            <svg class="w-5 h-5 text-white transition-transform group-hover:-rotate-12" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-btn bg-gradient-to-r from-blue-800 to-blue-900 p-3 rounded-full group">
+                            <svg class="w-5 h-5 text-white transition-transform group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                             </svg>
                         </a>
                     </div>
                 </div>
-            </div>
-            
 
+                <!-- Quick Links -->
+                <div class="space-y-4">
+                    <h4 class="text-lg font-semibold text-purple-300">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-300 hover:text-white hover:pl-2 transition-all duration-200">Home</a></li>
+                        <li><a href="#products" class="text-gray-300 hover:text-white hover:pl-2 transition-all duration-200">Our Products</a></li>
+                        <li><a href="#about" class="text-gray-300 hover:text-white hover:pl-2 transition-all duration-200">About Us</a></li>
+                        <li><a href="#contact" class="text-gray-300 hover:text-white hover:pl-2 transition-all duration-200">Contact</a></li>
+                        <li><a href="#" onclick="openTrackOrderModal()" class="text-gray-300 hover:text-white hover:pl-2 transition-all duration-200">Track Order</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white hover:pl-2 transition-all duration-200">Bulk Orders</a></li>
+                    </ul>
+                </div>
+
+                <!-- Product Categories -->
+                <div class="space-y-4">
+                    <h4 class="text-lg font-semibold text-purple-300">Our Specialties</h4>
+                    <ul class="space-y-2">
+                        <li class="text-gray-300 flex items-center"><span class="mr-2">🍅</span>Tangy Tomato Makhana</li>
+                        <li class="text-gray-300 flex items-center"><span class="mr-2">🌶️</span>Peri Peri Makhana</li>
+                        <li class="text-gray-300 flex items-center"><span class="mr-2">🥜</span>Premium Mixed Nuts</li>
+                        <li class="text-gray-300 flex items-center"><span class="mr-2">🫘</span>Masala Chickpeas</li>
+                        <li class="text-gray-300 flex items-center"><span class="mr-2">🍯</span>Honey Roasted Almonds</li>
+                        <li class="text-gray-300 flex items-center"><span class="mr-2">🥨</span>Spicy Trail Mix</li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="space-y-4">
+                    <h4 class="text-lg font-semibold text-purple-300">Get In Touch</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-start space-x-3">
+                            <span class="text-purple-400 mt-1">📍</span>
+                            <div>
+                                <p class="text-gray-300 text-sm">
+                                    <a href="https://maps.app.goo.gl/aEu4HPYgUaXuENnc8" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
+                                        Longowal, Sangrur,<br>Punjab 148106, India
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-purple-400">📧</span>
+                            <a href="mailto:snackester1909@gmail.com" class="text-gray-300 hover:text-white transition-colors text-sm">
+                                snackester1909@gmail.com
+                            </a>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-purple-400">📱</span>
+                            <a href="tel:+918603523912" class="text-gray-300 hover:text-white transition-colors text-sm">
+                                +91-8603523912
+                            </a>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-purple-400">🕒</span>
+                            <p class="text-gray-300 text-sm">Mon - Sat: 9AM - 8PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-2xl font-bold mb-4">🍿 Snackester</h3>
-                    <p class="text-gray-400">Premium healthy snacks delivered to your doorstep.</p>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#home" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
-                        <li><a href="#products" class="text-gray-400 hover:text-white transition-colors">Products</a></li>
-                        <li><a href="#about" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
-                        <li><a href="#contact" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Products</h4>
-                    <ul class="space-y-2">
-                        <li><span class="text-gray-400">Peri Peri Makhana</span></li>
-                        <li><span class="text-gray-400">Tangy Tomato Makhana</span></li>
-                        <li><span class="text-gray-400">Classic Salted</span></li>
-                        <li><span class="text-gray-400">Mixed Combos</span></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
-                    <ul class="space-y-2">
-                        <li>
-                            <a href="mailto:snackester1909@gmail.com" class="text-gray-400 hover:text-white transition-colors cursor-pointer">
-                                📧 snackester1909@gmail.com
-                            </a>
-                        </li>
-                        <li>
-                            <a href="tel:+918603523912" class="text-gray-400 hover:text-white transition-colors cursor-pointer">
-                                📱 +91-8603523912
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://maps.app.goo.gl/aEu4HPYgUaXuENnc8" class="text-gray-400 hover:text-white transition-colors cursor-pointer">
-                                📍 Longowal, Sangrur<br>&nbsp;&nbsp;&nbsp;&nbsp;Punjab 148106
-                            </a>
-                        </li>
-                    </ul>
+        <!-- Newsletter Section -->
+        <div class="border-t border-gray-700">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="text-center">
+                    <h4 class="text-xl font-semibold mb-2">Stay Updated with Our Latest Offers! 🎉</h4>
+                    <p class="text-gray-300 mb-6">Subscribe to get exclusive deals and new product launches</p>
+                    <div class="flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-y-0 sm:space-x-3 max-w-md mx-auto">
+                        <input type="email" placeholder="Enter your email" class="w-full sm:flex-1 px-4 py-2 rounded-lg bg-gray-800 border border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <button class="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-2 rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all duration-200 transform hover:scale-105">
+                            Subscribe
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
-                <p class="text-gray-400">&copy; 2024 Snackester. All rights reserved. Made with ❤ for healthy snacking.</p>
+        </div>
+
+        <!-- Bottom Footer -->
+        <div class="border-t border-gray-700 bg-gray-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                    <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
+                        <p class="text-gray-400 text-sm">&copy; 2025 Snackester. All rights reserved.</p>
+                        <div class="flex space-x-4 text-sm">
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors">Refund Policy</a>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-gray-400 text-sm">We Accept:</span>
+                        <div class="flex space-x-2">
+                            <span class="bg-gray-800 px-2 py-1 rounded text-xs">💳 Cards</span>
+                            <span class="bg-gray-800 px-2 py-1 rounded text-xs">📱 UPI</span>
+                            <span class="bg-gray-800 px-2 py-1 rounded text-xs">💵 COD</span>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+
+        <!-- Floating Elements -->
+        <div class="absolute top-4 right-4 opacity-10">
+            <div class="text-6xl animate-pulse">🍿</div>
+        </div>
+        <div class="absolute bottom-4 left-4 opacity-10">
+            <div class="text-4xl animate-bounce">🥜</div>
         </div>
     </footer>
 
-    <!-- Login Modal -->
-    <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-900">Login</h2>
-                <button onclick="closeLoginModal()" class="text-gray-500 hover:text-gray-700">
-                    <span class="text-2xl">&times;</span>
-                </button>
+    <!-- Floating Cart -->
+    <div class="floating-cart">
+        <button id="floatingCartBtn" class="bg-purple-600 text-white p-4 rounded-full shadow-lg hover:bg-purple-700 transition-colors">
+            🛒 <span id="floatingCartCount" class="ml-1">0</span>
+        </button>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-xl max-w-md w-full p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold">Shopping Cart</h3>
+                    <button id="closeCart" class="text-gray-500 hover:text-gray-700">✕</button>
+                </div>
+                <div id="cartItems" class="space-y-3 mb-4">
+                    <!-- Cart items will be added here -->
+                </div>
+                <div class="border-t pt-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="font-semibold">Total: ₹<span id="cartTotal">0</span></span>
+                    </div>
+                    <button id="checkoutBtn" class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                        Proceed to Checkout
+                    </button>
+                </div>
             </div>
-            <form id="login-form" class="space-y-4">
-               <div class="auth">
-        <a href="login.html">Log in</a>
-      </div>
-            </form>
+        </div>
+    </div>
+
+    <!-- Track Order Modal -->
+    <div id="trackOrderModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-semibold text-gray-800">Track Your Order</h3>
+                    <button id="closeTrackOrder" class="text-gray-500 hover:text-gray-700 text-2xl">✕</button>
+                </div>
+
+                <!-- Order ID Input -->
+                <div class="mb-6">
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg border border-purple-200">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Enter Order ID or Phone Number</label>
+                        <div class="flex gap-3">
+                            <input type="text" id="orderTrackingInput" placeholder="e.g., SNK2024001 or +91-9876543210" class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <button onclick="trackOrder()" class="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-6 py-3 rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all font-semibold">
+                                Track
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-600 mt-2">💡 Don't have your Order ID? Use the phone number you placed the order with.</p>
+                    </div>
+                </div>
+
+                <!-- Order Status Display -->
+                <div id="orderStatusDisplay" class="hidden">
+                    <!-- Order Header -->
+                    <div class="bg-gradient-to-r from-green-50 to-blue-50 p-4 rounded-lg border border-green-200 mb-6">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-800" id="displayOrderId">Order #SNK2024001</h4>
+                                <p class="text-sm text-gray-600" id="displayOrderDate">Placed on Oct 15, 2025</p>
+                                <p class="text-sm text-gray-600" id="displayOrderTotal">Total: ₹299</p>
+                            </div>
+                            <div class="text-right">
+                                <span id="displayOrderStatus" class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                    Out for Delivery
+                                </span>
+                                <p class="text-xs text-gray-600 mt-1" id="displayEstimatedDelivery">Est. delivery: Today, 6:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Timeline -->
+                    <div class="mb-6">
+                        <h5 class="text-lg font-semibold mb-4 text-gray-800">Order Progress</h5>
+                        <div class="space-y-4" id="orderTimeline">
+                            <!-- Timeline items will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Order Items -->
+                    <div class="mb-6">
+                        <h5 class="text-lg font-semibold mb-4 text-gray-800">Order Items</h5>
+                        <div class="space-y-3" id="orderItemsList">
+                            <!-- Order items will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Delivery Information -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h5 class="font-semibold mb-2 text-gray-800">Delivery Information</h5>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <p class="text-gray-600">Delivery Address:</p>
+                                <p class="font-medium" id="deliveryAddress">BH-01 SLIET, Longowal, Sangrur ,Punjab</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Contact Number:</p>
+                                <p class="font-medium" id="deliveryPhone">+91-6204006452</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-gray-200">
+                            <p class="text-xs text-gray-600">📞 Need help? Call us at <a href="tel:+918603523912" class="text-purple-600 hover:underline">+91-8603523912</a> or WhatsApp us for instant support!</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                        <button onclick="contactSupport()" class="flex-1 bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
+                            📞 Contact Support
+                        </button>
+                        <button onclick="shareOrderStatus()" class="flex-1 bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors">
+                            📤 Share Status
+                        </button>
+                        <button onclick="reorderItems()" class="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
+                            🔄 Reorder
+                        </button>
+                    </div>
+                </div>
+
+                <!-- No Order Found -->
+                <div id="noOrderFound" class="hidden text-center py-8">
+                    <div class="text-6xl mb-4">📦</div>
+                    <h4 class="text-xl font-semibold text-gray-800 mb-2">Order Not Found</h4>
+                    <p class="text-gray-600 mb-4">We couldn't find an order with that ID or phone number.</p>
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-left">
+                        <h5 class="font-semibold text-yellow-800 mb-2">💡 Tips:</h5>
+                        <ul class="text-sm text-yellow-700 space-y-1">
+                            <li>• Check your Order ID in the confirmation message</li>
+                            <li>• Make sure you're using the correct phone number</li>
+                            <li>• Contact us if you need help finding your order</li>
+                        </ul>
+                    </div>
+                    <button onclick="contactSupport()" class="mt-4 bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                        Contact Support
+                    </button>
+                </div>
+
+                <!-- Sample Orders for Demo -->
+                <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <h5 class="font-semibold text-blue-800 mb-2">🎯 Try These Sample Orders:</h5>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                        <button onclick="document.getElementById('orderTrackingInput').value='SNK2024001'; trackOrder();" class="text-left bg-white p-2 rounded border hover:bg-blue-50 transition-colors">
+                            <span class="font-medium">SNK2025001</span><br>
+                            <span class="text-xs text-gray-600">Out for Delivery</span>
+                        </button>
+                        <button onclick="document.getElementById('orderTrackingInput').value='SNK2024002'; trackOrder();" class="text-left bg-white p-2 rounded border hover:bg-blue-50 transition-colors">
+                            <span class="font-medium">SNK2025002</span><br>
+                            <span class="text-xs text-gray-600">In Transit</span>
+                        </button>
+                        <button onclick="document.getElementById('orderTrackingInput').value='SNK2024003'; trackOrder();" class="text-left bg-white p-2 rounded border hover:bg-blue-50 transition-colors">
+                            <span class="font-medium">SNK2025003</span><br>
+                            <span class="text-xs text-gray-600">Delivered</span>
+                        </button>
+                        <button onclick="document.getElementById('orderTrackingInput').value='+91-9876543210'; trackOrder();" class="text-left bg-white p-2 rounded border hover:bg-blue-50 transition-colors">
+                            <span class="font-medium">+91-6204006452</span><br>
+                            <span class="text-xs text-gray-600">Multiple Orders</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Payment Modal -->
-    <div id="payment-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="modal-content bg-white rounded-xl p-8 max-w-2xl w-full">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-900">Complete Payment</h2>
-                <button onclick="closePaymentModal()" class="text-gray-500 hover:text-gray-700">
-                    <span class="text-2xl">&times;</span>
-                </button>
-            </div>
-            
-            <div class="mb-6 p-4 bg-gray-50 rounded-lg">
-                <h3 class="font-semibold text-gray-900" id="payment-product">Product Name</h3>
-                <p class="text-2xl font-bold text-purple-600" id="payment-price">₹0</p>
-            </div>
-
-            <div class="space-y-6">
-                <h3 class="text-lg font-semibold text-gray-900">Choose Payment Method</h3>
+    <div id="paymentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-semibold">Choose Payment Method</h3>
+                    <button id="closePayment" class="text-gray-500 hover:text-gray-700">✕</button>
+                </div>
                 
-                <!-- UPI Payment Options -->
-                <div class="border rounded-lg p-4">
-                    <h4 class="font-semibold text-gray-900 mb-3">UPI Payment</h4>
-                    <div class="payment-methods mb-4">
-                        <button class="payment-method border-2 border-gray-200 rounded-lg p-3 hover:border-purple-500 transition-colors" data-method="phonepe">
-                            <div class="text-2xl mb-1">📱</div>
-                            <div class="text-sm font-medium">PhonePe</div>
-                        </button>
-                        <button class="payment-method border-2 border-gray-200 rounded-lg p-3 hover:border-purple-500 transition-colors" data-method="gpay">
-                            <div class="text-2xl mb-1">💳</div>
-                            <div class="text-sm font-medium">Google Pay</div>
-                        </button>
-                        <button class="payment-method border-2 border-gray-200 rounded-lg p-3 hover:border-purple-500 transition-colors" data-method="paytm">
-                            <div class="text-2xl mb-1">💰</div>
-                            <div class="text-sm font-medium">Paytm</div>
-                        </button>
-                        <button class="payment-method border-2 border-gray-200 rounded-lg p-3 hover:border-purple-500 transition-colors" data-method="upi">
-                            <div class="text-2xl mb-1">🏦</div>
-                            <div class="text-sm font-medium">UPI ID</div>
-                        </button>
+                <!-- Order Summary -->
+                <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                    <h4 class="font-semibold mb-2">Order Summary</h4>
+                    <div id="paymentOrderItems" class="text-sm space-y-1 mb-2">
+                        <!-- Order items will be populated here -->
                     </div>
-                    <div id="upi-input" class="hidden">
-                        <input type="text" placeholder="Enter UPI ID (e.g., user@paytm)" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                    </div>
-                </div>
-
-                <!-- Card Payment Options -->
-                <div class="border rounded-lg p-4">
-                    <h4 class="font-semibold text-gray-900 mb-3">Card Payment</h4>
-                    <div class="grid grid-cols-2 gap-3 mb-4">
-                        <button class="payment-method border-2 border-gray-200 rounded-lg p-3 hover:border-purple-500 transition-colors" data-method="credit">
-                            <div class="text-2xl mb-1">💳</div>
-                            <div class="text-sm font-medium">Credit Card</div>
-                        </button>
-                        <button class="payment-method border-2 border-gray-200 rounded-lg p-3 hover:border-purple-500 transition-colors" data-method="debit">
-                            <div class="text-2xl mb-1">💳</div>
-                            <div class="text-sm font-medium">Debit Card</div>
-                        </button>
-                    </div>
-                    <div id="card-input" class="hidden space-y-3">
-                        <input type="text" placeholder="Card Number" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                        <div class="grid grid-cols-2 gap-3">
-                            <input type="text" placeholder="MM/YY" class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                            <input type="text" placeholder="CVV" class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    <div class="border-t pt-2">
+                        <div class="flex justify-between font-semibold">
+                            <span>Total: ₹<span id="paymentTotal">0</span></span>
                         </div>
-                        <input type="text" placeholder="Cardholder Name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                     </div>
                 </div>
 
-                <!-- Other Payment Options -->
-                <div class="border rounded-lg p-4">
-                    <h4 class="font-semibold text-gray-900 mb-3">Other Options</h4>
-                    <div class="grid grid-cols-2 gap-3">
-                        <button class="payment-method border-2 border-gray-200 rounded-lg p-3 hover:border-purple-500 transition-colors" data-method="razorpay">
-                            <div class="text-2xl mb-1">⚡</div>
-                            <div class="text-sm font-medium">Razorpay</div>
+                <!-- Payment Methods -->
+                <div class="space-y-4">
+                    <!-- UPI Payment -->
+                    <div class="border rounded-lg p-4">
+                        <h4 class="font-semibold mb-3 flex items-center">
+                            <span class="text-2xl mr-2">📱</span>
+                            UPI Payment
+                        </h4>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="payWithUPI('gpay')" class="flex items-center justify-center p-3 border rounded-lg hover:bg-gray-50 transition-colors">
+                                <span class="text-2xl mr-2">🟢</span>
+                                <span class="font-medium">Google Pay</span>
+                            </button>
+                            <button onclick="payWithUPI('phonepe')" class="flex items-center justify-center p-3 border rounded-lg hover:bg-gray-50 transition-colors">
+                                <span class="text-2xl mr-2">🟣</span>
+                                <span class="font-medium">PhonePe</span>
+                            </button>
+                            <button onclick="payWithUPI('paytm')" class="flex items-center justify-center p-3 border rounded-lg hover:bg-gray-50 transition-colors">
+                                <span class="text-2xl mr-2">🔵</span>
+                                <span class="font-medium">Paytm</span>
+                            </button>
+                            <button onclick="showUPIForm()" class="flex items-center justify-center p-3 border rounded-lg hover:bg-gray-50 transition-colors">
+                                <span class="text-2xl mr-2">💳</span>
+                                <span class="font-medium">Other UPI</span>
+                            </button>
+                        </div>
+                        
+                        <!-- UPI ID Form -->
+                        <div id="upiForm" class="hidden mt-4 p-4 bg-gray-50 rounded-lg">
+                            <label class="block text-sm font-medium mb-2">Enter UPI ID:</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="upiId" placeholder="yourname@upi" class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500">
+                                <button onclick="payWithCustomUPI()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">Pay</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Razorpay -->
+                    <div class="border rounded-lg p-4">
+                        <button onclick="payWithRazorpay()" class="w-full flex items-center justify-between p-3 hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center">
+                                <span class="text-2xl mr-3">💎</span>
+                                <div class="text-left">
+                                    <div class="font-semibold">Razorpay</div>
+                                    <div class="text-sm text-gray-600">Cards, UPI, Wallets & More</div>
+                                </div>
+                            </div>
+                            <span class="text-gray-400">→</span>
                         </button>
-                        <button class="payment-method border-2 border-gray-200 rounded-lg p-3 hover:border-purple-500 transition-colors" data-method="paypal">
-                            <div class="text-2xl mb-1">🌐</div>
-                            <div class="text-sm font-medium">PayPal</div>
+                    </div>
+
+                    <!-- Credit/Debit Cards -->
+                    <div class="border rounded-lg p-4">
+                        <button onclick="showCardForm()" class="w-full flex items-center justify-between p-3 hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center">
+                                <span class="text-2xl mr-3">💳</span>
+                                <div class="text-left">
+                                    <div class="font-semibold">Credit/Debit Card</div>
+                                    <div class="text-sm text-gray-600">Visa, Mastercard, RuPay</div>
+                                </div>
+                            </div>
+                            <span class="text-gray-400">→</span>
+                        </button>
+                        
+                        <!-- Card Form -->
+                        <div id="cardForm" class="hidden mt-4 space-y-4">
+                            <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                                <div class="flex items-center text-red-700">
+                                    <span class="text-lg mr-2">⚠️</span>
+                                    <span class="font-semibold">Demo Mode</span>
+                                </div>
+                                <p class="text-sm text-red-600 mt-1">This is a sample form. No actual payment will be processed.</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Card Number</label>
+                                <input type="text" placeholder="1234 5678 9012 3456" maxlength="19" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Expiry Date</label>
+                                    <input type="text" placeholder="MM/YY" maxlength="5" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">CVV</label>
+                                    <input type="text" placeholder="123" maxlength="3" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Cardholder Name</label>
+                                <input type="text" placeholder="John Doe" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500">
+                            </div>
+                            <button onclick="processCardPayment()" class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                                Pay ₹<span id="cardPaymentAmount">0</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- PayPal -->
+                    <div class="border rounded-lg p-4">
+                        <button onclick="payWithPayPal()" class="w-full flex items-center justify-between p-3 hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center">
+                                <span class="text-2xl mr-3">🅿️</span>
+                                <div class="text-left">
+                                    <div class="font-semibold">PayPal</div>
+                                    <div class="text-sm text-gray-600">Pay with your PayPal account</div>
+                                </div>
+                            </div>
+                            <span class="text-gray-400">→</span>
+                        </button>
+                    </div>
+
+                    <!-- Cash on Delivery -->
+                    <div class="border rounded-lg p-4">
+                        <button onclick="selectCOD()" class="w-full flex items-center justify-between p-3 hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center">
+                                <span class="text-2xl mr-3">💵</span>
+                                <div class="text-left">
+                                    <div class="font-semibold">Cash on Delivery</div>
+                                    <div class="text-sm text-gray-600">Pay when you receive your order</div>
+                                </div>
+                            </div>
+                            <span class="text-gray-400">→</span>
                         </button>
                     </div>
                 </div>
-
-                <button id="complete-payment" class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors disabled:bg-gray-400" disabled>
-                    Complete Payment
-                </button>
             </div>
         </div>
     </div>
 
-    <!-- Success Notification -->
-    <div id="success-notification" class="fixed top-20 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 z-50">
-        <span id="success-message">Success!</span>
-    </div>
-
     <script>
-        // Device Detection and Auto-Responsive Setup
-        function detectDevice() {
-            const userAgent = navigator.userAgent.toLowerCase();
-            const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
-            const isTablet = /ipad|android(?!.*mobile)/i.test(userAgent) || (window.innerWidth >= 768 && window.innerWidth <= 1024);
-            const isDesktop = !isMobile && !isTablet;
-            
-            // Add device class to body
-            document.body.classList.add(isMobile ? 'mobile-device' : isTablet ? 'tablet-device' : 'desktop-device');
-            
-            // Auto-adjust viewport for different devices
-            if (isMobile) {
-                document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
-            } else if (isTablet) {
-                document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=2.0');
-            } else {
-                document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=device-width, initial-scale=1.0');
+        let cart = [];
+        let cartTotal = 0;
+        let currentUser = null;
+
+        // Check if user is logged in on page load
+        window.addEventListener('load', () => {
+            const savedUser = localStorage.getItem('snackesterUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                updateUserInterface();
             }
-            
-            return { isMobile, isTablet, isDesktop };
-        }
-        
-        // Initialize device detection
-        const device = detectDevice();
-        
-        // Responsive adjustments based on screen size
-        function adjustForScreenSize() {
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-            
-            // Auto-adjust modal sizes
-            const modals = document.querySelectorAll('.modal-content');
-            modals.forEach(modal => {
-                if (width < 640) {
-                    modal.style.maxWidth = '95vw';
-                    modal.style.maxHeight = '90vh';
-                    modal.style.margin = '1rem';
-                } else if (width < 1024) {
-                    modal.style.maxWidth = '80vw';
-                    modal.style.maxHeight = '85vh';
-                    modal.style.margin = '2rem';
-                } else {
-                    modal.style.maxWidth = '42rem';
-                    modal.style.maxHeight = '90vh';
-                    modal.style.margin = '2rem';
-                }
-            });
-            
-            // Auto-adjust navigation for mobile
-            const nav = document.querySelector('nav');
-            if (width < 768) {
-                nav.classList.add('mobile-nav');
+        });
+
+        // Auth Modal Functions
+        function openAuthModal(showSignup = false) {
+            document.getElementById('authModal').classList.remove('hidden');
+            if (showSignup) {
+                switchToSignup();
             } else {
-                nav.classList.remove('mobile-nav');
+                switchToLogin();
             }
         }
-        
-        // Run on load and resize
-        window.addEventListener('load', adjustForScreenSize);
-        window.addEventListener('resize', adjustForScreenSize);
-        window.addEventListener('orientationchange', () => {
-            setTimeout(adjustForScreenSize, 100);
-        });
 
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    // Close mobile menu if open
-                    document.getElementById('mobile-menu').classList.add('hidden');
-                }
-            });
-        });
-
-        // Modal functions
-        function openLoginModal() {
-            document.getElementById('login-modal').classList.remove('hidden');
-        }
-
-        function closeLoginModal() {
-            document.getElementById('login-modal').classList.add('hidden');
-        }
-
-        function openSignupModal() {
-            document.getElementById('signup-modal').classList.remove('hidden');
-        }
-
-        function closeSignupModal() {
-            document.getElementById('signup-modal').classList.add('hidden');
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.add('hidden');
         }
 
         function switchToSignup() {
-            closeLoginModal();
-            openSignupModal();
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            
+            loginForm.classList.add('form-slide-exit');
+            setTimeout(() => {
+                loginForm.classList.add('hidden');
+                loginForm.classList.remove('form-slide-exit');
+                signupForm.classList.remove('hidden');
+                signupForm.classList.add('form-slide-enter');
+                setTimeout(() => {
+                    signupForm.classList.remove('form-slide-enter');
+                }, 500);
+            }, 250);
         }
 
         function switchToLogin() {
-            closeSignupModal();
-            openLoginModal();
-        }
-
-        function openPaymentModal(productName, price) {
-            document.getElementById('payment-product').textContent = productName;
-            document.getElementById('payment-price').textContent = ₹${price};
-            document.getElementById('payment-modal').classList.remove('hidden');
-        }
-
-        function closePaymentModal() {
-            document.getElementById('payment-modal').classList.add('hidden');
-            // Reset payment method selection
-            document.querySelectorAll('.payment-method').forEach(btn => {
-                btn.classList.remove('border-purple-500', 'bg-purple-50');
-                btn.classList.add('border-gray-200');
-            });
-            document.getElementById('upi-input').classList.add('hidden');
-            document.getElementById('card-input').classList.add('hidden');
-            document.getElementById('complete-payment').disabled = true;
-        }
-
-        function showNotification(message, type = 'success') {
-            const notification = document.getElementById('success-notification');
-            const messageEl = document.getElementById('success-message');
-            messageEl.textContent = message;
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
             
-            if (type === 'success') {
-                notification.className = 'fixed top-20 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 z-50';
+            signupForm.classList.add('form-slide-exit');
+            setTimeout(() => {
+                signupForm.classList.add('hidden');
+                signupForm.classList.remove('form-slide-exit');
+                loginForm.classList.remove('hidden');
+                loginForm.classList.add('form-slide-enter');
+                setTimeout(() => {
+                    loginForm.classList.remove('form-slide-enter');
+                }, 500);
+            }, 250);
+        }
+
+        function updateUserInterface() {
+            const authButtons = document.getElementById('authButtons');
+            const userSection = document.getElementById('userSection');
+            const userWelcome = document.getElementById('userWelcome');
+
+            if (currentUser) {
+                authButtons.classList.add('hidden');
+                userSection.classList.remove('hidden');
+                userWelcome.textContent = `Welcome, ${currentUser.firstName}!`;
+            } else {
+                authButtons.classList.remove('hidden');
+                userSection.classList.add('hidden');
             }
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('snackesterUser');
+            updateUserInterface();
             
-            notification.classList.remove('translate-x-full');
+            // Show success message
+            const logoutMessage = document.createElement('div');
+            logoutMessage.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 success-animation';
+            logoutMessage.textContent = 'Successfully logged out!';
+            document.body.appendChild(logoutMessage);
             
             setTimeout(() => {
-                notification.classList.add('translate-x-full');
+                document.body.removeChild(logoutMessage);
             }, 3000);
         }
 
-        // Form submissions
-        document.getElementById('login-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            showNotification('Login successful! Welcome back!');
-            closeLoginModal();
-        });
-
-        document.getElementById('signup-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            showNotification('Account created successfully! Welcome to Snackester!');
-            closeSignupModal();
-        });
-
-        document.getElementById('contact-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-            
-            showNotification(Thank you ${name}! Your message has been received.);
-            this.reset();
-        });
-
-        // Payment method selection
-        document.querySelectorAll('.payment-method').forEach(button => {
-            button.addEventListener('click', function() {
-                // Reset all buttons
-                document.querySelectorAll('.payment-method').forEach(btn => {
-                    btn.classList.remove('border-purple-500', 'bg-purple-50');
-                    btn.classList.add('border-gray-200');
-                });
-                
-                // Highlight selected button
-                this.classList.remove('border-gray-200');
-                this.classList.add('border-purple-500', 'bg-purple-50');
-                
-                // Show/hide input fields based on selection
-                const method = this.dataset.method;
-                document.getElementById('upi-input').classList.add('hidden');
-                document.getElementById('card-input').classList.add('hidden');
-                
-                if (method === 'upi') {
-                    document.getElementById('upi-input').classList.remove('hidden');
-                } else if (method === 'credit' || method === 'debit') {
-                    document.getElementById('card-input').classList.remove('hidden');
-                }
-                
-                // Enable payment button
-                document.getElementById('complete-payment').disabled = false;
-            });
-        });
-
-        // Complete payment
-        document.getElementById('complete-payment').addEventListener('click', function() {
-            const selectedMethod = document.querySelector('.payment-method.border-purple-500');
-            if (selectedMethod) {
-                const methodName = selectedMethod.querySelector('.text-sm').textContent;
-                showNotification(Payment successful via ${methodName}! Order confirmed.);
-                closePaymentModal();
+        // Sample order data for demo
+        const sampleOrders = {
+            'SNK2024001': {
+                id: 'SNK2024001',
+                date: 'Oct 15, 2025',
+                total: 299,
+                status: 'Out for Delivery',
+                estimatedDelivery: 'Today, 6:00 PM',
+                items: [
+                    { name: 'Tangy Tomato Makhana', quantity: 2, price: 149 }
+                ],
+                address: '123 Main Street, Longowal, Punjab 148106',
+                phone: '+91-9876543210',
+                timeline: [
+                    { status: 'Order Placed', time: 'Oct 15, 10:30 AM', completed: true, icon: '📝' },
+                    { status: 'Order Confirmed', time: 'Oct 15, 11:00 AM', completed: true, icon: '✅' },
+                    { status: 'Preparing Order', time: 'Oct 15, 2:00 PM', completed: true, icon: '👨‍🍳' },
+                    { status: 'Out for Delivery', time: 'Oct 15, 4:30 PM', completed: true, icon: '🚚' },
+                    { status: 'Delivered', time: 'Expected by 6:00 PM', completed: false, icon: '📦' }
+                ]
+            },
+            'SNK2024002': {
+                id: 'SNK2024002',
+                date: 'Oct 14, 2025',
+                total: 448,
+                status: 'In Transit',
+                estimatedDelivery: 'Tomorrow, 2:00 PM',
+                items: [
+                    { name: 'Peri Peri Makhana', quantity: 1, price: 159 },
+                    { name: 'Premium Mixed Nuts', quantity: 1, price: 299 }
+                ],
+                address: '456 Park Avenue, Sangrur, Punjab 148001',
+                phone: '+91-9876543210',
+                timeline: [
+                    { status: 'Order Placed', time: 'Mar 14, 9:15 AM', completed: true, icon: '📝' },
+                    { status: 'Order Confirmed', time: 'Mar 14, 9:45 AM', completed: true, icon: '✅' },
+                    { status: 'Preparing Order', time: 'Mar 14, 1:30 PM', completed: true, icon: '👨‍🍳' },
+                    { status: 'In Transit', time: 'Mar 15, 8:00 AM', completed: true, icon: '🚛' },
+                    { status: 'Out for Delivery', time: 'Tomorrow morning', completed: false, icon: '🚚' },
+                    { status: 'Delivered', time: 'Expected by 2:00 PM', completed: false, icon: '📦' }
+                ]
+            },
+            'SNK2024003': {
+                id: 'SNK2024003',
+                date: 'March 13, 2024',
+                total: 577,
+                status: 'Delivered',
+                estimatedDelivery: 'Delivered on Mar 14, 3:45 PM',
+                items: [
+                    { name: 'Honey Roasted Almonds', quantity: 1, price: 249 },
+                    { name: 'Masala Chickpeas', quantity: 1, price: 129 },
+                    { name: 'Spicy Trail Mix', quantity: 1, price: 199 }
+                ],
+                address: '789 Garden Road, Patiala, Punjab 147001',
+                phone: '+91-9876543210',
+                timeline: [
+                    { status: 'Order Placed', time: 'Mar 13, 11:20 AM', completed: true, icon: '📝' },
+                    { status: 'Order Confirmed', time: 'Mar 13, 11:50 AM', completed: true, icon: '✅' },
+                    { status: 'Preparing Order', time: 'Mar 13, 3:15 PM', completed: true, icon: '👨‍🍳' },
+                    { status: 'Out for Delivery', time: 'Mar 14, 1:00 PM', completed: true, icon: '🚚' },
+                    { status: 'Delivered', time: 'Mar 14, 3:45 PM', completed: true, icon: '📦' }
+                ]
             }
-        });
+        };
 
-        // Add scroll effect to navbar
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('nav');
-            if (window.scrollY > 50) {
-                navbar.classList.add('shadow-xl');
+        // Track Order Functions
+        function openTrackOrderModal() {
+            document.getElementById('trackOrderModal').classList.remove('hidden');
+            // Reset modal state
+            document.getElementById('orderStatusDisplay').classList.add('hidden');
+            document.getElementById('noOrderFound').classList.add('hidden');
+            document.getElementById('orderTrackingInput').value = '';
+        }
+
+        function closeTrackOrderModal() {
+            document.getElementById('trackOrderModal').classList.add('hidden');
+        }
+
+        function trackOrder() {
+            const input = document.getElementById('orderTrackingInput').value.trim();
+            
+            if (!input) {
+                alert('Please enter an Order ID or phone number');
+                return;
+            }
+
+            // Check if it's a phone number
+            if (input.startsWith('+91') || input.startsWith('91') || (input.length === 10 && /^\d+$/.test(input))) {
+                // Show multiple orders for phone number
+                showMultipleOrders();
+                return;
+            }
+
+            // Check for specific order ID
+            const order = sampleOrders[input.toUpperCase()];
+            
+            if (order) {
+                displayOrderStatus(order);
             } else {
-                navbar.classList.remove('shadow-xl');
+                showNoOrderFound();
+            }
+        }
+
+        function displayOrderStatus(order) {
+            document.getElementById('noOrderFound').classList.add('hidden');
+            document.getElementById('orderStatusDisplay').classList.remove('hidden');
+
+            // Update order header
+            document.getElementById('displayOrderId').textContent = `Order #${order.id}`;
+            document.getElementById('displayOrderDate').textContent = `Placed on ${order.date}`;
+            document.getElementById('displayOrderTotal').textContent = `Total: ₹${order.total}`;
+            document.getElementById('displayOrderStatus').textContent = order.status;
+            document.getElementById('displayEstimatedDelivery').textContent = order.estimatedDelivery;
+
+            // Update status badge color
+            const statusBadge = document.getElementById('displayOrderStatus');
+            statusBadge.className = 'inline-block px-3 py-1 rounded-full text-sm font-medium ';
+            
+            switch (order.status) {
+                case 'Delivered':
+                    statusBadge.className += 'bg-green-100 text-green-800';
+                    break;
+                case 'Out for Delivery':
+                    statusBadge.className += 'bg-blue-100 text-blue-800';
+                    break;
+                case 'In Transit':
+                    statusBadge.className += 'bg-yellow-100 text-yellow-800';
+                    break;
+                default:
+                    statusBadge.className += 'bg-gray-100 text-gray-800';
+            }
+
+            // Update timeline
+            const timeline = document.getElementById('orderTimeline');
+            timeline.innerHTML = '';
+            
+            order.timeline.forEach((step, index) => {
+                const timelineItem = document.createElement('div');
+                timelineItem.className = 'flex items-center space-x-4';
+                
+                const isLast = index === order.timeline.length - 1;
+                const lineClass = isLast ? '' : (step.completed ? 'border-green-300' : 'border-gray-300');
+                
+                timelineItem.innerHTML = `
+                    <div class="flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg ${step.completed ? 'bg-green-100 border-2 border-green-500' : 'bg-gray-100 border-2 border-gray-300'}">
+                            ${step.icon}
+                        </div>
+                        ${!isLast ? `<div class="w-0.5 h-8 border-l-2 ${lineClass} mt-2"></div>` : ''}
+                    </div>
+                    <div class="flex-1">
+                        <h6 class="font-medium ${step.completed ? 'text-green-800' : 'text-gray-600'}">${step.status}</h6>
+                        <p class="text-sm text-gray-500">${step.time}</p>
+                    </div>
+                `;
+                
+                timeline.appendChild(timelineItem);
+            });
+
+            // Update order items
+            const itemsList = document.getElementById('orderItemsList');
+            itemsList.innerHTML = '';
+            
+            order.items.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'flex justify-between items-center bg-gray-50 p-3 rounded-lg';
+                itemDiv.innerHTML = `
+                    <div>
+                        <h6 class="font-medium">${item.name}</h6>
+                        <p class="text-sm text-gray-600">Quantity: ${item.quantity}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-medium">₹${item.price * item.quantity}</p>
+                        <p class="text-sm text-gray-600">₹${item.price} each</p>
+                    </div>
+                `;
+                itemsList.appendChild(itemDiv);
+            });
+
+            // Update delivery info
+            document.getElementById('deliveryAddress').textContent = order.address;
+            document.getElementById('deliveryPhone').textContent = order.phone;
+        }
+
+        function showMultipleOrders() {
+            document.getElementById('noOrderFound').classList.add('hidden');
+            document.getElementById('orderStatusDisplay').classList.remove('hidden');
+
+            // Show the most recent order for the phone number
+            const recentOrder = sampleOrders['SNK2024001'];
+            displayOrderStatus(recentOrder);
+
+            // Add a note about multiple orders
+            const orderHeader = document.querySelector('#orderStatusDisplay .bg-gradient-to-r');
+            const multiOrderNote = document.createElement('div');
+            multiOrderNote.className = 'mt-3 p-2 bg-blue-50 border border-blue-200 rounded text-sm text-blue-700';
+            multiOrderNote.innerHTML = '📋 We found multiple orders for this phone number. Showing your most recent order. <a href="#" onclick="contactSupport()" class="underline">Contact us</a> to view all orders.';
+            orderHeader.appendChild(multiOrderNote);
+        }
+
+        function showNoOrderFound() {
+            document.getElementById('orderStatusDisplay').classList.add('hidden');
+            document.getElementById('noOrderFound').classList.remove('hidden');
+        }
+
+        function contactSupport() {
+            const message = 'Hi! I need help with my order tracking. Can you please assist me?';
+            const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function shareOrderStatus() {
+            const orderId = document.getElementById('displayOrderId').textContent;
+            const status = document.getElementById('displayOrderStatus').textContent;
+            const delivery = document.getElementById('displayEstimatedDelivery').textContent;
+            
+            const shareText = `🍿 Snackester Order Update!\n\n${orderId}\nStatus: ${status}\n${delivery}\n\nTrack your order: [Your tracking link here]`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Order Status Update',
+                    text: shareText
+                });
+            } else {
+                // Fallback to copying to clipboard
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('Order status copied to clipboard!');
+                });
+            }
+        }
+
+        function reorderItems() {
+            // Get current order items and add them to cart
+            const orderItems = document.querySelectorAll('#orderItemsList > div');
+            let itemsAdded = 0;
+            
+            orderItems.forEach(itemDiv => {
+                const itemName = itemDiv.querySelector('h6').textContent;
+                const quantityText = itemDiv.querySelector('.text-sm').textContent;
+                const quantity = parseInt(quantityText.match(/\d+/)[0]);
+                const priceText = itemDiv.querySelector('.text-sm.text-gray-600:last-child').textContent;
+                const price = parseInt(priceText.match(/\d+/)[0]);
+                
+                // Add to cart
+                for (let i = 0; i < quantity; i++) {
+                    addToCart(itemName, price);
+                }
+                itemsAdded += quantity;
+            });
+            
+            closeTrackOrderModal();
+            alert(`${itemsAdded} items added to your cart! 🛒`);
+        }
+
+        // Event Listeners for Track Order
+        document.getElementById('closeTrackOrder').addEventListener('click', closeTrackOrderModal);
+        document.getElementById('trackOrderModal').addEventListener('click', (e) => {
+            if (e.target.id === 'trackOrderModal') {
+                closeTrackOrderModal();
             }
         });
+
+        // Allow Enter key to track order
+        document.getElementById('orderTrackingInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                trackOrder();
+            }
+        });
+
+        // Event Listeners for Auth
+        document.getElementById('loginBtn').addEventListener('click', () => openAuthModal(false));
+        document.getElementById('signupBtn').addEventListener('click', () => openAuthModal(true));
+        document.getElementById('closeAuth').addEventListener('click', closeAuthModal);
+        document.getElementById('switchToSignup').addEventListener('click', switchToSignup);
+        document.getElementById('switchToLogin').addEventListener('click', switchToLogin);
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+
+        // Close modal when clicking outside
+        document.getElementById('authModal').addEventListener('click', (e) => {
+            if (e.target.id === 'authModal') {
+                closeAuthModal();
+            }
+        });
+
+        // Login Form Handler
+        document.getElementById('loginFormElement').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Simulate login validation
+            const savedUsers = JSON.parse(localStorage.getItem('snackesterUsers') || '[]');
+            const user = savedUsers.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('snackesterUser', JSON.stringify(user));
+                updateUserInterface();
+                closeAuthModal();
+                
+                // Show success message
+                const successMessage = document.createElement('div');
+                successMessage.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 success-animation';
+                successMessage.textContent = `Welcome back, ${user.firstName}!`;
+                document.body.appendChild(successMessage);
+                
+                setTimeout(() => {
+                    document.body.removeChild(successMessage);
+                }, 3000);
+            } else {
+                alert('Invalid email or password. Please try again or sign up for a new account.');
+            }
+        });
+
+        // Signup Form Handler
+        document.getElementById('signupFormElement').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('signupFirstName').value;
+            const lastName = document.getElementById('signupLastName').value;
+            const email = document.getElementById('signupEmail').value;
+            const phone = document.getElementById('signupPhone').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            
+            // Validation
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long!');
+                return;
+            }
+            
+            // Check if user already exists
+            const savedUsers = JSON.parse(localStorage.getItem('snackesterUsers') || '[]');
+            if (savedUsers.find(u => u.email === email)) {
+                alert('An account with this email already exists. Please login instead.');
+                return;
+            }
+            
+            // Create new user
+            const newUser = {
+                firstName,
+                lastName,
+                email,
+                phone,
+                password,
+                createdAt: new Date().toISOString()
+            };
+            
+            // Save user
+            savedUsers.push(newUser);
+            localStorage.setItem('snackesterUsers', JSON.stringify(savedUsers));
+            
+            // Auto login
+            currentUser = newUser;
+            localStorage.setItem('snackesterUser', JSON.stringify(newUser));
+            updateUserInterface();
+            closeAuthModal();
+            
+            // Show success message
+            const successMessage = document.createElement('div');
+            successMessage.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 success-animation';
+            successMessage.textContent = `Welcome to Snackester, ${firstName}! 🎉`;
+            document.body.appendChild(successMessage);
+            
+            setTimeout(() => {
+                document.body.removeChild(successMessage);
+            }, 3000);
+        });
+
+        function addToCart(productName, price) {
+            const existingItem = cart.find(item => item.name === productName);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    name: productName,
+                    price: price,
+                    quantity: 1
+                });
+            }
+            
+            updateCartDisplay();
+            
+            // Add bounce animation to cart button
+            const cartBtn = document.getElementById('cartCount');
+            cartBtn.classList.add('cart-count');
+            setTimeout(() => cartBtn.classList.remove('cart-count'), 500);
+        }
+
+        function removeFromCart(productName) {
+            cart = cart.filter(item => item.name !== productName);
+            updateCartDisplay();
+        }
+
+        function updateCartDisplay() {
+            const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+            cartTotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            
+            document.getElementById('cartCount').textContent = cartCount;
+            document.getElementById('floatingCartCount').textContent = cartCount;
+            document.getElementById('cartTotal').textContent = cartTotal;
+            
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p class="text-gray-500 text-center">Your cart is empty</p>';
+            } else {
+                cart.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'flex justify-between items-center bg-gray-50 p-3 rounded-lg';
+                    itemDiv.innerHTML = `
+                        <div>
+                            <h4 class="font-medium">${item.name}</h4>
+                            <p class="text-sm text-gray-600">₹${item.price} × ${item.quantity}</p>
+                        </div>
+                        <button onclick="removeFromCart('${item.name}')" class="text-red-500 hover:text-red-700">
+                            🗑️
+                        </button>
+                    `;
+                    cartItems.appendChild(itemDiv);
+                });
+            }
+        }
+
+        // Event listeners
+        document.getElementById('cartBtn').addEventListener('click', () => {
+            document.getElementById('cartModal').classList.remove('hidden');
+        });
+
+        document.getElementById('floatingCartBtn').addEventListener('click', () => {
+            document.getElementById('cartModal').classList.remove('hidden');
+        });
+
+        document.getElementById('closeCart').addEventListener('click', () => {
+            document.getElementById('cartModal').classList.add('hidden');
+        });
+
+        document.getElementById('cartModal').addEventListener('click', (e) => {
+            if (e.target.id === 'cartModal') {
+                document.getElementById('cartModal').classList.add('hidden');
+            }
+        });
+
+        document.getElementById('checkoutBtn').addEventListener('click', () => {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            
+            // Close cart modal and open payment modal
+            document.getElementById('cartModal').classList.add('hidden');
+            document.getElementById('paymentModal').classList.remove('hidden');
+            
+            // Update payment modal with order details
+            updatePaymentModal();
+        });
+
+        // Payment Modal Event Listeners
+        document.getElementById('closePayment').addEventListener('click', () => {
+            document.getElementById('paymentModal').classList.add('hidden');
+        });
+
+        document.getElementById('paymentModal').addEventListener('click', (e) => {
+            if (e.target.id === 'paymentModal') {
+                document.getElementById('paymentModal').classList.add('hidden');
+            }
+        });
+
+        function updatePaymentModal() {
+            const paymentOrderItems = document.getElementById('paymentOrderItems');
+            const paymentTotal = document.getElementById('paymentTotal');
+            const cardPaymentAmount = document.getElementById('cardPaymentAmount');
+            
+            paymentOrderItems.innerHTML = '';
+            cart.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'flex justify-between';
+                itemDiv.innerHTML = `
+                    <span>${item.name} × ${item.quantity}</span>
+                    <span>₹${item.price * item.quantity}</span>
+                `;
+                paymentOrderItems.appendChild(itemDiv);
+            });
+            
+            paymentTotal.textContent = cartTotal;
+            cardPaymentAmount.textContent = cartTotal;
+        }
+
+        // Payment Methods
+        function payWithUPI(provider) {
+            const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
+            const message = `New Order from Snackester Website!\n\nPayment Method: ${provider.toUpperCase()}\n\nOrder Details:\n${orderDetails}\n\nTotal: ₹${cartTotal}\n\nPlease confirm your delivery address.`;
+            
+            const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+            
+            showPaymentSuccess(`${provider.toUpperCase()} payment initiated! Please complete the payment and we'll process your order.`);
+        }
+
+        function showUPIForm() {
+            document.getElementById('upiForm').classList.toggle('hidden');
+        }
+
+        function payWithCustomUPI() {
+            const upiId = document.getElementById('upiId').value;
+            if (!upiId) {
+                alert('Please enter a valid UPI ID');
+                return;
+            }
+            
+            const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
+            const message = `New Order from Snackester Website!\n\nPayment Method: UPI (${upiId})\n\nOrder Details:\n${orderDetails}\n\nTotal: ₹${cartTotal}\n\nPlease confirm your delivery address.`;
+            
+            const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+            
+            showPaymentSuccess('UPI payment initiated! Please complete the payment and we\'ll process your order.');
+        }
+
+        function payWithRazorpay() {
+            const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
+            const message = `New Order from Snackester Website!\n\nPayment Method: Razorpay\n\nOrder Details:\n${orderDetails}\n\nTotal: ₹${cartTotal}\n\nPlease confirm your delivery address.`;
+            
+            const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+            
+            showPaymentSuccess('Redirecting to Razorpay... Please complete the payment to confirm your order.');
+        }
+
+        function showCardForm() {
+            document.getElementById('cardForm').classList.toggle('hidden');
+        }
+
+        function processCardPayment() {
+            // This is a demo - in real implementation, you'd integrate with a payment processor
+            alert('Demo Mode: This is a sample payment form. In a real implementation, this would securely process your card payment.');
+            
+            const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
+            const message = `New Order from Snackester Website!\n\nPayment Method: Credit/Debit Card\n\nOrder Details:\n${orderDetails}\n\nTotal: ₹${cartTotal}\n\nPlease confirm your delivery address.`;
+            
+            const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+            
+            showPaymentSuccess('Card payment processed! We\'ll confirm your order shortly.');
+        }
+
+        function payWithPayPal() {
+            const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
+            const message = `New Order from Snackester Website!\n\nPayment Method: PayPal\n\nOrder Details:\n${orderDetails}\n\nTotal: ₹${cartTotal}\n\nPlease confirm your delivery address.`;
+            
+            const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+            
+            showPaymentSuccess('Redirecting to PayPal... Please complete the payment to confirm your order.');
+        }
+
+        function selectCOD() {
+            const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
+            const message = `New Order from Snackester Website!\n\nPayment Method: Cash on Delivery\n\nOrder Details:\n${orderDetails}\n\nTotal: ₹${cartTotal}\n\nPlease confirm your delivery address.`;
+            
+            const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+            
+            showPaymentSuccess('Cash on Delivery selected! We\'ll contact you to confirm delivery details.');
+        }
+
+        function showPaymentSuccess(message) {
+            document.getElementById('paymentModal').classList.add('hidden');
+            alert(message);
+            
+            // Clear cart after successful order
+            cart = [];
+            updateCartDisplay();
+        }
+
+
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9896c49123ae54f2',t:'MTc1OTYwMjgwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98975f77f7a490d6',t:'MTc1OTYwOTE1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
