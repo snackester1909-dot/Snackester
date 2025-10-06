@@ -1,4 +1,5 @@
-const backendURL = "https://snackester-backend-1.onrender.com/";
+const BASE_URL = 'https://snackester-backend.onrender.com';
+
 
 let currentUser = JSON.parse(localStorage.getItem('snackesterUser')) || null;
 
