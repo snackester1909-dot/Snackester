@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snackester Payment</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f3f8ff, #d9e4f5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      text-align: center;
+      padding: 30px 40px;
+      max-width: 360px;
+      width: 90%;
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+    }
+    .logo {
+      font-size: 26px;
+      font-weight: 700;
+      color: #0078ff;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+    }
+    .qr {
+      border: 2px solid #e0e0e0;
+      border-radius: 15px;
+      padding: 10px;
+      margin: 20px 0;
+      background: #fafafa;
+    }
+    .pay-btn {
+      display: inline-block;
+      background: #0078ff;
+      color: white;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      transition: background 0.3s ease;
+      margin-top: 10px;
+    }
+    .pay-btn:hover {
+      background: #005fcc;
+    }
+    h2 {
+      color: #222;
+      margin-bottom: 5px;
+    }
+    p {
+      color: #555;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <!-- Company Logo / Name -->
+    <div class="logo">
+      <!-- Replace this text with your logo image if available -->
+      🍿 Snackester
+    </div>
+
+    <!-- Payment Info -->
+    <h2>Pay ₹1 to Dinesh Kumar</h2>
+
+    <!-- QR Code with auto-filled amount -->
+    <div class="qr">
+      <img 
+        src="https://quickchart.io/qr?text=upi://pay?pa=dineshkumar2729304@okhdfcbank&pn=Dinesh%20Kumar&am=149&cu=INR&tid=Snackester"
+        alt="UPI Payment QR"
+        width="220"
+        height="220"
+      >
+    </div>
+
+    <p>Scan this QR using any UPI app (Google Pay, PhonePe, Paytm, etc.)</p>
+    <p><b>UPI ID:</b> dineshkumar2729304@okhdfcbank</p>
+
+    <!-- Pay Now button with auto-filled amount -->
+    <a href="upi://pay?pa=dineshkumar2729304@okhdfcbank&pn=Dinesh%20Kumar&am=149&cu=INR&tid=Snackester" class="pay-btn">Pay Now</a>
+  </div>
+
+</body>
+</html>
