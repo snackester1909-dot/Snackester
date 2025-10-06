@@ -1,6 +1,5 @@
 const BASE_URL = 'https://snackester-backend.onrender.com';
 
-
 let currentUser = JSON.parse(localStorage.getItem('snackesterUser')) || null;
 
 // --- UI Updates ---
@@ -53,7 +52,7 @@ document.getElementById('loginFormElement').addEventListener('submit', async (e)
     const password = document.getElementById('loginPassword').value;
 
     try {
-        const response = await fetch(`${backendURL}login`, {
+        const response = await fetch(`${BASE_URL}/api/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -62,13 +61,13 @@ document.getElementById('loginFormElement').addEventListener('submit', async (e)
         const data = await response.json();
 
         if (response.ok) {
-            currentUser = data;
-            localStorage.setItem('snackesterUser', JSON.stringify(data));
+            currentUser = data.user;
+            localStorage.setItem('snackesterUser', JSON.stringify(currentUser));
             updateUserInterface();
-            showMessage(`Welcome back, ${data.firstName}!`, "green");
+            showMessage(`Welcome back, ${currentUser.firstName}!`, "green");
             if (typeof closeAuthModal === "function") closeAuthModal();
         } else {
-            showMessage(data.error || "Invalid credentials!", "red");
+            showMessage(data.message || "Invalid credentials!", "red");
         }
     } catch (err) {
         console.error(err);
@@ -98,7 +97,7 @@ document.getElementById('signupFormElement').addEventListener('submit', async (e
     }
 
     try {
-        const response = await fetch(`${backendURL}register-user`, {
+        const response = await fetch(`${BASE_URL}/api/signup`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ firstName, lastName, email, phone, password })
@@ -107,13 +106,13 @@ document.getElementById('signupFormElement').addEventListener('submit', async (e
         const data = await response.json();
 
         if (response.ok) {
-            currentUser = data;
-            localStorage.setItem('snackesterUser', JSON.stringify(data));
+            currentUser = data.user;
+            localStorage.setItem('snackesterUser', JSON.stringify(currentUser));
             updateUserInterface();
-            showMessage(`Welcome to Snackester, ${data.firstName}! 🎉`, "green");
+            showMessage(`Welcome to Snackester, ${currentUser.firstName}! 🎉`, "green");
             if (typeof closeAuthModal === "function") closeAuthModal();
         } else {
-            showMessage(data.error || "Signup failed!", "red");
+            showMessage(data.message || "Signup failed!", "red");
         }
     } catch (err) {
         console.error(err);
