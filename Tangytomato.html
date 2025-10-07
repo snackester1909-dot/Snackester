@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tangy Tomato Makhana - Premium Healthy Snacks | Snackester</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        .product-image {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            cursor: zoom-in;
+        }
+        .product-image.zoomed {
+            cursor: zoom-out;
+            transform: scale(1.5);
+            transition: transform 0.3s ease;
+        }
+        .makhana-illustration {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .quantity-btn {
+            transition: all 0.2s ease;
+        }
+        .quantity-btn:hover {
+            transform: scale(1.1);
+        }
+        .add-to-cart-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            transition: all 0.3s ease;
+        }
+        .add-to-cart-btn:hover {
+            background: linear-gradient(135deg, #ee5a24, #c44569);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(238, 90, 36, 0.3);
+        }
+        .feature-card {
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .star-rating {
+            color: #fbbf24;
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #fbbf24 var(--width), #e5e7eb var(--width));
+        }
+        .floating-cart {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            transform: translateY(100px);
+            transition: transform 0.3s ease;
+        }
+        .floating-cart.show {
+            transform: translateY(0);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+        }
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .size-option {
+            transition: all 0.2s ease;
+        }
+        .size-option.selected {
+            border-color: #ff6b6b;
+            background: #fef2f2;
+        }
+        .wishlist-btn {
+            transition: all 0.3s ease;
+        }
+        .wishlist-btn.active {
+            color: #ef4444;
+            transform: scale(1.1);
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 3000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        .notification.show {
+            transform: translateX(0);
+        }
+        .delivery-truck {
+            animation: drive 2s ease-in-out infinite;
+        }
+        @keyframes drive {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+        .pulse-dot {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .ingredient-tag {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .comparison-table {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-orange-50 to-red-50 min-h-screen">
+    <!-- Premium Header -->
+    <header class="bg-white shadow-lg border-b border-orange-100 sticky top-0 z-50">
+        <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-2 text-sm">
+            🎉 FREE SHIPPING on orders above ₹499 | Use code: HEALTHY20 for 20% off
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold">M</span>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-800">Snackester</h1>
+                        <p class="text-xs text-gray-500">Premium Healthy Snacks</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <div class="flex items-center space-x-2 text-sm text-gray-600">
+                        <span class="pulse-dot w-2 h-2 bg-green-500 rounded-full"></span>
+                        <span>2,847 people viewing this</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-sm text-gray-600">
+                        <span>🚚</span>
+                        <span>Express Delivery Available</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-orange-500 transition-colors relative" onclick="toggleWishlist()">
+                        <svg class="w-6 h-6 wishlist-btn" id="wishlist-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </button>
+                    <button class="text-gray-600 hover:text-orange-500 transition-colors relative" onclick="openCart()">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 11-4 0v-6m4 0V9a2 2 0 10-4 0v4.01"></path>
+                        </svg>
+                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" id="cart-count">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- Enhanced Product Image Section -->
+            <div class="space-y-6">
+                <!-- Main Product Image with Zoom -->
+                <div class="relative">
+                    <div class="product-image aspect-square" id="main-image" onclick="toggleZoom()">
+                        <div class="makhana-illustration">
+                            <svg viewBox="0 0 300 300" class="w-64 h-64">
+                                <!-- Enhanced Makhana pieces with shadows -->
+                                <defs>
+                                    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+                                        <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/>
+                                    </filter>
+                                </defs>
+                                <circle cx="150" cy="120" r="25" fill="#fff" opacity="0.95" filter="url(#shadow)"/>
+                                <circle cx="120" cy="160" r="20" fill="#fff" opacity="0.9" filter="url(#shadow)"/>
+                                <circle cx="180" cy="170" r="22" fill="#fff" opacity="0.95" filter="url(#shadow)"/>
+                                <circle cx="140" cy="200" r="18" fill="#fff" opacity="0.85" filter="url(#shadow)"/>
+                                <circle cx="190" cy="140" r="16" fill="#fff" opacity="0.9" filter="url(#shadow)"/>
+                                <circle cx="110" cy="130" r="15" fill="#fff" opacity="0.8" filter="url(#shadow)"/>
+                                <circle cx="170" cy="200" r="20" fill="#fff" opacity="0.9" filter="url(#shadow)"/>
+                                
+                                <!-- Enhanced tomato flavor particles -->
+                                <circle cx="100" cy="100" r="3" fill="#ff4757" opacity="0.9"/>
+                                <circle cx="200" cy="110" r="2" fill="#ff4757" opacity="0.7"/>
+                                <circle cx="130" cy="90" r="2.5" fill="#ff4757" opacity="0.8"/>
+                                <circle cx="220" cy="180" r="3" fill="#ff4757" opacity="0.9"/>
+                                <circle cx="80" cy="190" r="2" fill="#ff4757" opacity="0.7"/>
+                                
+                                <!-- Premium sparkle effects -->
+                                <text x="90" y="80" font-size="16" fill="#ffd700">✨</text>
+                                <text x="210" y="100" font-size="12" fill="#ffd700">✨</text>
+                                <text x="70" y="220" font-size="14" fill="#ffd700">✨</text>
+                                <text x="230" y="200" font-size="10" fill="#ffd700">✨</text>
+                                <text x="160" y="60" font-size="8" fill="#ffd700">✨</text>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- Zoom indicator -->
+                    <div class="absolute top-4 right-4 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
+                        🔍 Click to zoom
+                    </div>
+                    <!-- Premium badge -->
+                    <div class="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                        PREMIUM QUALITY
+                    </div>
+                </div>
+                
+                <!-- Enhanced Thumbnail Gallery -->
+                <div class="flex space-x-3 overflow-x-auto pb-2">
+                    <div class="w-70 h-70 bg-gradient-to-br from-red-400 to-transparency-200 rounded-lg border-2 border-orange-300 flex items-center justify-center cursor-pointer flex-shrink-0">
+                        <span class="text-2xl">🍅</span>
+                      <img src="Tangy Tomato(70&70).png" alt="Tangy Tomato"></img>
+                    </div>
+                    <div class="w-20 h-20 bg-gradient-to-br from-green-200 to-emerald-200 rounded-lg border border-gray-200 flex items-center justify-center cursor-pointer opacity-70 hover:opacity-100 transition-opacity flex-shrink-0">
+                        <span class="text-2xl">🌾</span>
+                    </div>
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-200 to-indigo-200 rounded-lg border border-gray-200 flex items-center justify-center cursor-pointer opacity-70 hover:opacity-100 transition-opacity flex-shrink-0">
+                        <span class="text-2xl">📦</span>
+                    </div>
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-200 to-pink-200 rounded-lg border border-gray-200 flex items-center justify-center cursor-pointer opacity-70 hover:opacity-100 transition-opacity flex-shrink-0">
+                        <span class="text-2xl">🥄</span>
+                    </div>
+                    <div class="w-20 h-20 bg-gradient-to-br from-yellow-200 to-orange-200 rounded-lg border border-gray-200 flex items-center justify-center cursor-pointer opacity-70 hover:opacity-100 transition-opacity flex-shrink-0">
+                        <span class="text-2xl">🏆</span>
+                    </div>
+                </div>
+
+                <!-- Trust Badges -->
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                        <div class="text-2xl mb-1">🌱</div>
+                        <div class="text-xs font-medium text-gray-700">100% Natural</div>
+                    </div>
+                    <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                        <div class="text-2xl mb-1">🏅</div>
+                        <div class="text-xs font-medium text-gray-700">Award Winner</div>
+                    </div>
+                    <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                        <div class="text-2xl mb-1">✅</div>
+                        <div class="text-xs font-medium text-gray-700">Lab Tested</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Product Details -->
+            <div class="space-y-6">
+                <!-- Enhanced Breadcrumb -->
+                <nav class="text-sm text-gray-500 flex items-center space-x-2">
+                    <span class="hover:text-orange-600 cursor-pointer">Home</span>
+                    <span>/</span>
+                    <span class="hover:text-orange-600 cursor-pointer">Healthy Snacks</span>
+                    <span>/</span>
+                    <span class="hover:text-orange-600 cursor-pointer">Makhana</span>
+                    <span>/</span>
+                    <span class="text-orange-600 font-medium">Tangy Tomato</span>
+                </nav>
+
+                <!-- Enhanced Product Title & Rating -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-2">
+                        <h1 class="text-3xl font-bold text-gray-900">Tangy Tomato Makhana</h1>
+                        <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full font-semibold">BESTSELLER</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex items-center">
+                                <div class="star-rating flex text-lg">
+                                    <span>★★★★★</span>
+                                </div>
+                                <span class="ml-2 text-sm text-gray-600 font-medium">(4.8)</span>
+                            </div>
+                            <span class="text-sm text-gray-500">|</span>
+                            <span class="text-sm text-blue-600 hover:underline cursor-pointer">127 reviews</span>
+                            <span class="text-sm text-gray-500">|</span>
+                            <span class="text-sm text-green-600 font-medium">2,847 sold this month</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-semibold">✓ In Stock</span>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-semibold">Fast Shipping</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-lg leading-relaxed mb-4">Crispy fox nuts with a burst of tangy tomato flavor. Perfect healthy snacking option made from premium quality lotus seeds.</p>
+                    
+                    <!-- Ingredient Tags -->
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="ingredient-tag">Fox Nuts</span>
+                        <span class="ingredient-tag">Tomato Powder</span>
+                        <span class="ingredient-tag">Sea Salt</span>
+                        <span class="ingredient-tag">Herbs & Spices</span>
+                        <span class="ingredient-tag">Natural Flavors</span>
+                    </div>
+                </div>
+
+                <!-- Enhanced Price Section -->
+                <div class="border-t border-b border-gray-200 py-6 bg-gradient-to-r from-orange-50 to-red-50 -mx-4 px-4 rounded-lg">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-4">
+                            <span class="text-4xl font-bold text-orange-600">₹149</span>
+                            <span class="text-xl text-gray-500 line-through">₹199</span>
+                            <span class="bg-red-500 text-white text-sm px-3 py-1 rounded-full font-semibold">25% OFF</span>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm text-gray-600">You save</div>
+                            <div class="text-lg font-bold text-green-600">₹50</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-sm text-gray-600">
+                        <span>75g pack • ₹1.99 per gram</span>
+                        <span class="text-red-600 font-medium">⏰ Limited time offer</span>
+                    </div>
+                    
+                    <!-- Price comparison -->
+                    <div class="mt-4 p-3 bg-white rounded-lg border border-orange-200">
+                        <div class="text-sm font-medium text-gray-700 mb-2">💰 Price Comparison</div>
+                        <div class="grid grid-cols-3 gap-2 text-xs">
+                            <div class="text-center">
+                                <div class="font-medium text-orange-600">Our Price</div>
+                                <div>₹149</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="font-medium text-gray-600">Market Avg</div>
+                                <div>₹180</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="font-medium text-green-600">You Save</div>
+                                <div>₹31</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Size/Variant Selection -->
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Choose Size</h3>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="size-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer text-center" onclick="selectSize(this, 75, 149)">
+                                <div class="font-semibold text-gray-800">75g</div>
+                                <div class="text-sm text-gray-600">₹149</div>
+                                <div class="text-xs text-green-600 font-medium">Most Popular</div>
+                            </div>
+                            <div class="size-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer text-center selected" onclick="selectSize(this, 150, 279)">
+                                <div class="font-semibold text-gray-800">150g</div>
+                                <div class="text-sm text-gray-600">₹279</div>
+                                <div class="text-xs text-orange-600 font-medium">Save ₹19</div>
+                            </div>
+                            <div class="size-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer text-center" onclick="selectSize(this, 300, 529)">
+                                <div class="font-semibold text-gray-800">300g</div>
+                                <div class="text-sm text-gray-600">₹529</div>
+                                <div class="text-xs text-red-600 font-medium">Save ₹67</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quantity Selector with Stock Info -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <span class="text-gray-700 font-medium">Quantity:</span>
+                            <div class="flex items-center border-2 border-gray-300 rounded-lg">
+                                <button class="quantity-btn px-4 py-2 text-gray-600 hover:text-orange-600 font-bold" onclick="decreaseQuantity()">-</button>
+                                <span class="px-6 py-2 border-l border-r border-gray-300 font-semibold" id="quantity">1</span>
+                                <button class="quantity-btn px-4 py-2 text-gray-600 hover:text-orange-600 font-bold" onclick="increaseQuantity()">+</button>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <span class="text-orange-600 font-medium">47 left</span> in stock
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Action Buttons -->
+                    <div class="space-y-3">
+                        <div class="flex space-x-3">
+                            <button class="add-to-cart-btn flex-1 text-white font-semibold py-4 px-6 rounded-lg shadow-lg text-lg" onclick="addToCart()">
+                                🛒 Add to Cart
+                            </button>
+                            <button class="border-2 border-orange-500 text-orange-500 font-semibold py-4 px-6 rounded-lg hover:bg-orange-50 transition-colors" onclick="buyNow()">
+                                ⚡ Buy Now
+                            </button>
+                        </div>
+                        <button class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all" onclick="buyWithOneClick()">
+                            🚀 1-Click Buy (Express Checkout)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Delivery Information -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                    <h3 class="font-semibold text-gray-800 mb-4 flex items-center">
+                        <span class="delivery-truck mr-2">🚚</span>
+                        Delivery Information
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">📍 Deliver to: Mumbai 400001</span>
+                            <button class="text-orange-600 text-sm hover:underline">Change</button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-green-500">✓</span>
+                                <span>Free delivery above ₹499</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-green-500">✓</span>
+                                <span>Express delivery available</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-green-500">✓</span>
+                                <span>Cash on delivery</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-green-500">✓</span>
+                                <span>Easy returns</span>
+                            </div>
+                        </div>
+                        <div class="border-t pt-3 mt-3">
+                            <div class="text-sm text-gray-600">
+                                <strong>Standard Delivery:</strong> 2-3 business days (₹40)
+                            </div>
+                            <div class="text-sm text-gray-600">
+                                <strong>Express Delivery:</strong> Same day delivery (₹99)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Features Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="feature-card bg-white p-4 rounded-lg shadow-sm border border-orange-100">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-green-500 text-2xl">🌱</span>
+                            <div>
+                                <div class="font-medium text-gray-800">100% Natural</div>
+                                <div class="text-xs text-gray-600">No artificial additives</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feature-card bg-white p-4 rounded-lg shadow-sm border border-orange-100">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-blue-500 text-2xl">💪</span>
+                            <div>
+                                <div class="font-medium text-gray-800">High Protein</div>
+                                <div class="text-xs text-gray-600">9.7g per serving</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feature-card bg-white p-4 rounded-lg shadow-sm border border-orange-100">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-red-500 text-2xl">❤️</span>
+                            <div>
+                                <div class="font-medium text-gray-800">Heart Healthy</div>
+                                <div class="text-xs text-gray-600">Low sodium & fat</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feature-card bg-white p-4 rounded-lg shadow-sm border border-orange-100">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-yellow-500 text-2xl">⚡</span>
+                            <div>
+                                <div class="font-medium text-gray-800">Energy Boost</div>
+                                <div class="text-xs text-gray-600">347 calories per pack</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Proof -->
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex -space-x-2">
+                            <div class="w-8 h-8 bg-orange-500 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold">A</div>
+                            <div class="w-8 h-8 bg-blue-500 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold">R</div>
+                            <div class="w-8 h-8 bg-green-500 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold">S</div>
+                            <div class="w-8 h-8 bg-purple-500 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold">+</div>
+                        </div>
+                        <div class="text-sm">
+                            <div class="font-medium text-gray-800">2,847 people bought this</div>
+                            <div class="text-gray-600">in the last 30 days</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Product Details Tabs -->
+        <div class="mt-16">
+            <div class="border-b border-gray-200 bg-white rounded-t-lg">
+                <nav class="flex space-x-8 px-6">
+                    <button class="tab-btn py-4 px-1 border-b-2 border-orange-500 text-orange-600 font-medium" onclick="showTab('description')">📝 Description</button>
+                    <button class="tab-btn py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700" onclick="showTab('nutrition')">🥗 Nutrition Facts</button>
+                    <button class="tab-btn py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700" onclick="showTab('reviews')">⭐ Reviews (127)</button>
+                    <button class="tab-btn py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700" onclick="showTab('ingredients')">🌿 Ingredients</button>
+                    <button class="tab-btn py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700" onclick="showTab('comparison')">📊 Compare</button>
+                </nav>
+            </div>
+
+            <div class="bg-white rounded-b-lg shadow-sm border border-gray-200 border-t-0">
+                <div class="p-8">
+                    <!-- Description Tab -->
+                    <div id="description-tab" class="tab-content">
+                        <div class="prose max-w-none">
+                            <h3 class="text-2xl font-semibold mb-6 text-gray-800">About Tangy Tomato Makhana</h3>
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <div>
+                                    <p class="text-gray-600 mb-4 leading-relaxed">Our premium fox nuts are carefully roasted and seasoned with authentic tangy tomato flavoring. Each bite delivers a perfect crunch with an explosion of savory tomato taste that will keep you coming back for more.</p>
+                                    <h4 class="font-semibold text-gray-800 mb-3">Key Features:</h4>
+                                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                        <li>Made from premium quality fox nuts (Euryale Ferox)</li>
+                                        <li>Roasted to perfection for maximum crunch</li>
+                                        <li>Natural tomato flavoring with herbs and spices</li>
+                                        <li>No artificial colors or preservatives</li>
+                                        <li>Gluten-free and vegan friendly</li>
+                                        <li>Rich in protein, fiber, and essential minerals</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-3">Health Benefits:</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex items-start space-x-3">
+                                            <span class="text-green-500 mt-1">💚</span>
+                                            <div>
+                                                <div class="font-medium text-gray-800">Weight Management</div>
+                                                <div class="text-sm text-gray-600">Low in calories, high in fiber</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start space-x-3">
+                                            <span class="text-blue-500 mt-1">🧠</span>
+                                            <div>
+                                                <div class="font-medium text-gray-800">Brain Health</div>
+                                                <div class="text-sm text-gray-600">Rich in thiamine and magnesium</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start space-x-3">
+                                            <span class="text-red-500 mt-1">❤️</span>
+                                            <div>
+                                                <div class="font-medium text-gray-800">Heart Health</div>
+                                                <div class="text-sm text-gray-600">Low sodium, cholesterol-free</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start space-x-3">
+                                            <span class="text-yellow-500 mt-1">⚡</span>
+                                            <div>
+                                                <div class="font-medium text-gray-800">Energy Boost</div>
+                                                <div class="text-sm text-gray-600">Complex carbohydrates for sustained energy</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Nutrition Tab -->
+                    <div id="nutrition-tab" class="tab-content hidden">
+                        <h3 class="text-2xl font-semibold mb-6 text-gray-800">Detailed Nutrition Facts</h3>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-6 border border-green-200">
+                                <h4 class="text-lg font-semibold mb-4 text-gray-800">Per 75g Serving</h4>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center border-b pb-2">
+                                        <span class="font-medium">Calories</span>
+                                        <span class="font-bold text-lg">347</span>
+                                    </div>
+                                    <div class="flex justify-between items-center border-b pb-2">
+                                        <span>Protein</span>
+                                        <span class="font-semibold">9.7g</span>
+                                    </div>
+                                    <div class="flex justify-between items-center border-b pb-2">
+                                        <span>Carbohydrates</span>
+                                        <span class="font-semibold">76.9g</span>
+                                    </div>
+                                    <div class="flex justify-between items-center border-b pb-2">
+                                        <span>Dietary Fiber</span>
+                                        <span class="font-semibold">14.5g</span>
+                                    </div>
+                                    <div class="flex justify-between items-center border-b pb-2">
+                                        <span>Total Fat</span>
+                                        <span class="font-semibold">0.1g</span>
+                                    </div>
+                                    <div class="flex justify-between items-center border-b pb-2">
+                                        <span>Sodium</span>
+                                        <span class="font-semibold">2.5mg</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold mb-4 text-gray-800">Vitamins & Minerals</h4>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center">
+                                        <span>Calcium</span>
+                                        <span class="font-semibold">60mg (6% DV)</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span>Iron</span>
+                                        <span class="font-semibold">1.4mg (8% DV)</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span>Magnesium</span>
+                                        <span class="font-semibold">210mg (50% DV)</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span>Phosphorus</span>
+                                        <span class="font-semibold">540mg (43% DV)</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span>Potassium</span>
+                                        <span class="font-semibold">1368mg (29% DV)</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span>Thiamine (B1)</span>
+                                        <span class="font-semibold">0.6mg (50% DV)</span>
+                                    </div>
+                                </div>
+                                <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                                    <div class="text-sm text-blue-800">
+                                        <strong>Note:</strong> DV = Daily Value based on a 2000 calorie diet. Your daily values may be higher or lower depending on your calorie needs.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Reviews Tab -->
+                    <div id="reviews-tab" class="tab-content hidden">
+                        <div class="space-y-8">
+                            <!-- Review Summary -->
+                            <div class="grid md:grid-cols-3 gap-8">
+                                <div class="text-center">
+                                    <div class="text-5xl font-bold text-orange-600 mb-2">4.8</div>
+                                    <div class="star-rating text-2xl mb-2">★★★★★</div>
+                                    <div class="text-gray-600">Based on 127 reviews</div>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <div class="space-y-2">
+                                        <div class="flex items-center space-x-3">
+                                            <span class="text-sm w-8">5★</span>
+                                            <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                                <div class="progress-bar h-2 rounded-full" style="--width: 78%"></div>
+                                            </div>
+                                            <span class="text-sm text-gray-600 w-12">78%</span>
+                                        </div>
+                                        <div class="flex items-center space-x-3">
+                                            <span class="text-sm w-8">4★</span>
+                                            <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                                <div class="progress-bar h-2 rounded-full" style="--width: 15%"></div>
+                                            </div>
+                                            <span class="text-sm text-gray-600 w-12">15%</span>
+                                        </div>
+                                        <div class="flex items-center space-x-3">
+                                            <span class="text-sm w-8">3★</span>
+                                            <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                                <div class="progress-bar h-2 rounded-full" style="--width: 5%"></div>
+                                            </div>
+                                            <span class="text-sm text-gray-600 w-12">5%</span>
+                                        </div>
+                                        <div class="flex items-center space-x-3">
+                                            <span class="text-sm w-8">2★</span>
+                                            <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                                <div class="progress-bar h-2 rounded-full" style="--width: 2%"></div>
+                                            </div>
+                                            <span class="text-sm text-gray-600 w-12">2%</span>
+                                        </div>
+                                        <div class="flex items-center space-x-3">
+                                            <span class="text-sm w-8">1★</span>
+                                            <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                                <div class="progress-bar h-2 rounded-full" style="--width: 0%"></div>
+                                            </div>
+                                            <span class="text-sm text-gray-600 w-12">0%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Individual Reviews -->
+                            <div class="space-y-6">
+                                <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-6 border border-green-200">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white font-semibold text-lg">A</div>
+                                            <div>
+                                                <h4 class="font-semibold text-gray-800">Anita Sharma</h4>
+                                                <div class="star-rating text-sm">★★★★★</div>
+                                                <div class="text-xs text-gray-500">Verified Purchase • 2 days ago</div>
+                                            </div>
+                                        </div>
+                                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Verified</span>
+                                    </div>
+                                    <p class="text-gray-700 mb-3">"Amazing taste! The tangy tomato flavor is perfectly balanced. My kids love it as a healthy snack option. The packaging keeps it fresh and crunchy. Will definitely order again!"</p>
+                                    <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                        <button class="hover:text-orange-600">👍 Helpful (23)</button>
+                                        <button class="hover:text-orange-600">💬 Reply</button>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white rounded-lg p-6 border border-gray-200">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold text-lg">R</div>
+                                            <div>
+                                                <h4 class="font-semibold text-gray-800">Rajesh Kumar</h4>
+                                                <div class="star-rating text-sm">★★★★☆</div>
+                                                <div class="text-xs text-gray-500">Verified Purchase • 1 week ago</div>
+                                            </div>
+                                        </div>
+                                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Verified</span>
+                                    </div>
+                                    <p class="text-gray-700 mb-3">"Great quality makhana with excellent packaging. The tomato seasoning is delicious and not too salty. Perfect for evening snacks. Fast delivery too!"</p>
+                                    <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                        <button class="hover:text-orange-600">👍 Helpful (18)</button>
+                                        <button class="hover:text-orange-600">💬 Reply</button>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white rounded-lg p-6 border border-gray-200">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-lg">P</div>
+                                            <div>
+                                                <h4 class="font-semibold text-gray-800">Priya Patel</h4>
+                                                <div class="star-rating text-sm">★★★★★</div>
+                                                <div class="text-xs text-gray-500">Verified Purchase • 2 weeks ago</div>
+                                            </div>
+                                        </div>
+                                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Verified</span>
+                                    </div>
+                                    <p class="text-gray-700 mb-3">"Absolutely love this healthy snack! The crunch is perfect and the tangy tomato flavor is addictive. Great alternative to chips. Highly recommended for health-conscious people."</p>
+                                    <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                        <button class="hover:text-orange-600">👍 Helpful (31)</button>
+                                        <button class="hover:text-orange-600">💬 Reply</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Write Review Button -->
+                            <div class="text-center">
+                                <button class="bg-orange-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors" onclick="openReviewModal()">
+                                    ✍️ Write a Review
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ingredients Tab -->
+                    <div id="ingredients-tab" class="tab-content hidden">
+                        <h3 class="text-2xl font-semibold mb-6 text-gray-800">Complete Ingredients List</h3>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div>
+                                <h4 class="text-lg font-semibold mb-4 text-gray-800">Primary Ingredients</h4>
+                                <div class="space-y-4">
+                                    <div class="flex items-start space-x-3 p-4 bg-green-50 rounded-lg border border-green-200">
+                                        <span class="text-2xl">🌰</span>
+                                        <div>
+                                            <div class="font-semibold text-gray-800">Fox Nuts (Makhana)</div>
+                                            <div class="text-sm text-gray-600">Premium quality Euryale Ferox seeds, carefully selected and processed</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start space-x-3 p-4 bg-red-50 rounded-lg border border-red-200">
+                                        <span class="text-2xl">🍅</span>
+                                        <div>
+                                            <div class="font-semibold text-gray-800">Tomato Powder</div>
+                                            <div class="text-sm text-gray-600">Natural tomato powder for authentic tangy flavor</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start space-x-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                                        <span class="text-2xl">🧂</span>
+                                        <div>
+                                            <div class="font-semibold text-gray-800">Sea Salt</div>
+                                            <div class="text-sm text-gray-600">Pure sea salt for enhanced taste</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold mb-4 text-gray-800">Seasonings & Spices</h4>
+                                <div class="space-y-3">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                        <span>Onion Powder</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                        <span>Garlic Powder</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                        <span>Black Pepper</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                        <span>Paprika</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                        <span>Dried Herbs (Oregano, Basil)</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                        <span>Natural Flavoring</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                                    <h5 class="font-semibold text-gray-800 mb-2">Allergen Information</h5>
+                                    <div class="text-sm text-gray-700">
+                                        <div class="mb-2"><strong>Contains:</strong> None of the major allergens</div>
+                                        <div class="mb-2"><strong>Gluten-Free:</strong> ✅ Yes</div>
+                                        <div class="mb-2"><strong>Vegan:</strong> ✅ Yes</div>
+                                        <div><strong>Processed in facility that may contain:</strong> Nuts, Soy</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Tab -->
+                    <div id="comparison-tab" class="tab-content hidden">
+                        <h3 class="text-2xl font-semibold mb-6 text-gray-800">Product Comparison</h3>
+                        <div class="comparison-table rounded-lg p-6 border border-gray-200">
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead>
+                                        <tr class="border-b-2 border-gray-300">
+                                            <th class="text-left py-4 px-4 font-semibold text-gray-800">Features</th>
+                                            <th class="text-center py-4 px-4 font-semibold text-orange-600">Our Makhana</th>
+                                            <th class="text-center py-4 px-4 font-semibold text-gray-600">Regular Chips</th>
+                                            <th class="text-center py-4 px-4 font-semibold text-gray-600">Nuts</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="py-4 px-4 font-medium">Calories (per 100g)</td>
+                                            <td class="py-4 px-4 text-center text-green-600 font-semibold">347</td>
+                                            <td class="py-4 px-4 text-center text-red-600">534</td>
+                                            <td class="py-4 px-4 text-center text-yellow-600">567</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-4 px-4 font-medium">Protein (g)</td>
+                                            <td class="py-4 px-4 text-center text-green-600 font-semibold">9.7</td>
+                                            <td class="py-4 px-4 text-center text-red-600">6.6</td>
+                                            <td class="py-4 px-4 text-center text-green-600">20.4</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-4 px-4 font-medium">Fat (g)</td>
+                                            <td class="py-4 px-4 text-center text-green-600 font-semibold">0.1</td>
+                                            <td class="py-4 px-4 text-center text-red-600">34.6</td>
+                                            <td class="py-4 px-4 text-center text-yellow-600">49.2</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-4 px-4 font-medium">Fiber (g)</td>
+                                            <td class="py-4 px-4 text-center text-green-600 font-semibold">14.5</td>
+                                            <td class="py-4 px-4 text-center text-red-600">4.2</td>
+                                            <td class="py-4 px-4 text-center text-yellow-600">8.5</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-4 px-4 font-medium">Sodium (mg)</td>
+                                            <td class="py-4 px-4 text-center text-green-600 font-semibold">2.5</td>
+                                            <td class="py-4 px-4 text-center text-red-600">525</td>
+                                            <td class="py-4 px-4 text-center text-yellow-600">18</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-4 px-4 font-medium">Natural</td>
+                                            <td class="py-4 px-4 text-center text-green-600">✅</td>
+                                            <td class="py-4 px-4 text-center text-red-600">❌</td>
+                                            <td class="py-4 px-4 text-center text-green-600">✅</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-4 px-4 font-medium">Gluten-Free</td>
+                                            <td class="py-4 px-4 text-center text-green-600">✅</td>
+                                            <td class="py-4 px-4 text-center text-red-600">❌</td>
+                                            <td class="py-4 px-4 text-center text-green-600">✅</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products -->
+        <div class="mt-16">
+            <h3 class="text-2xl font-bold text-gray-800 mb-8">You Might Also Like</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-lg transition-shadow">
+                    <div class="aspect-square bg-gradient-to-br from-green-200 to-emerald-300 rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-4xl">🌿</span>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 mb-2">Mint Makhana</h4>
+                    <div class="flex items-center justify-between">
+                        <span class="text-orange-600 font-bold">₹159</span>
+                        <button class="text-sm bg-orange-100 text-orange-600 px-3 py-1 rounded-full hover:bg-orange-200 transition-colors">Add</button>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-lg transition-shadow">
+                    <div class="aspect-square bg-gradient-to-br from-yellow-200 to-orange-300 rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-4xl">🧀</span>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 mb-2">Cheese Makhana</h4>
+                    <div class="flex items-center justify-between">
+                        <span class="text-orange-600 font-bold">₹169</span>
+                        <button class="text-sm bg-orange-100 text-orange-600 px-3 py-1 rounded-full hover:bg-orange-200 transition-colors">Add</button>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-lg transition-shadow">
+                    <div class="aspect-square bg-gradient-to-br from-red-200 to-pink-300 rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-4xl">🌶️</span>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 mb-2">Spicy Makhana</h4>
+                    <div class="flex items-center justify-between">
+                        <span class="text-orange-600 font-bold">₹149</span>
+                        <button class="text-sm bg-orange-100 text-orange-600 px-3 py-1 rounded-full hover:bg-orange-200 transition-colors">Add</button>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-lg transition-shadow">
+                    <div class="aspect-square bg-gradient-to-br from-purple-200 to-indigo-300 rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-4xl">🧂</span>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 mb-2">Salted Makhana</h4>
+                    <div class="flex items-center justify-between">
+                        <span class="text-orange-600 font-bold">₹139</span>
+                        <button class="text-sm bg-orange-100 text-orange-600 px-3 py-1 rounded-full hover:bg-orange-200 transition-colors">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Cart -->
+    <div class="floating-cart bg-white rounded-lg shadow-xl border border-gray-200 p-4" id="floating-cart">
+        <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 bg-gradient-to-br from-orange-200 to-red-200 rounded-lg flex items-center justify-center">
+                <span class="text-xl">🍅</span>
+            </div>
+            <div class="flex-1">
+                <div class="font-semibold text-gray-800">Tangy Tomato Makhana</div>
+                <div class="text-sm text-gray-600">₹149 • 75g</div>
+            </div>
+            <button class="bg-orange-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-600 transition-colors" onclick="quickAddToCart()">
+                Add
+            </button>
+        </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="notification bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg" id="success-notification">
+        <div class="flex items-center space-x-3">
+            <span class="text-xl">✅</span>
+            <div>
+                <div class="font-semibold">Added to cart successfully!</div>
+                <div class="text-sm opacity-90">Tangy Tomato Makhana (75g)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification bg-red-500 text-white px-6 py-4 rounded-lg shadow-lg" id="wishlist-notification">
+        <div class="flex items-center space-x-3">
+            <span class="text-xl">❤️</span>
+            <div>
+                <div class="font-semibold">Added to wishlist!</div>
+                <div class="text-sm opacity-90">You can view it in your profile</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Modal -->
+    <div class="modal" id="review-modal">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold text-gray-800">Write a Review</h3>
+                <button class="text-gray-400 hover:text-gray-600" onclick="closeReviewModal()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <form onsubmit="submitReview(event)">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+                        <div class="flex space-x-1">
+                            <button type="button" class="star-btn text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating(1)">★</button>
+                            <button type="button" class="star-btn text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating(2)">★</button>
+                            <button type="button" class="star-btn text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating(3)">★</button>
+                            <button type="button" class="star-btn text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating(4)">★</button>
+                            <button type="button" class="star-btn text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating(5)">★</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Your Review</label>
+                        <textarea class="w-full border border-gray-300 rounded-lg p-3 h-24 resize-none" placeholder="Share your experience with this product..."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Your Name</label>
+                        <input type="text" class="w-full border border-gray-300 rounded-lg p-3" placeholder="Enter your name">
+                    </div>
+                </div>
+                <div class="flex space-x-3 mt-6">
+                    <button type="button" class="flex-1 border border-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors" onclick="closeReviewModal()">Cancel</button>
+                    <button type="submit" class="flex-1 bg-orange-500 text-white py-3 px-4 rounded-lg hover:bg-orange-600 transition-colors">Submit Review</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let quantity = 1;
+        let cartCount = 0;
+        let selectedSize = 150;
+        let selectedPrice = 279;
+        let currentRating = 0;
+        let isWishlisted = false;
+
+        // Show floating cart after scroll
+        window.addEventListener('scroll', () => {
+            const floatingCart = document.getElementById('floating-cart');
+            if (window.scrollY > 500) {
+                floatingCart.classList.add('show');
+            } else {
+                floatingCart.classList.remove('show');
+            }
+        });
+
+        function toggleZoom() {
+            const image = document.getElementById('main-image');
+            image.classList.toggle('zoomed');
+        }
+
+        function increaseQuantity() {
+            quantity++;
+            document.getElementById('quantity').textContent = quantity;
+        }
+
+        function decreaseQuantity() {
+            if (quantity > 1) {
+                quantity--;
+                document.getElementById('quantity').textContent = quantity;
+            }
+        }
+
+        function selectSize(element, size, price) {
+            document.querySelectorAll('.size-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedSize = size;
+            selectedPrice = price;
+        }
+
+        function addToCart() {
+            cartCount += quantity;
+            document.getElementById('cart-count').textContent = cartCount;
+            showNotification('success-notification');
+        }
+
+        function quickAddToCart() {
+            cartCount += 1;
+            document.getElementById('cart-count').textContent = cartCount;
+            showNotification('success-notification');
+        }
+
+        function buyNow() {
+            alert(`Proceeding to checkout with ${quantity} item(s) - Total: ₹${selectedPrice * quantity}`);
+        }
+
+        function buyWithOneClick() {
+            alert(`Express checkout initiated! Total: ₹${selectedPrice * quantity}\nDelivery: Express (Same day)`);
+        }
+
+        function toggleWishlist() {
+            isWishlisted = !isWishlisted;
+            const icon = document.getElementById('wishlist-icon');
+            const btn = icon.parentElement;
+            
+            if (isWishlisted) {
+                icon.classList.add('active');
+                icon.setAttribute('fill', 'currentColor');
+                showNotification('wishlist-notification');
+            } else {
+                icon.classList.remove('active');
+                icon.setAttribute('fill', 'none');
+            }
+        }
+
+        function showNotification(notificationId) {
+            const notification = document.getElementById(notificationId);
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-orange-500', 'text-orange-600');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+            
+            event.target.classList.remove('border-transparent', 'text-gray-500');
+            event.target.classList.add('border-orange-500', 'text-orange-600');
+        }
+
+        function openReviewModal() {
+            document.getElementById('review-modal').classList.add('show');
+        }
+
+        function closeReviewModal() {
+            document.getElementById('review-modal').classList.remove('show');
+            currentRating = 0;
+            updateStarDisplay();
+        }
+
+        function setRating(rating) {
+            currentRating = rating;
+            updateStarDisplay();
+        }
+
+        function updateStarDisplay() {
+            const stars = document.querySelectorAll('.star-btn');
+            stars.forEach((star, index) => {
+                if (index < currentRating) {
+                    star.classList.remove('text-gray-300');
+                    star.classList.add('text-yellow-400');
+                } else {
+                    star.classList.remove('text-yellow-400');
+                    star.classList.add('text-gray-300');
+                }
+            });
+        }
+
+        function submitReview(event) {
+            event.preventDefault();
+            if (currentRating === 0) {
+                alert('Please select a rating');
+                return;
+            }
+            alert('Thank you for your review! It will be published after moderation.');
+            closeReviewModal();
+        }
+
+        function openCart() {
+            alert(`Cart Contents:\n${cartCount} items\nTotal: ₹${selectedPrice * cartCount}`);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-select middle size option
+            const middleSize = document.querySelectorAll('.size-option')[1];
+            middleSize.classList.add('selected');
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98ad03d761b559a2',t:'MTc1OTgzNjA4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
