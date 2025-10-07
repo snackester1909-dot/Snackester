@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Masala Makhana - Tangy & Flavorful | Premium Healthy Snacks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .product-image {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            cursor: zoom-in;
+            transition: all 0.3s ease;
+        }
+        
+        .product-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .tangy-badge {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            animation: tangy-glow 2s infinite;
+        }
+        
+        @keyframes tangy-glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(245, 158, 11, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.8); }
+        }
+        
+        .flavor-level {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .add-to-cart-btn {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            transition: all 0.3s ease;
+        }
+        
+        .add-to-cart-btn:hover {
+            background: linear-gradient(135deg, #d97706, #b45309);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+        }
+        
+        .size-option {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .size-option.selected {
+            border-color: #f59e0b;
+            background: #fef3c7;
+            transform: scale(1.05);
+        }
+        
+        .tab-btn.active {
+            border-color: #f59e0b;
+            color: #f59e0b;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            border-left: 4px solid #10b981;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-center py-2 text-sm">
+            🎉 Chat Masala TREAT: FREE SHIPPING + 25% OFF | Use: MASALA25 | Limited Time!
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">S</span>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">Snackester</h1>
+                        <p class="text-xs text-gray-600">Premium Healthy Snacks</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-6">
+                    <button class="text-gray-600 hover:text-amber-500 transition-colors relative" onclick="openCart()">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 11-4 0v-6m4 0V9a2 2 0 10-4 0v4.01"></path>
+                        </svg>
+                        <span class="absolute -top-2 -right-2 bg-amber-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" id="cart-count">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- Product Image Section -->
+            <div class="space-y-6">
+                <!-- Main Product Image -->
+                <div class="relative">
+                    <div class="product-image aspect-square flex items-center justify-center">
+                        <!-- <svg viewBox="0 0 300 300" class="w-64 h-64">
+                            <defs>
+                                <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+                                    <feDropShadow dx="3" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.4"/>
+                                </filter>
+                                <linearGradient id="makhanaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#f8f9fa;stop-opacity:0.9" />
+                                </linearGradient>
+                            </defs> -->
+                            
+                            <!-- Makhana pieces with chat masala coating -->
+                            <!-- <circle cx="150" cy="120" r="28" fill="url(#makhanaGradient)" filter="url(#shadow)"/>
+                            <circle cx="120" cy="160" r="23" fill="url(#makhanaGradient)" filter="url(#shadow)"/>
+                            <circle cx="180" cy="170" r="25" fill="url(#makhanaGradient)" filter="url(#shadow)"/>
+                            <circle cx="140" cy="200" r="21" fill="url(#makhanaGradient)" filter="url(#shadow)"/>
+                            <circle cx="190" cy="140" r="19" fill="url(#makhanaGradient)" filter="url(#shadow)"/>
+                            <circle cx="110" cy="130" r="18" fill="url(#makhanaGradient)" filter="url(#shadow)"/>
+                            <circle cx="170" cy="200" r="23" fill="url(#makhanaGradient)" filter="url(#shadow)"/> -->
+                            
+                            <!-- Chat masala particles -->
+                            <!-- <circle cx="100" cy="100" r="4" fill="#f59e0b" opacity="0.9">
+                                <animate attributeName="opacity" values="0.9;0.5;0.9" dur="1.5s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="200" cy="110" r="3" fill="#d97706" opacity="0.8">
+                                <animate attributeName="opacity" values="0.8;0.4;0.8" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="130" cy="90" r="3.5" fill="#fbbf24" opacity="0.85">
+                                <animate attributeName="opacity" values="0.85;0.45;0.85" dur="1.8s" repeatCount="indefinite"/>
+                            </circle> -->
+                            
+                            <!-- Tangy waves -->
+                            <!-- <path d="M 60 60 Q 70 50 80 60 Q 90 70 100 60" stroke="#f59e0b" stroke-width="2" fill="none" opacity="0.6">
+                                <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2s" repeatCount="indefinite"/>
+                            </path> -->
+                            
+                            <!-- Sparkle effects -->
+                            <!-- <text x="90" y="80" font-size="18" fill="#ffd700">
+                                <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/>
+                                ✨
+                            </text>
+                            <text x="70" y="220" font-size="16" fill="#f59e0b">
+                                <animate attributeName="opacity" values="1;0.3;1" dur="1.8s" repeatCount="indefinite"/>
+                                😋
+                            </text>
+                            <text x="230" y="200" font-size="12" fill="#d97706">
+                                <animate attributeName="opacity" values="1;0.3;1" dur="2.3s" repeatCount="indefinite"/>
+                                🧂
+                            </text> -->
+                        <!-- </svg> -->
+                         <img src="Chat Masala(70&70).png" alt="Chat Masala makhana"></img>
+                    </div>
+                    
+                    <!-- Badges -->
+                    <div class="absolute top-4 left-4 flex flex-col space-y-2">
+                        <span class="bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-semibold">PREMIUM</span>
+                        <span class="tangy-badge">😋 EXTRA TANGY</span>
+                        <span class="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold">🌱 NATURAL</span>
+                        
+                    </div>
+                    
+                    <!-- Stock Status -->
+                    <div class="absolute bottom-4 left-4">
+                        <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-semibold">
+                            <span class="w-2 h-2 bg-orange-500 rounded-full inline-block mr-1 animate-pulse"></span>
+                            Only 82 left!
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Thumbnail Gallery -->
+                <div class="flex space-x-3 overflow-x-auto pb-2">
+                    <div class="w-20 h-20 bg-gradient-to-br from-amber-200 to-orange-200 rounded-lg border-2 border-amber-300 flex items-center justify-center cursor-pointer flex-shrink-0">
+                        <!-- <span class="text-2xl">😋</span> -->
+                         <img src="Chat Masala(70&70).png" alt="Chat Masala makhana"></img>
+                    </div>
+                    <div class="w-20 h-20 bg-gradient-to-br from-orange-200 to-amber-200 rounded-lg border border-gray-200 flex items-center justify-center cursor-pointer opacity-70 hover:opacity-100 transition-opacity flex-shrink-0">
+                        <span class="text-2xl">🧂</span>
+                    </div>
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-200 to-indigo-200 rounded-lg border border-gray-200 flex items-center justify-center cursor-pointer opacity-70 hover:opacity-100 transition-opacity flex-shrink-0">
+                        <span class="text-2xl">📦</span>
+                    </div>
+                </div>
+
+                <!-- Trust Badges -->
+                <div class="grid grid-cols-4 gap-3">
+                    <div class="text-center p-3 bg-white rounded-lg shadow-sm border">
+                        <div class="text-2xl mb-1">😋</div>
+                        <div class="text-xs font-medium text-gray-900">Authentic</div>
+                        <div class="text-xs text-gray-600">Chat Masala</div>
+                    </div>
+                    <div class="text-center p-3 bg-white rounded-lg shadow-sm border">
+                        <div class="text-2xl mb-1">🚚</div>
+                        <div class="text-xs font-medium text-gray-900">Fast</div>
+                        <div class="text-xs text-gray-600">Delivery</div>
+                    </div>
+                    <div class="text-center p-3 bg-transparency ">
+                        <div class="text-2xl mb-1"></div>
+                        <div class="text-xs font-medium text-gray-900"></div>
+                        <div class="text-xs text-gray-600"></div>
+                    </div>
+                    <div class="text-center p-3 bg-transparency ">
+                        <div class="text-2xl mb-1"></div>
+                        <div class="text-xs font-medium text-gray-900"></div>
+                        <div class="text-xs text-gray-600"></div>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- Product Details -->
+            <div class="space-y-6">
+                <!-- Breadcrumb -->
+                <nav class="text-sm text-gray-600 flex items-center space-x-2">
+                    <span class="hover:text-amber-600 cursor-pointer">Home</span>
+                    <span>/</span>
+                    <span class="hover:text-amber-600 cursor-pointer">Healthy Snacks</span>
+                    <span>/</span>
+                    <span class="hover:text-amber-600 cursor-pointer">Makhana</span>
+                    <span>/</span>
+                    <span class="text-amber-600 font-medium">Chat Masala</span>
+                </nav>
+
+                <!-- Product Title & Rating -->
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <h1 class="text-3xl font-bold text-gray-900">Chat Masala Makhana</h1>
+                        <button class="text-2xl hover:scale-110 transition-transform" onclick="shareProduct()">📤</button>
+                    </div>
+                    
+                    <!-- Flavor Level -->
+                    <div class="flex items-center space-x-4 mb-4">
+                        <span class="text-sm font-medium text-gray-900">Flavor Level:</span>
+                        <div class="flex space-x-1">
+                            <span class="text-amber-500">😋</span>
+                            <span class="text-amber-500">😋</span>
+                            <span class="text-amber-500">😋</span>
+                            <span class="text-amber-500"></span>
+                            <span class="text-amber-500"></span>
+                        </div>
+                        <span class="flavor-level">🧂 EXTRA TANGY</span>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="flex items-center">
+                            <div class="star-rating flex text-lg text-yellow-400">
+                                <span>★★★★★</span>
+                            </div>
+                            <span class="ml-2 text-sm text-gray-600 font-medium">(4.6)</span>
+                        </div>
+                        <span class="text-sm text-gray-400">|</span>
+                        <span class="text-sm text-blue-600 hover:underline cursor-pointer">12 reviews</span>
+                        <span class="text-sm text-gray-400">|</span>
+                        <span class="text-sm text-green-600 font-medium">17 sold</span>
+                    </div>
+                    
+                    <p class="text-gray-600 text-lg leading-relaxed mb-4">
+                        A delightful mix of roasted fox nuts with special chat masala seasoning! Perfectly balanced tangy and 
+                        savory flavors that will make your taste buds dance. Made with authentic Indian spices and premium makhana.
+                    </p>
+                    
+                    <!-- Ingredient Tags -->
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-medium">🌰 Fox Nuts</span>
+                        <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-medium">😋 Chat Masala</span>
+                        <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-medium">🧂 Rock Salt</span>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">🌱 Vegan</span>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">🚫 Gluten-Free</span>
+                    </div>
+
+                    <!-- Social Proof -->
+                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-4 rounded-lg border border-amber-200 mb-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex -space-x-2">
+                                <div class="w-8 h-8 bg-amber-500 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold">A</div>
+                                <div class="w-8 h-8 bg-orange-500 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold">R</div>
+                                <div class="w-8 h-8 bg-yellow-500 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold">M</div>
+                            </div>
+                            <div class="text-sm">
+                                <div class="font-medium text-gray-900">👀 7 people viewing now</div>
+                                <div class="text-gray-600">🛒 11 added to cart in last week</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price Section -->
+                <div class="border-t border-b border-gray-200 py-6 bg-gradient-to-r from-amber-50 to-orange-50 -mx-4 px-4 rounded-lg">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-4">
+                            <span class="text-4xl font-bold text-amber-600" id="current-price">₹249</span>
+                            <span class="text-xl text-gray-500 line-through">₹299</span>
+                            <span class="bg-amber-500 text-white text-sm px-3 py-1 rounded-full font-semibold animate-pulse">17% OFF</span>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm text-gray-600">You save</div>
+                            <div class="text-lg font-bold text-green-600">₹50</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between text-sm text-gray-600 mb-4">
+                        <span>100g pack • ₹2.49 per gram</span>
+                        <span class="text-amber-600 font-medium">⏰ Offer ends in 5days 5h 12m</span>
+                    </div>
+                </div>
+
+                <!-- Size Selection -->
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3">Choose Size</h3>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="size-option border-2 border-gray-200 rounded-lg p-4 text-center" onclick="selectSize(this, 75, 199)">
+                                <div class="font-semibold text-gray-900">75g</div>
+                                <div class="text-sm text-grey-600">₹199</div>
+                                <div class="text-xs text-green-600 font-medium">Trial Size</div>
+                                <div class="text-xs text-red-400 font-medium">Out of stock</div>
+                            </div>
+                            <div class="size-option border-2 border-gray-200 rounded-lg p-4 text-center selected" onclick="selectSize(this, 100, 249)">
+                                <div class="font-semibold text-gray-900">100g</div>
+                                <div class="text-sm text-gray-600">₹249</div>
+                                <div class="text-xs text-green-500 font-medium">Most Popular</div>
+                            </div>
+                            <div class="size-option border-2 border-gray-200 rounded-lg p-4 text-center" onclick="selectSize(this, 200, 479)">
+                                <div class="font-semibold text-gray-900">200g</div>
+                                <div class="text-sm text-gray-600">₹479</div>
+                                <div class="text-xs text-green-600 font-medium">Save ₹19</div>
+                                <div class="text-xs text-red-400 font-medium">Out of stock</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quantity Selector -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <span class="text-gray-900 font-medium">Quantity:</span>
+                            <div class="flex items-center border-2 border-gray-200 rounded-lg">
+                                <button class="px-4 py-2 text-gray-600 hover:text-amber-600 font-bold" onclick="decreaseQuantity()">-</button>
+                                <span class="px-6 py-2 border-l border-r border-gray-200 font-semibold text-gray-900" id="quantity">1</span>
+                                <button class="px-4 py-2 text-gray-600 hover:text-amber-600 font-bold" onclick="increaseQuantity()">+</button>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <span class="text-amber-600 font-medium animate-pulse">⚡ 82 left</span> in stock
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="space-y-3">
+                        <div class="flex space-x-3">
+                            <button class="add-to-cart-btn flex-1 text-white font-semibold py-4 px-6 rounded-lg shadow-lg text-lg" onclick="addToCart()">
+                                🛒 Add to Cart
+                            </button>
+                            <button class="border-2 text-red-100 font-semibold py-4 px-6 rounded-lg hover:bg-green-50 transition-colors" onclick="buyNow()">
+                               <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_RQlSixYbaAcIBy" async> </script> </form>
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-1">
+                            <button class="border-2 text-red-500 font-semibold py-4 px-6 rounded-lg hover:bg-green-50 transition-colors"onclick="buyNow()">
+                                <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_RQlQMq9WjNm0QE" async> </script> </form>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delivery Information -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <h3 class="font-semibold text-gray-900 mb-4 flex items-center">
+                        <span class="mr-2">🚚</span>
+                        Delivery Options
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">📍 Deliver to: Longowal 148106</span>
+                            <button class="text-amber-600 text-sm hover:underline" onclick="changeLocation()">Change</button>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
+                                <div class="flex items-center space-x-3">
+                                    <input type="radio" name="delivery" value="standard" checked>
+                                    <div>
+                                        <div class="font-medium text-gray-800">🚚 Standard Delivery</div>
+                                        <div class="text-sm text-gray-600">2-3 business days</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-semibold text-green-600">FREE</div>
+                                    <div class="text-xs text-gray-500">Above ₹499</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                <div class="flex items-center space-x-3">
+                                    <input type="radio" name="delivery" value="express">
+                                    <div>
+                                        <div class="font-medium text-gray-800">⚡ Express Delivery</div>
+                                        <div class="text-sm text-gray-600">Same day (Order by 2 PM)</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-semibold text-blue-600">₹99</div>
+                                    <div class="text-xs text-gray-500">Longowal only</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 text-sm pt-3 border-t border-gray-200">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-green-500">✓</span>
+                                <span class="text-gray-600">Quality guarantee</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-green-500">✓</span>
+                                <span class="text-gray-600">Live tracking</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-green-500"></span>
+                                <span class="text-gray-600"></span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-green-500"></span>
+                                <span class="text-gray-600"></span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-amber-100">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-amber-500 text-2xl">😋</span>
+                            <div>
+                                <div class="font-medium text-gray-900">Authentic Chat Masala</div>
+                                <div class="text-xs text-gray-600">12 traditional spices</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-amber-100">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-blue-500 text-2xl">💪</span>
+                            <div>
+                                <div class="font-medium text-gray-900">High Protein</div>
+                                <div class="text-xs text-gray-600">9.7g per serving</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-amber-100">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-green-500 text-2xl">🌱</span>
+                            <div>
+                                <div class="font-medium text-gray-900">100% Natural</div>
+                                <div class="text-xs text-gray-600">No artificial flavors</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-amber-100">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-yellow-500 text-2xl">⚡</span>
+                            <div>
+                                <div class="font-medium text-gray-900">Energy Boost</div>
+                                <div class="text-xs text-gray-600">347 calories per pack</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Details Tabs -->
+        <div class="mt-16">
+            <div class="border-b border-gray-200 bg-white rounded-t-lg">
+                <nav class="flex space-x-8 px-6 overflow-x-auto">
+                    <button class="tab-btn py-4 px-1 border-b-2 border-amber-500 text-amber-600 font-medium whitespace-nowrap active" onclick="showTab('description')">📝 Description</button>
+                    <button class="tab-btn py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 whitespace-nowrap" onclick="showTab('nutrition')">🥗 Nutrition</button>
+                    <button class="tab-btn py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 whitespace-nowrap" onclick="showTab('reviews')">⭐ Reviews (156)</button>
+                    <button class="tab-btn py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 whitespace-nowrap" onclick="showTab('ingredients')">🌿 Ingredients</button>
+                </nav>
+            </div>
+
+            <div class="bg-white rounded-b-lg shadow-sm border border-t-0">
+                <div class="p-8">
+                    <!-- Description Tab -->
+                    <div id="description-tab" class="tab-content active">
+                        <h3 class="text-2xl font-semibold mb-6 text-gray-900">About Chat Masala Makhana</h3>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div>
+                                <p class="text-gray-600 mb-4 leading-relaxed">
+                                    Experience the authentic taste of Indian street food with our Chat Masala Makhana! Each batch is carefully 
+                                    seasoned with a traditional blend of 12 aromatic spices including amchur, black salt, cumin, and coriander.
+                                </p>
+                                <h4 class="font-semibold text-gray-900 mb-3">😋 Key Features:</h4>
+                                <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                    <li>Authentic Indian chat masala blend</li>
+                                    <li>Premium Grade A+ fox nuts from Bihar</li>
+                                    <li>Zero artificial colors or preservatives</li>
+                                    <li>Gluten-free, vegan, and keto-friendly</li>
+                                    <li>Rich in protein, fiber, and antioxidants</li>
+                                    <li>Perfect tangy flavor for all ages</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-3">🏥 Health Benefits:</h4>
+                                <div class="space-y-4">
+                                    <div class="flex items-start space-x-3 p-3 bg-amber-50 rounded-lg">
+                                        <span class="text-amber-500 mt-1">🧂</span>
+                                        <div>
+                                            <div class="font-medium text-gray-900">Digestive Aid</div>
+                                            <div class="text-sm text-gray-600">Chat masala improves digestion</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start space-x-3 p-3 bg-green-50 rounded-lg">
+                                        <span class="text-green-500 mt-1">💚</span>
+                                        <div>
+                                            <div class="font-medium text-gray-900">Weight Management</div>
+                                            <div class="text-sm text-gray-600">Low calories, high fiber content</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg">
+                                        <span class="text-blue-500 mt-1">🧠</span>
+                                        <div>
+                                            <div class="font-medium text-gray-900">Mood Enhancement</div>
+                                            <div class="text-sm text-gray-600">Tangy flavors boost appetite</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nutrition Tab -->
+                    <div id="nutrition-tab" class="tab-content">
+                        <h3 class="text-2xl font-semibold mb-6 text-gray-900">Nutritional Information</h3>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg p-6 border border-amber-200">
+                                <h4 class="text-lg font-semibold mb-4 text-gray-900">Per 100g Serving (1 Pack)</h4>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center border-b pb-2 border-gray-200">
+                                        <span class="font-medium text-gray-900">Calories</span>
+                                        <span class="font-bold text-lg text-amber-600">347</span>
+                                    </div>
+                                    <div class="flex justify-between items-center border-b pb-2 border-gray-200">
+                                        <span class="text-gray-600">Protein</span>
+                                        <span class="font-semibold text-gray-900">9.7g</span>
+                                    </div>
+                                    <div class="flex justify-between items-center border-b pb-2 border-gray-200">
+                                        <span class="text-gray-600">Carbohydrates</span>
+                                        <span class="font-semibold text-gray-900">76.9g</span>
+                                    </div>
+                                    <div class="flex justify-between items-center border-b pb-2 border-gray-200">
+                                        <span class="text-gray-600">Dietary Fiber</span>
+                                        <span class="font-semibold text-gray-900">14.5g</span>
+                                    </div>
+                                    <div class="flex justify-between items-center border-b pb-2 border-gray-200">
+                                        <span class="text-gray-600">Total Fat</span>
+                                        <span class="font-semibold text-gray-900">0.1g</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">Sodium</span>
+                                        <span class="font-semibold text-gray-900">425mg</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="text-lg font-semibold mb-4 text-gray-900">Vitamins & Minerals</h4>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">Calcium</span>
+                                        <span class="font-semibold text-gray-900">60mg</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">Iron</span>
+                                        <span class="font-semibold text-gray-900">1.4mg</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">Magnesium</span>
+                                        <span class="font-semibold text-gray-900">210mg</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="-gray-600">Potassium</span>
+                                        <span class="font-semibold text-gray-900">1368mg</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="p-4 bg-amber-50 rounded-lg border border-amber-200">
+                                    <div class="text-sm text-amber-800">
+                                        <strong>😋 Flavor Note:</strong> This serving provides digestive-boosting spices and 19% of your daily protein needs.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reviews Tab -->
+                    <div id="reviews-tab" class="tab-content">
+                        <h3 class="text-2xl font-semibold mb-6 text-gray-900">Customer Reviews</h3>
+                        <div class="space-y-8">
+                            <!-- Review Summary -->
+                            <div class="grid md:grid-cols-3 gap-8">
+                                <div class="text-center">
+                                    <div class="text-6xl font-bold text-amber-600 mb-2">4.6</div>
+                                    <div class="star-rating text-3xl mb-2 text-yellow-400">★★★★★</div>
+                                    <div class="text-gray-600">Based on 16 reviews</div>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <div class="space-y-2">
+                                        <div class="flex items-center space-x-3">
+                                            <span class="text-sm w-8 text-gray-600">5★</span>
+                                            <div class="flex-1 bg-gray-200 rounded-full h-3">
+                                                <div class="h-3 rounded-full bg-gradient-to-r from-amber-400 to-orange-500" style="width: 82%"></div>
+                                            </div>
+                                            <span class="text-sm text-gray-600 w-16">12 reviews</span>
+                                        </div>
+                                        <div class="flex items-center space-x-3">
+                                            <span class="text-sm w-8 text-gray-600">4★</span>
+                                            <div class="flex-1 bg-gray-200 rounded-full h-3">
+                                                <div class="h-3 rounded-full bg-gradient-to-r from-amber-400 to-orange-500" style="width: 15%"></div>
+                                            </div>
+                                            <span class="text-sm text-gray-600 w-16">3 reviews</span>
+                                        </div>
+                                        <div class="flex items-center space-x-3">
+                                            <span class="text-sm w-8 text-gray-600">3★</span>
+                                            <div class="flex-1 bg-gray-200 rounded-full h-3">
+                                                <div class="h-3 rounded-full bg-gradient-to-r from-amber-400 to-orange-500" style="width: 3%"></div>
+                                            </div>
+                                            <span class="text-sm text-gray-600 w-16">1 reviews</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Individual Reviews -->
+                            <div class="space-y-6">
+                                <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-6 border border-amber-200">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center text-white font-semibold text-lg">R</div>
+                                            <div>
+                                                <h4 class="font-semibold text-gray-900">Ranvir Kumar</h4>
+                                                <div class="star-rating text-sm text-yellow-400">★★★★★</div>
+                                                <div class="text-xs text-gray-600">Verified Purchase • 2 days ago</div>
+                                            </div>
+                                        </div>
+                                        <span class="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full">✓ Verified</span>
+                                    </div>
+                                    <p class="text-gray-900 mb-3 leading-relaxed">
+                                        "Perfect chat masala flavor! Reminds me of the street food from my childhood. The tangy taste is just right 
+                                        and the makhana stays crispy. My kids love it too. Ordering more packs!"
+                                    </p>
+                                    <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                        <button class="hover:text-amber-600 flex items-center space-x-1">
+                                            <span>👍</span>
+                                            <span>Helpful (8)</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white rounded-lg p-6 border">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white font-semibold text-lg">A</div>
+                                            <div>
+                                                <h4 class="font-semibold text-gray-900">Anya</h4>
+                                                <div class="star-rating text-sm text-yellow-400">★★★★★</div>
+                                                <div class="text-xs text-gray-600">Verified Purchase • 4 days ago</div>
+                                            </div>
+                                        </div>
+                                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">✓ Verified</span>
+                                    </div>
+                                    <p class="text-gray-900 mb-3 leading-relaxed">
+                                        "Excellent healthy snack option! The chat masala seasoning is authentic and well-balanced. 
+                                        Great alternative to unhealthy chips. Highly recommended!"
+                                    </p>
+                                    <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                        <button class="hover:text-amber-600 flex items-center space-x-1">
+                                            <span>👍</span>
+                                            <span>Helpful (29)</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ingredients Tab -->
+                    <div id="ingredients-tab" class="tab-content">
+                        <h3 class="text-2xl font-semibold mb-6 text-gray-900">Complete Ingredients</h3>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div>
+                                <h4 class="text-lg font-semibold mb-4 text-gray-900">🌟 Primary Ingredients</h4>
+                                <div class="space-y-4">
+                                    <div class="flex items-start space-x-3 p-4 bg-green-50 rounded-lg border border-green-200">
+                                        <span class="text-3xl">🌰</span>
+                                        <div>
+                                            <div class="font-semibold text-gray-900">Fox Nuts (Makhana) - 82%</div>
+                                            <div class="text-sm text-gray-600">Premium quality from Bihar farms</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start space-x-3 p-4 bg-amber-50 rounded-lg border border-amber-200">
+                                        <span class="text-3xl">😋</span>
+                                        <div>
+                                            <div class="font-semibold text-gray-900">Chat Masala Blend - 12%</div>
+                                            <div class="text-sm text-gray-600">Traditional Indian street food spices</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start space-x-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                                        <span class="text-3xl">🧂</span>
+                                        <div>
+                                            <div class="font-semibold text-gray-900">Rock Salt - 3%</div>
+                                            <div class="text-sm text-gray-600">Pure Himalayan rock salt</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold mb-4 text-gray-900">😋 Spice Breakdown</h4>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-2 bg-amber-50 rounded">
+                                        <span class="text-gray-900">Amchur (Dry Mango)</span>
+                                        <span class="text-sm text-gray-600">3.2%</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-2 bg-amber-50 rounded">
+                                        <span class="text-gray-900">Black Salt</span>
+                                        <span class="text-sm text-gray-600">2.8%</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-2 bg-amber-50 rounded">
+                                        <span class="text-gray-900">Cumin Powder</span>
+                                        <span class="text-sm text-gray-600">2.1%</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-2 bg-amber-50 rounded">
+                                        <span class="text-gray-900">Coriander Powder</span>
+                                        <span class="text-sm text-gray-600">1.9%</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-2 bg-amber-50 rounded">
+                                        <span class="text-gray-900">Other Spices & Herbs</span>
+                                        <span class="text-sm text-gray-600">2.0%</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                    <h5 class="font-semibold text-gray-900 mb-3">⚠️ Allergen Information</h5>
+                                    <div class="text-sm text-gray-900 space-y-2">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-green-500">✅</span>
+                                            <span>Gluten-Free</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-green-500">✅</span>
+                                            <span>100% Vegan</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-amber-500">😋</span>
+                                            <span>Contains natural tangy flavors</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="mt-16">
+            <h3 class="text-2xl font-bold text-gray-800 mb-8">You Might Also Like</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-lg transition-shadow">
+                    <div class="aspect-square bg-gradient-to-br from-green-200 to-emerald-300 rounded-lg mb-4 flex items-center justify-center">
+                        <!-- <span class="text-4xl">🌿</span> -->
+                         <a href="Tangytomato.html" target="_blank">
+                         <img src="Tangy Tomato(70&70).png" alt="Tangy Tomato Makhana"></img></a>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 mb-2">Tangy Tomato Makhana</h4>
+                    <div class="flex items-center justify-between">
+                        <span class="text-orange-600 font-bold">₹149</span>
+                        <button class="text-sm bg-orange-100 text-orange-600 px-3 py-1 rounded-full hover:bg-orange-200 transition-colors">Add</button>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-lg transition-shadow">
+                    <div class="aspect-square bg-gradient-to-br from-yellow-200 to-orange-300 rounded-lg mb-4 flex items-center justify-center">
+                        <!-- <span class="text-4xl">🧀</span> -->
+                         <a href="periperi.html" target="_blank">
+                         <img src="Peri Peri(70&70).png" alt="Chat Masala Makhana"></img></a>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 mb-2">Peri Peri Makhana</h4>
+                    <div class="flex items-center justify-between">
+                        <span class="text-orange-600 font-bold">₹199</span>
+                        <button class="text-sm bg-orange-100 text-orange-600 px-3 py-1 rounded-full hover:bg-orange-200 transition-colors">Add</button>
+                    </div>
+                </div>
+
+
+    </main>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <div class="flex items-center space-x-3">
+            <span class="text-2xl" id="notification-icon">✅</span>
+            <div>
+                <div class="font-semibold text-gray-900" id="notification-title">Success!</div>
+                <div class="text-sm text-gray-600" id="notification-message">Item added to cart</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuantity = 1;
+        let currentPrice = 249;
+        let currentSize = 100;
+        let cartCount = 0;
+
+        function selectSize(element, size, price) {
+            // Remove selected class from all options
+            document.querySelectorAll('.size-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            element.classList.add('selected');
+            
+            // Update current values
+            currentSize = size;
+            currentPrice = price;
+            
+            // Update price display
+            document.getElementById('current-price').textContent = `₹${price}`;
+        }
+
+        function increaseQuantity() {
+            currentQuantity++;
+            document.getElementById('quantity').textContent = currentQuantity;
+        }
+
+        function decreaseQuantity() {
+            if (currentQuantity > 1) {
+                currentQuantity--;
+                document.getElementById('quantity').textContent = currentQuantity;
+            }
+        }
+
+        function addToCart() {
+            cartCount += currentQuantity;
+            document.getElementById('cart-count').textContent = cartCount;
+            showNotification('Added to Cart!', `${currentQuantity}x Chat Masala Makhana (${currentSize}g) added to cart`, '🛒');
+        }
+
+        function buyNow() {
+            showNotification('Redirecting...', 'Taking you to checkout page', '⚡');
+        }
+
+        function buyWithOneClick() {
+            showNotification('Order Placed!', 'Your 1-click order has been confirmed', '🚀');
+        }
+
+        function addToWishlist() {
+            showNotification('Added to Wishlist!', 'Chat Masala Makhana saved for later', '💚');
+        }
+
+        function shareProduct() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Chat Masala Makhana - Tangy & Flavorful',
+                    text: 'Check out this amazing tangy makhana!',
+                    url: window.location.href
+                });
+            } else {
+                showNotification('Link Copied!', 'Product link copied to clipboard', '📤');
+            }
+        }
+
+        function changeLocation() {
+            showNotification('Location Updated!', 'Delivery options updated for your area', '📍');
+        }
+
+        function openCart() {
+            showNotification('Cart Opened!', `You have ${cartCount} items in your cart`, '🛒');
+        }
+
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.remove('border-amber-500', 'text-amber-600');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked tab button
+            event.target.classList.add('active');
+            event.target.classList.remove('border-transparent', 'text-gray-500');
+            event.target.classList.add('border-amber-500', 'text-amber-600');
+        }
+
+        function showNotification(title, message, icon) {
+            const notification = document.getElementById('notification');
+            const titleEl = document.getElementById('notification-title');
+            const messageEl = document.getElementById('notification-message');
+            const iconEl = document.getElementById('notification-icon');
+            
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+            iconEl.textContent = icon;
+            
+            notification.classList.add('show', 'success');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            showTab('description');
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98b10d97a61b8e86',t:'MTc1OTg3ODQyOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
