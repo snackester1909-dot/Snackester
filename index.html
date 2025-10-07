@@ -1084,7 +1084,7 @@
                             <span class="text-2xl mr-2">📱</span>
                             UPI Payment
                         </h4>
-                        <div class="grid grid-cols-2 gap-3">
+                        <!-- <div class="grid grid-cols-2 gap-3">
                             <button onclick="payWithUPI('gpay')" class="flex items-center justify-center p-3 border rounded-lg hover:bg-gray-50 transition-colors">
                                 <span class="text-2xl mr-2">🟢</span>
                                 <span class="font-medium">Google Pay</span>
@@ -1104,7 +1104,7 @@
                         </div>
                         
                         <!-- UPI ID Form -->
-                        <div id="upiForm" class="hidden mt-4 p-4 bg-gray-50 rounded-lg">
+                        <!-- <div id="upiForm" class="hidden mt-4 p-4 bg-gray-50 rounded-lg">
                             <label class="block text-sm font-medium mb-2">Enter UPI ID:</label>
                             <div class="flex gap-2">
                                 <input type="text" id="upiId" placeholder="yourname@upi" class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500">
@@ -1112,7 +1112,7 @@
                                  <a href="Snackesterqrpayment.html" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700" >Pay With Qr Code</a>
                             </div>
                         </div>
-                    </div>
+                    </div>  -->
 
                     <!-- Razorpay -->
                     <div class="border rounded-lg p-4">
@@ -1120,7 +1120,7 @@
                             <div class="flex items-center">
                                 <span class="text-2xl mr-3">💎</span>
                                 <div class="text-left">
-                                   <a href="https://rzp.io/rzp/zH4xbGa3" target="_blank">Razorpay</a>
+                                   <a href="https://rzp.io/rzp/zH4xbGa3" target="_blank">Proceed to pay</a>
                                 </div>
                             </div>
                             <span class="text-gray-400">→</span>
@@ -1128,7 +1128,7 @@
                     </div>
 
                     <!-- Credit/Debit Cards -->
-                    <div class="border rounded-lg p-4">
+                    <!-- <div class="border rounded-lg p-4">
                         <button onclick="showCardForm()" class="w-full flex items-center justify-between p-3 hover:bg-gray-50 transition-colors">
                             <div class="flex items-center">
                                 <span class="text-2xl mr-3">💳</span>
@@ -1141,7 +1141,7 @@
                         </button>
                         
                         <!-- Card Form -->
-                        <div id="cardForm" class="hidden mt-4 space-y-4">
+                        <!-- <div id="cardForm" class="hidden mt-4 space-y-4">
                             <div class="bg-red-50 border border-red-200 rounded-lg p-3">
                                 <div class="flex items-center text-red-700">
                                     <span class="text-lg mr-2">⚠️</span>
@@ -1171,10 +1171,10 @@
                                 Pay ₹<span id="cardPaymentAmount">0</span>
                             </button>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- PayPal -->
-                    <div class="border rounded-lg p-4">
+                    <!-- <div class="border rounded-lg p-4">
                         <button onclick="payWithPayPal()" class="w-full flex items-center justify-between p-3 hover:bg-gray-50 transition-colors">
                             <div class="flex items-center">
                                 <span class="text-2xl mr-3">🅿️</span>
@@ -1185,10 +1185,10 @@
                             </div>
                             <span class="text-gray-400">→</span>
                         </button>
-                    </div>
+                    </div>  -->
 
                     <!-- Cash on Delivery -->
-                    <div class="border rounded-lg p-4">
+                    <!-- <div class="border rounded-lg p-4">
                         <button onclick="selectCOD()" class="w-full flex items-center justify-between p-3 hover:bg-gray-50 transition-colors">
                             <div class="flex items-center">
                                 <span class="text-2xl mr-3">💵</span>
@@ -1199,7 +1199,7 @@
                             </div>
                             <span class="text-gray-400">→</span>
                         </button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -1793,35 +1793,35 @@
         }
 
         // Payment Methods
-        function payWithUPI(provider) {
-            const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
-            const message = `New Order from Snackester Website!\n\nPayment Method: ${provider.toUpperCase()}\n\nOrder Details:\n${orderDetails}\n\nTotal: ₹${cartTotal}\n\nPlease confirm your delivery address.`;
+        // function payWithUPI(provider) {
+        //     const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
+        //     const message = `New Order from Snackester Website!\n\nPayment Method: ${provider.toUpperCase()}\n\nOrder Details:\n${orderDetails}\n\nTotal: ₹${cartTotal}\n\nPlease confirm your delivery address.`;
             
-            const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
+        //     const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
+        //     window.open(whatsappUrl, '_blank');
             
-            showPaymentSuccess(`${provider.toUpperCase()} payment initiated! Please complete the payment and we'll process your order.`);
-        }
+        //     showPaymentSuccess(`${provider.toUpperCase()} payment initiated! Please complete the payment and we'll process your order.`);
+        // }
 
-        function showUPIForm() {
-            document.getElementById('upiForm').classList.toggle('hidden');
-        }
+        // function showUPIForm() {
+        //     document.getElementById('upiForm').classList.toggle('hidden');
+        // }
 
-        function payWithCustomUPI() {
-            const upiId = document.getElementById('upiId').value;
-            if (!upiId) {
-                alert('Please enter a valid UPI ID');
-                return;
-            }
+        // function payWithCustomUPI() {
+        //     const upiId = document.getElementById('upiId').value;
+        //     if (!upiId) {
+        //         alert('Please enter a valid UPI ID');
+        //         return;
+        //     }
             
-            const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
-            const message = `New Order from Snackester Website!\n\nPayment Method: UPI (${upiId})\n\nOrder Details:\n${orderDetails}\n\nTotal: ₹${cartTotal}\n\nPlease confirm your delivery address.`;
+        //     const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
+        //     const message = `New Order from Snackester Website!\n\nPayment Method: UPI (${upiId})\n\nOrder Details:\n${orderDetails}\n\nTotal: ₹${cartTotal}\n\nPlease confirm your delivery address.`;
             
-            const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
+        //     const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
+        //     window.open(whatsappUrl, '_blank');
             
-            showPaymentSuccess('UPI payment initiated! Please complete the payment and we\'ll process your order.');
-        }
+        //     showPaymentSuccess('UPI payment initiated! Please complete the payment and we\'ll process your order.');
+        // }
 
         function payWithRazorpay() {
             const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
@@ -1833,42 +1833,42 @@
             showPaymentSuccess('Redirecting to Razorpay... Please complete the payment to confirm your order.');
         }
 
-        function showCardForm() {
-            document.getElementById('cardForm').classList.toggle('hidden');
-        }
+        // function showCardForm() {
+        //     document.getElementById('cardForm').classList.toggle('hidden');
+        // }
 
-        function processCardPayment() {
-            // This is a demo - in real implementation, you'd integrate with a payment processor
-            alert('Demo Mode: This is a sample payment form. In a real implementation, this would securely process your card payment.');
+        // function processCardPayment() {
+        //     // This is a demo - in real implementation, you'd integrate with a payment processor
+        //     alert('Demo Mode: This is a sample payment form. In a real implementation, this would securely process your card payment.');
             
-            const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
-            const message = `New Order from Snackester Website!\n\nPayment Method: Credit/Debit Card\n\nOrder Details:\n${orderDetails}\n\nTotal: ₹${cartTotal}\n\nPlease confirm your delivery address.`;
+        //     const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
+        //     const message = `New Order from Snackester Website!\n\nPayment Method: Credit/Debit Card\n\nOrder Details:\n${orderDetails}\n\nTotal: ₹${cartTotal}\n\nPlease confirm your delivery address.`;
             
-            const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
+        //     const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
+        //     window.open(whatsappUrl, '_blank');
             
-            showPaymentSuccess('Card payment processed! We\'ll confirm your order shortly.');
-        }
+        //     showPaymentSuccess('Card payment processed! We\'ll confirm your order shortly.');
+        // }
 
-        function payWithPayPal() {
-            const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
-            const message = `New Order from Snackester Website!\n\nPayment Method: PayPal\n\nOrder Details:\n${orderDetails}\n\nTotal: ₹${cartTotal}\n\nPlease confirm your delivery address.`;
+        // function payWithPayPal() {
+        //     const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
+        //     const message = `New Order from Snackester Website!\n\nPayment Method: PayPal\n\nOrder Details:\n${orderDetails}\n\nTotal: ₹${cartTotal}\n\nPlease confirm your delivery address.`;
             
-            const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
+        //     const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
+        //     window.open(whatsappUrl, '_blank');
             
-            showPaymentSuccess('Redirecting to PayPal... Please complete the payment to confirm your order.');
-        }
+        //     showPaymentSuccess('Redirecting to PayPal... Please complete the payment to confirm your order.');
+        // }
 
-        function selectCOD() {
-            const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
-            const message = `New Order from Snackester Website!\n\nPayment Method: Cash on Delivery\n\nOrder Details:\n${orderDetails}\n\nTotal: ₹${cartTotal}\n\nPlease confirm your delivery address.`;
+        // function selectCOD() {
+        //     const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
+        //     const message = `New Order from Snackester Website!\n\nPayment Method: Cash on Delivery\n\nOrder Details:\n${orderDetails}\n\nTotal: ₹${cartTotal}\n\nPlease confirm your delivery address.`;
             
-            const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
+        //     const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
+        //     window.open(whatsappUrl, '_blank');
             
-            showPaymentSuccess('Cash on Delivery selected! We\'ll contact you to confirm delivery details.');
-        }
+        //     showPaymentSuccess('Cash on Delivery selected! We\'ll contact you to confirm delivery details.');
+        // }
 
         function showPaymentSuccess(message) {
             document.getElementById('paymentModal').classList.add('hidden');
