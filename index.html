@@ -1120,8 +1120,9 @@
                             <div class="flex items-center">
                                 <span class="text-2xl mr-3">💎</span>
                                 <div class="text-left">
+                                   <a href=" https://rzp.io/rzp/zH4xbGa3" target="_blank">
                                     <div class="font-semibold">Razorpay</div>
-                                    <div class="text-sm text-gray-600">Cards, UPI, Wallets & More</div>
+                                   </a>
                                 </div>
                             </div>
                             <span class="text-gray-400">→</span>
@@ -1828,8 +1829,8 @@
             const orderDetails = cart.map(item => `${item.name} × ${item.quantity} = ₹${item.price * item.quantity}`).join('\n');
             const message = `New Order from Snackester Website!\n\nPayment Method: Razorpay\n\nOrder Details:\n${orderDetails}\n\nTotal: ₹${cartTotal}\n\nPlease confirm your delivery address.`;
             
-            const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
+            // const whatsappUrl = `https://wa.me/918603523912?text=${encodeURIComponent(message)}`;
+            // window.open(whatsappUrl, '_blank');
             
             showPaymentSuccess('Redirecting to Razorpay... Please complete the payment to confirm your order.');
         }
