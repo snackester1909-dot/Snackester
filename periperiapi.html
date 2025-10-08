@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout - Snackester Premium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .step-indicator {
+            position: relative;
+        }
+        
+        .step-indicator::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            width: 100px;
+            height: 2px;
+            background: #e5e7eb;
+            transform: translateY(-50%);
+        }
+        
+        .step-indicator.active::after {
+            background: #10b981;
+        }
+        
+        .step-indicator:last-child::after {
+            display: none;
+        }
+        
+        .payment-option {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .payment-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .payment-option.selected {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+        }
+        
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #10b981;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .success-animation {
+            animation: successPulse 0.6s ease-in-out;
+        }
+        
+        @keyframes successPulse {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .peri-peri-gradient {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ff4757 100%);
+        }
+        
+        .spice-animation {
+            animation: spiceFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes spiceFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+    </style>
+</head>
+<body class="min-h-full bg-gradient-to-br from-orange-50 to-red-50">
+    <!-- Header -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 peri-peri-gradient rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">S</span>
+                    </div>
+                    <span class="text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">Snackester</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">🔒 Secure Checkout</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Steps -->
+    <div class="bg-white border-b">
+        <div class="max-w-4xl mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <div id="step1Indicator" class="step-indicator active flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-semibold">1</div>
+                    <span class="font-medium text-green-600">Login/Signup</span>
+                </div>
+                <div id="step2Indicator" class="step-indicator flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-semibold">2</div>
+                    <span class="font-medium text-gray-500">Delivery Address</span>
+                </div>
+                <div id="step3Indicator" class="step-indicator flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-semibold">3</div>
+                    <span class="font-medium text-gray-500">Order Summary</span>
+                </div>
+                <div id="step4Indicator" class="step-indicator flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-semibold">4</div>
+                    <span class="font-medium text-gray-500">Payment</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Step 1: Login/Signup -->
+        <div id="step1" class="step-content">
+            <div class="bg-white rounded-2xl shadow-xl p-8 fade-in">
+                <div class="text-center mb-8">
+                    <div class="w-20 h-20 peri-peri-gradient rounded-full flex items-center justify-center mx-auto mb-4 spice-animation">
+                        <span class="text-4xl">🌶️</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome to Secure Checkout</h2>
+                    <p class="text-gray-600">Login to your account or create a new one to continue</p>
+                </div>
+
+                <!-- Login/Signup Toggle -->
+                <div class="flex bg-gray-100 rounded-xl p-1 mb-8">
+                    <button id="loginTab" onclick="switchAuthTab('login')" class="flex-1 py-3 px-6 rounded-lg font-semibold transition-all bg-white text-orange-600 shadow-md">
+                        Login
+                    </button>
+                    <button id="signupTab" onclick="switchAuthTab('signup')" class="flex-1 py-3 px-6 rounded-lg font-semibold transition-all text-gray-600 hover:text-gray-800">
+                        Sign Up
+                    </button>
+                </div>
+
+                <!-- Login Form -->
+                <div id="loginForm" class="auth-form">
+                    <form onsubmit="handleLogin(event)">
+                        <div class="space-y-6">
+                            <div class="relative">
+                                <input type="email" id="loginEmail" placeholder="Email Address" required 
+                                       class="w-full p-4 pl-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                                <span class="absolute left-4 top-4 text-gray-400">📧</span>
+                            </div>
+                            <div class="relative">
+                                <input type="password" id="loginPassword" placeholder="Password" required 
+                                       class="w-full p-4 pl-12 pr-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                                <span class="absolute left-4 top-4 text-gray-400">🔒</span>
+                                <button type="button" onclick="togglePassword('loginPassword')" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600">👁️</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="rememberMe" class="rounded border-gray-300 text-orange-600 focus:ring-orange-500">
+                                    <span class="ml-2 text-gray-600">Remember me</span>
+                                </label>
+                                <button type="button" onclick="showForgotPassword()" class="text-orange-600 hover:text-orange-800 font-medium">Forgot Password?</button>
+                            </div>
+                            <button type="submit" class="w-full peri-peri-gradient text-white py-4 rounded-xl font-semibold text-lg hover:shadow-xl transition-all transform hover:scale-105">
+                                Login & Continue
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Signup Form -->
+                <div id="signupForm" class="auth-form hidden">
+                    <div id="signupStep1" class="signup-step">
+                        <form onsubmit="handleSignupStep1(event)">
+                            <div class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="relative">
+                                        <input type="text" id="signupName" placeholder="Full Name" required 
+                                               class="w-full p-4 pl-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all">
+                                        <span class="absolute left-4 top-4 text-gray-400">👤</span>
+                                    </div>
+                                    <div class="relative">
+                                        <input type="tel" id="signupPhone" placeholder="Mobile Number" required pattern="[0-9]{10}" 
+                                               class="w-full p-4 pl-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all">
+                                        <span class="absolute left-4 top-4 text-gray-400">📱</span>
+                                    </div>
+                                </div>
+                                <div class="relative">
+                                    <input type="email" id="signupEmail" placeholder="Email Address" required 
+                                           class="w-full p-4 pl-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all">
+                                    <span class="absolute left-4 top-4 text-gray-400">📧</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="password" id="signupPassword" placeholder="Create Password" required 
+                                           class="w-full p-4 pl-12 pr-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                                           onkeyup="validatePassword()">
+                                    <span class="absolute left-4 top-4 text-gray-400">🔒</span>
+                                    <button type="button" onclick="togglePassword('signupPassword')" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600">👁️</button>
+                                </div>
+                                <div class="relative">
+                                    <input type="password" id="confirmPassword" placeholder="Confirm Password" required 
+                                           class="w-full p-4 pl-12 pr-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                                           onkeyup="validatePasswordMatch()">
+                                    <span class="absolute left-4 top-4 text-gray-400">🔒</span>
+                                    <button type="button" onclick="togglePassword('confirmPassword')" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600">👁️</button>
+                                </div>
+                                
+                                <!-- Password Requirements -->
+                                <div class="bg-gray-50 rounded-xl p-4">
+                                    <p class="text-sm font-medium text-gray-700 mb-2">Password Requirements:</p>
+                                    <div class="grid grid-cols-2 gap-2 text-xs">
+                                        <div id="req-length" class="flex items-center text-gray-500">
+                                            <span class="mr-2">❌</span> 8+ characters
+                                        </div>
+                                        <div id="req-capital" class="flex items-center text-gray-500">
+                                            <span class="mr-2">❌</span> Uppercase letter
+                                        </div>
+                                        <div id="req-number" class="flex items-center text-gray-500">
+                                            <span class="mr-2">❌</span> Number
+                                        </div>
+                                        <div id="req-special" class="flex items-center text-gray-500">
+                                            <span class="mr-2">❌</span> Special character
+                                        </div>
+                                    </div>
+                                    <div id="req-match" class="flex items-center text-gray-500 mt-2">
+                                        <span class="mr-2">❌</span> Passwords match
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <input type="checkbox" id="agreeTerms" required class="mt-1 rounded border-gray-300 text-red-600 focus:ring-red-500">
+                                    <label for="agreeTerms" class="ml-3 text-sm text-gray-600">
+                                        I agree to the <a href="#" class="text-red-600 hover:text-red-800 font-medium">Terms of Service</a> 
+                                        and <a href="#" class="text-red-600 hover:text-red-800 font-medium">Privacy Policy</a>
+                                    </label>
+                                </div>
+                                
+                                <button type="submit" id="signupBtn" disabled 
+                                        class="w-full bg-gray-400 text-white py-4 rounded-xl font-semibold text-lg transition-all cursor-not-allowed">
+                                    Continue to Verification
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- OTP Verification Step -->
+                    <div id="signupStep2" class="signup-step hidden">
+                        <div class="text-center mb-6">
+                            <div class="w-16 h-16 peri-peri-gradient rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-white text-2xl">📱</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800">Verify Your Account</h3>
+                            <p class="text-gray-600 mt-2">We've sent verification codes to your email and phone</p>
+                        </div>
+                        
+                        <form onsubmit="handleOTPVerification(event)">
+                            <div class="space-y-6">
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label class="block text-sm font-medium text-gray-700">Email OTP</label>
+                                        <div id="emailOtpTimer" class="text-sm text-red-600 hidden">Resend in <span id="emailCountdown">60</span>s</div>
+                                    </div>
+                                    <div class="flex space-x-2 justify-center">
+                                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-lg font-semibold" onkeyup="moveToNext(this, 0)" onpaste="handleOTPPaste(event, 'email')">
+                                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-lg font-semibold" onkeyup="moveToNext(this, 1)">
+                                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-lg font-semibold" onkeyup="moveToNext(this, 2)">
+                                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-lg font-semibold" onkeyup="moveToNext(this, 3)">
+                                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-lg font-semibold" onkeyup="moveToNext(this, 4)">
+                                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-lg font-semibold" onkeyup="moveToNext(this, 5)">
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label class="block text-sm font-medium text-gray-700">SMS OTP</label>
+                                        <div id="smsOtpTimer" class="text-sm text-red-600 hidden">Resend in <span id="smsCountdown">60</span>s</div>
+                                    </div>
+                                    <div class="flex space-x-2 justify-center">
+                                        <input type="text" maxlength="1" class="sms-otp-input w-12 h-12 text-center border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-lg font-semibold" onkeyup="moveToNextSMS(this, 0)" onpaste="handleOTPPaste(event, 'sms')">
+                                        <input type="text" maxlength="1" class="sms-otp-input w-12 h-12 text-center border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-lg font-semibold" onkeyup="moveToNextSMS(this, 1)">
+                                        <input type="text" maxlength="1" class="sms-otp-input w-12 h-12 text-center border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-lg font-semibold" onkeyup="moveToNextSMS(this, 2)">
+                                        <input type="text" maxlength="1" class="sms-otp-input w-12 h-12 text-center border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-lg font-semibold" onkeyup="moveToNextSMS(this, 3)">
+                                        <input type="text" maxlength="1" class="sms-otp-input w-12 h-12 text-center border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-lg font-semibold" onkeyup="moveToNextSMS(this, 4)">
+                                        <input type="text" maxlength="1" class="sms-otp-input w-12 h-12 text-center border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-lg font-semibold" onkeyup="moveToNextSMS(this, 5)">
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-between text-sm">
+                                    <button type="button" id="resendEmailBtn" onclick="resendOTP('email')" class="text-orange-600 hover:text-orange-800 font-medium flex items-center">
+                                        <span id="emailResendSpinner" class="loading-spinner mr-2 hidden"></span>
+                                        Resend Email OTP
+                                    </button>
+                                    <button type="button" id="resendSmsBtn" onclick="resendOTP('sms')" class="text-red-600 hover:text-red-800 font-medium flex items-center">
+                                        <span id="smsResendSpinner" class="loading-spinner mr-2 hidden"></span>
+                                        Resend SMS OTP
+                                    </button>
+                                </div>
+                                
+                                <button type="submit" id="verifyBtn" class="w-full peri-peri-gradient text-white py-4 rounded-xl font-semibold text-lg hover:shadow-xl transition-all transform hover:scale-105 flex items-center justify-center">
+                                    <span id="verifySpinner" class="loading-spinner mr-2 hidden"></span>
+                                    Verify & Continue
+                                </button>
+                                
+                                <button type="button" onclick="backToSignupStep1()" class="w-full text-gray-600 hover:text-gray-800 py-2">
+                                    ← Back to Registration
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Continue as Guest -->
+                <div class="mt-8 text-center">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">Or</span>
+                        </div>
+                    </div>
+                    <button onclick="continueAsGuest()" class="mt-4 w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-all">
+                        Continue as Guest
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Delivery Address -->
+        <div id="step2" class="step-content hidden">
+            <div class="bg-white rounded-2xl shadow-xl p-8 slide-in">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 peri-peri-gradient rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white text-2xl">🏠</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Delivery Address</h2>
+                    <p class="text-gray-600">Where should we deliver your spicy Peri Peri Makhana?</p>
+                </div>
+
+                <form onsubmit="handleAddressSubmit(event)">
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="relative">
+                                <input type="text" id="fullName" placeholder="Full Name" required 
+                                       class="w-full p-4 pl-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                                <span class="absolute left-4 top-4 text-gray-400">👤</span>
+                            </div>
+                            <div class="relative">
+                                <input type="tel" id="mobileNumber" placeholder="10-digit Mobile Number" required pattern="[0-9]{10}" 
+                                       class="w-full p-4 pl-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                                <span class="absolute left-4 top-4 text-gray-400">📱</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="relative">
+                                <input type="text" id="pincode" placeholder="Pincode" required pattern="[0-9]{6}" 
+                                       class="w-full p-4 pl-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
+                                       onkeyup="handlePincodeChange(event)">
+                                <span class="absolute left-4 top-4 text-gray-400">📍</span>
+                            </div>
+                            <div class="relative">
+                                <input type="text" id="locality" placeholder="Locality" required 
+                                       class="w-full p-4 pl-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                                <span class="absolute left-4 top-4 text-gray-400">🏘️</span>
+                            </div>
+                        </div>
+
+                        <div class="relative">
+                            <textarea id="address" placeholder="Address (Area and Street)" required rows="3"
+                                      class="w-full p-4 pl-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all resize-none"></textarea>
+                            <span class="absolute left-4 top-4 text-gray-400">🏠</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="relative">
+                                <input type="text" id="city" placeholder="City/District/Town" required 
+                                       class="w-full p-4 pl-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                                <span class="absolute left-4 top-4 text-gray-400">🏙️</span>
+                            </div>
+                            <div class="relative">
+                                <select id="state" required 
+                                        class="w-full p-4 pl-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all appearance-none">
+                                    <option value="">Select State</option>
+                                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                    <option value="Assam">Assam</option>
+                                    <option value="Bihar">Bihar</option>
+                                    <option value="Chhattisgarh">Chhattisgarh</option>
+                                    <option value="Goa">Goa</option>
+                                    <option value="Gujarat">Gujarat</option>
+                                    <option value="Haryana">Haryana</option>
+                                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                    <option value="Jharkhand">Jharkhand</option>
+                                    <option value="Karnataka">Karnataka</option>
+                                    <option value="Kerala">Kerala</option>
+                                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                    <option value="Maharashtra">Maharashtra</option>
+                                    <option value="Manipur">Manipur</option>
+                                    <option value="Meghalaya">Meghalaya</option>
+                                    <option value="Mizoram">Mizoram</option>
+                                    <option value="Nagaland">Nagaland</option>
+                                    <option value="Odisha">Odisha</option>
+                                    <option value="Punjab">Punjab</option>
+                                    <option value="Rajasthan">Rajasthan</option>
+                                    <option value="Sikkim">Sikkim</option>
+                                    <option value="Tamil Nadu">Tamil Nadu</option>
+                                    <option value="Telangana">Telangana</option>
+                                    <option value="Tripura">Tripura</option>
+                                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                    <option value="Uttarakhand">Uttarakhand</option>
+                                    <option value="West Bengal">West Bengal</option>
+                                </select>
+                                <span class="absolute left-4 top-4 text-gray-400">🗺️</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="relative">
+                                <input type="text" id="landmark" placeholder="Landmark (Optional)" 
+                                       class="w-full p-4 pl-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                                <span class="absolute left-4 top-4 text-gray-400">🏛️</span>
+                            </div>
+                            <div class="relative">
+                                <input type="tel" id="alternatePhone" placeholder="Alternate Phone (Optional)" pattern="[0-9]{10}" 
+                                       class="w-full p-4 pl-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                                <span class="absolute left-4 top-4 text-gray-400">📞</span>
+                            </div>
+                        </div>
+
+                        <!-- Address Type -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Address Type</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <label class="flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:bg-orange-50 transition-all">
+                                    <input type="radio" name="addressType" value="home" required class="text-orange-600 focus:ring-orange-500">
+                                    <div class="ml-3">
+                                        <div class="font-semibold text-gray-800">🏠 Home</div>
+                                        <div class="text-sm text-gray-600">All day delivery</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:bg-orange-50 transition-all">
+                                    <input type="radio" name="addressType" value="work" required class="text-orange-600 focus:ring-orange-500">
+                                    <div class="ml-3">
+                                        <div class="font-semibold text-gray-800">🏢 Work</div>
+                                        <div class="text-sm text-gray-600">Delivery 10AM-5PM</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full peri-peri-gradient text-white py-4 rounded-xl font-semibold text-lg hover:shadow-xl transition-all transform hover:scale-105">
+                            Continue to Order Summary
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Step 3: Order Summary -->
+        <div id="step3" class="step-content hidden">
+            <div class="bg-white rounded-2xl shadow-xl p-8 slide-in">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 peri-peri-gradient rounded-full flex items-center justify-center mx-auto mb-4 spice-animation">
+                        <span class="text-white text-2xl">🌶️</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Order Summary</h2>
+                    <p class="text-gray-600">Review your spicy order before payment</p>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Product Details -->
+                    <div class="border border-gray-200 rounded-xl p-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-20 h-20 peri-peri-gradient rounded-xl flex items-center justify-center">
+                                <span class="text-4xl">🌶️</span>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-bold text-lg text-gray-800">Peri Peri Masala Makhana</h3>
+                                <p class="text-gray-600">Premium quality fox nuts with fiery spices - 80g</p>
+                                <p class="text-sm text-green-600">✓ In Stock</p>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">🔥 Spicy Level: Hot</span>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="flex items-center space-x-3">
+                                    <button onclick="updateOrderQuantity(-1)" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-all">-</button>
+                                    <span id="orderQuantity" class="font-semibold text-lg">1</span>
+                                    <button onclick="updateOrderQuantity(1)" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-all">+</button>
+                                </div>
+                                <div class="mt-2">
+                                    <div class="text-lg font-bold text-red-600">₹<span id="itemPrice">249</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price Breakdown -->
+                    <div class="border border-gray-200 rounded-xl p-6">
+                        <h3 class="font-bold text-lg text-gray-800 mb-4">Price Details</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Price (<span id="summaryQuantity">1</span> item)</span>
+                                <span class="font-semibold">₹<span id="summaryPrice">249</span></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Delivery Charges</span>
+                                <span class="font-semibold text-green-600">FREE</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Packaging Charges</span>
+                                <span class="font-semibold text-green-600">FREE</span>
+                            </div>
+                            <hr class="border-gray-200">
+                            <div class="flex justify-between text-lg font-bold">
+                                <span>Total Amount</span>
+                                <span class="text-red-600">₹<span id="totalAmount">249</span></span>
+                            </div>
+                            <div class="bg-red-50 rounded-lg p-3">
+                                <p class="text-red-800 text-sm font-medium">🌶️ You will save ₹100 on this spicy order</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Address Summary -->
+                    <div class="border border-gray-200 rounded-xl p-6">
+                        <h3 class="font-bold text-lg text-gray-800 mb-4">Delivery Address</h3>
+                        <div id="addressSummary" class="text-gray-600">
+                            <!-- Address will be populated here -->
+                        </div>
+                        <button onclick="goToStep(2)" class="mt-3 text-orange-600 hover:text-orange-800 font-medium">Change Address</button>
+                    </div>
+
+                    <button onclick="goToStep(4)" class="w-full peri-peri-gradient text-white py-4 rounded-xl font-semibold text-lg hover:shadow-xl transition-all transform hover:scale-105">
+                        Continue to Payment
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Payment -->
+        <div id="step4" class="step-content hidden">
+            <div class="bg-white rounded-2xl shadow-xl p-8 slide-in">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 peri-peri-gradient rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white text-2xl">💳</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Payment Options</h2>
+                    <p class="text-gray-600">Choose your preferred payment method</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Payment Options -->
+                    <div class="lg:col-span-2 space-y-4">
+                        <!-- UPI Payment -->
+                        <div class="payment-option border-2 border-gray-200 rounded-xl p-6" onclick="selectPaymentMethod('upi')">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
+                                        <span class="text-white font-bold">UPI</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-gray-800">UPI Payment</h3>
+                                        <p class="text-sm text-gray-600">Pay using UPI ID</p>
+                                    </div>
+                                </div>
+                                <input type="radio" name="paymentMethod" value="upi" class="text-red-600 focus:ring-red-500">
+                            </div>
+                            <div id="upiForm" class="payment-form hidden">
+                                <div class="relative">
+                                    <input type="text" id="upiId" placeholder="Enter UPI ID (e.g., user@paytm)" 
+                                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Payment -->
+                        <div class="payment-option border-2 border-gray-200 rounded-xl p-6" onclick="selectPaymentMethod('card')">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center">
+                                        <span class="text-white font-bold">💳</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-gray-800">Credit/Debit/ATM Card</h3>
+                                        <p class="text-sm text-gray-600">Visa, Mastercard, RuPay</p>
+                                    </div>
+                                </div>
+                                <input type="radio" name="paymentMethod" value="card" class="text-red-600 focus:ring-red-500">
+                            </div>
+                            <div id="cardForm" class="payment-form hidden space-y-4">
+                                <div class="relative">
+                                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19"
+                                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                           onkeyup="formatCardNumber(this)">
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="relative">
+                                        <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5"
+                                               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                               onkeyup="formatExpiryDate(this)">
+                                    </div>
+                                    <div class="relative">
+                                        <input type="text" id="cvv" placeholder="CVV" maxlength="3"
+                                               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    </div>
+                                </div>
+                                <div class="relative">
+                                    <input type="text" id="cardholderName" placeholder="Cardholder Name"
+                                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Net Banking -->
+                        <div class="payment-option border-2 border-gray-200 rounded-xl p-6" onclick="selectPaymentMethod('netbanking')">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center">
+                                        <span class="text-white font-bold">🏦</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-gray-800">Net Banking</h3>
+                                        <p class="text-sm text-gray-600">All major banks supported</p>
+                                    </div>
+                                </div>
+                                <input type="radio" name="paymentMethod" value="netbanking" class="text-red-600 focus:ring-red-500">
+                            </div>
+                            <div id="netbankingForm" class="payment-form hidden">
+                                <select id="bankSelect" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                                    <option value="">Select Your Bank</option>
+                                    <option value="sbi">State Bank of India</option>
+                                    <option value="hdfc">HDFC Bank</option>
+                                    <option value="icici">ICICI Bank</option>
+                                    <option value="axis">Axis Bank</option>
+                                    <option value="pnb">Punjab National Bank</option>
+                                    <option value="bob">Bank of Baroda</option>
+                                    <option value="canara">Canara Bank</option>
+                                    <option value="kotak">Kotak Mahindra Bank</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Gift Card -->
+                        <div class="payment-option border-2 border-gray-200 rounded-xl p-6" onclick="selectPaymentMethod('giftcard')">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 peri-peri-gradient rounded-full flex items-center justify-center">
+                                        <span class="text-white font-bold">🎁</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-gray-800">Snackester Gift Card</h3>
+                                        <p class="text-sm text-gray-600">Use your gift card balance</p>
+                                    </div>
+                                </div>
+                                <input type="radio" name="paymentMethod" value="giftcard" class="text-red-600 focus:ring-red-500">
+                            </div>
+                            <div id="giftcardForm" class="payment-form hidden">
+                                <div class="relative">
+                                    <input type="text" id="giftCardNumber" placeholder="Enter Gift Card Number" 
+                                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cash on Delivery -->
+                        <div class="payment-option border-2 border-gray-300 rounded-xl p-6 opacity-60 cursor-not-allowed">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center">
+                                        <span class="text-white font-bold">💵</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-gray-500">Cash on Delivery</h3>
+                                        <p class="text-sm text-red-600">Currently Unavailable</p>
+                                    </div>
+                                </div>
+                                <input type="radio" name="paymentMethod" value="cod" disabled class="text-gray-400">
+                            </div>
+                        </div>
+
+                        <!-- EMI -->
+                        <div class="payment-option border-2 border-gray-300 rounded-xl p-6 opacity-60 cursor-not-allowed">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center">
+                                        <span class="text-white font-bold">📊</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-gray-500">EMI</h3>
+                                        <p class="text-sm text-red-600">Currently Unavailable</p>
+                                    </div>
+                                </div>
+                                <input type="radio" name="paymentMethod" value="emi" disabled class="text-gray-400">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Summary Sidebar -->
+                    <div class="lg:col-span-1">
+                        <div class="sticky top-8 border border-gray-200 rounded-xl p-6">
+                            <h3 class="font-bold text-lg text-gray-800 mb-4">Order Summary</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 peri-peri-gradient rounded-lg flex items-center justify-center">
+                                        <span class="text-2xl">🌶️</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold text-sm">Peri Peri Masala Makhana</h4>
+                                        <p class="text-xs text-gray-600">Qty: <span id="paymentQuantity">1</span></p>
+                                    </div>
+                                    <span class="font-bold text-red-600">₹<span id="paymentPrice">249</span></span>
+                                </div>
+                                <hr class="border-gray-200">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Subtotal</span>
+                                    <span class="font-semibold">₹<span id="paymentSubtotal">249</span></span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Delivery</span>
+                                    <span class="font-semibold text-green-600">FREE</span>
+                                </div>
+                                <hr class="border-gray-200">
+                                <div class="flex justify-between text-lg font-bold">
+                                    <span>Total</span>
+                                    <span class="text-red-600">₹<span id="paymentTotal">249</span></span>
+                                </div>
+                            </div>
+                            
+                            <button id="payButton" onclick="processPayment()" disabled 
+                                    class="w-full mt-6 bg-gray-400 text-white py-4 rounded-xl font-semibold text-lg transition-all cursor-not-allowed">
+                                Select Payment Method
+                            </button>
+                            
+                            <div class="mt-4 text-center">
+                                <div class="flex items-center justify-center space-x-2 text-sm text-gray-600">
+                                    <span>🔒</span>
+                                    <span>Secured by Razorpay</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Page -->
+        <div id="successPage" class="step-content hidden">
+            <div class="bg-white rounded-2xl shadow-xl p-8 text-center success-animation">
+                <div class="w-24 h-24 peri-peri-gradient rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span class="text-white text-4xl">✅</span>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Payment Successful!</h2>
+                <p class="text-gray-600 mb-6">Thank you for your order. Your spicy Peri Peri Makhana is on its way!</p>
+                
+                <div class="bg-red-50 rounded-xl p-6 mb-6">
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <span class="text-gray-600">Order ID:</span>
+                            <div class="font-semibold" id="orderId">SNK-2024-001</div>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">Payment ID:</span>
+                            <div class="font-semibold" id="paymentId">pay_123456789</div>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">Amount Paid:</span>
+                            <div class="font-semibold text-red-600">₹<span id="paidAmount">249</span></div>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">Payment Method:</span>
+                            <div class="font-semibold" id="paymentMethodUsed">UPI</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <button onclick="downloadInvoice()" class="w-full peri-peri-gradient text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all">
+                        📄 Download Invoice
+                    </button>
+                    <button onclick="trackOrder()" class="w-full bg-gradient-to-r from-green-600 to-teal-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all">
+                        📦 Track Your Spicy Order
+                    </button>
+                    <button onclick="continueShopping()" class="w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-all">
+                        🛒 Continue Shopping
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="fixed top-4 right-4 z-50 transform translate-x-full transition-transform duration-300">
+        <div class="bg-white border border-gray-200 rounded-xl shadow-xl p-4 max-w-sm">
+            <div class="flex items-center space-x-3">
+                <div id="notificationIcon" class="w-8 h-8 rounded-full flex items-center justify-center"></div>
+                <div class="flex-1">
+                    <div id="notificationTitle" class="font-semibold text-gray-800"></div>
+                    <div id="notificationMessage" class="text-sm text-gray-600"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration - Replace with your actual Razorpay keys
+        const RAZORPAY_KEY_ID = 'rzp_live_RQcOdDbux3bxGp'; // Replace with your actual key from Razorpay Dashboard
+        const RAZORPAY_KEY_SECRET = 'mmpnSo6H0UJoA61Tj3WucDQE'; // ⚠️ NEVER expose this in frontend! Use on server only
+        
+        // Server endpoints - Replace with your actual server URLs
+        const SERVER_BASE_URL = 'https://your-domain.com/api'; // Your backend server URL
+        
+        // Global Variables
+        let currentStep = 1;
+        let currentUser = null;
+        let users = JSON.parse(localStorage.getItem('snackesterUsers') || '[]');
+        let orderData = {
+            quantity: 1,
+            price: 249,
+            total: 249,
+            product: 'Peri Peri Masala Makhana',
+            productEmoji: '🌶️'
+        };
+        let selectedPaymentMethod = null;
+        let deliveryAddress = null;
+        
+        // OTP System Variables
+        let pendingUser = null;
+        let generatedEmailOTP = '';
+        let generatedSMSOTP = '';
+        let emailOTPExpiry = null;
+        let smsOTPExpiry = null;
+        
+        // Initialize sample users if none exist
+        if (users.length === 0) {
+            users = [
+                {
+                    id: 1,
+                    name: 'John Doe',
+                    email: 'john@example.com',
+                    password: 'Password123!',
+                    phone: '9876543210',
+                    createdAt: new Date().toISOString()
+                }
+            ];
+            localStorage.setItem('snackesterUsers', JSON.stringify(users));
+        }
+
+        // Step Navigation Functions
+        function goToStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Show target step
+            document.getElementById(`step${step}`).classList.remove('hidden');
+            
+            // Update step indicators
+            updateStepIndicators(step);
+            currentStep = step;
+            
+            // Update order summary if going to payment step
+            if (step === 4) {
+                updatePaymentSummary();
+            }
+        }
+
+        function updateStepIndicators(activeStep) {
+            for (let i = 1; i <= 4; i++) {
+                const indicator = document.getElementById(`step${i}Indicator`);
+                const circle = indicator.querySelector('div');
+                const text = indicator.querySelector('span');
+                
+                if (i <= activeStep) {
+                    circle.className = 'w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-semibold';
+                    text.className = 'font-medium text-green-600';
+                    indicator.classList.add('active');
+                } else {
+                    circle.className = 'w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-semibold';
+                    text.className = 'font-medium text-gray-500';
+                    indicator.classList.remove('active');
+                }
+            }
+        }
+
+        // Authentication Functions
+        function switchAuthTab(tab) {
+            const loginTab = document.getElementById('loginTab');
+            const signupTab = document.getElementById('signupTab');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            
+            if (tab === 'login') {
+                loginTab.className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all bg-white text-orange-600 shadow-md';
+                signupTab.className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all text-gray-600 hover:text-gray-800';
+                loginForm.classList.remove('hidden');
+                signupForm.classList.add('hidden');
+            } else {
+                signupTab.className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all bg-white text-red-600 shadow-md';
+                loginTab.className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all text-gray-600 hover:text-gray-800';
+                signupForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                if (rememberMe) {
+                    localStorage.setItem('snackesterCurrentUser', JSON.stringify(user));
+                }
+                showNotification('Login Successful', `Welcome back, ${user.name}! Ready for some spice?`, 'success');
+                
+                // Pre-fill address form if user has saved address
+                if (user.address) {
+                    prefillAddressForm(user.address);
+                }
+                
+                setTimeout(() => goToStep(2), 1500);
+            } else {
+                showNotification('Login Failed', 'Invalid email or password', 'error');
+            }
+        }
+
+        function continueAsGuest() {
+            showNotification('Guest Checkout', 'Continuing as guest user for spicy adventure', 'info');
+            setTimeout(() => goToStep(2), 1000);
+        }
+
+        // Password validation and OTP functions
+        function validatePassword() {
+            const password = document.getElementById('signupPassword').value;
+            
+            const hasLength = password.length >= 8;
+            const hasCapital = /[A-Z]/.test(password);
+            const hasNumber = /\d/.test(password);
+            const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+            
+            updateRequirement('req-length', hasLength);
+            updateRequirement('req-capital', hasCapital);
+            updateRequirement('req-number', hasNumber);
+            updateRequirement('req-special', hasSpecial);
+            
+            validatePasswordMatch();
+            updateSignupButton();
+        }
+
+        function validatePasswordMatch() {
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const hasMatch = password === confirmPassword && password.length > 0;
+            
+            updateRequirement('req-match', hasMatch);
+            updateSignupButton();
+        }
+
+        function updateRequirement(id, isValid) {
+            const element = document.getElementById(id);
+            const icon = element.querySelector('span');
+            
+            if (isValid) {
+                element.classList.remove('text-gray-500');
+                element.classList.add('text-green-600');
+                icon.textContent = '✅';
+            } else {
+                element.classList.remove('text-green-600');
+                element.classList.add('text-gray-500');
+                icon.textContent = '❌';
+            }
+        }
+
+        function updateSignupButton() {
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            
+            const hasLength = password.length >= 8;
+            const hasCapital = /[A-Z]/.test(password);
+            const hasNumber = /\d/.test(password);
+            const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+            const hasMatch = password === confirmPassword && password.length > 0;
+            
+            const allValid = hasLength && hasCapital && hasNumber && hasSpecial && hasMatch && agreeTerms;
+            
+            const button = document.getElementById('signupBtn');
+            if (allValid) {
+                button.disabled = false;
+                button.className = 'w-full peri-peri-gradient text-white py-4 rounded-xl font-semibold text-lg hover:shadow-xl transition-all transform hover:scale-105';
+            } else {
+                button.disabled = true;
+                button.className = 'w-full bg-gray-400 text-white py-4 rounded-xl font-semibold text-lg transition-all cursor-not-allowed';
+            }
+        }
+
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const button = input.nextElementSibling;
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                button.textContent = '👁️';
+            }
+        }
+
+        // OTP Functions
+        function generateRealOTP() {
+            return Math.floor(100000 + Math.random() * 900000).toString();
+        }
+
+        async function sendOTP(type, contact, otp) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    console.log(`${type.toUpperCase()} OTP sent to ${contact}: ${otp}`);
+                    showNotification('OTP Sent', `${type.toUpperCase()} OTP: ${otp}`, 'info');
+                    resolve(true);
+                }, 1000);
+            });
+        }
+
+        async function handleSignupStep1(event) {
+            event.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const phone = document.getElementById('signupPhone').value;
+
+            if (users.find(user => user.email === email)) {
+                showNotification('Error', 'User already exists! Please login instead.', 'error');
+                return;
+            }
+
+            pendingUser = {
+                id: Date.now(),
+                name,
+                email,
+                password,
+                phone,
+                createdAt: new Date().toISOString()
+            };
+
+            generatedEmailOTP = generateRealOTP();
+            generatedSMSOTP = generateRealOTP();
+            
+            const expiryTime = new Date(Date.now() + 10 * 60 * 1000);
+            emailOTPExpiry = expiryTime;
+            smsOTPExpiry = expiryTime;
+
+            try {
+                await Promise.all([
+                    sendOTP('email', email, generatedEmailOTP),
+                    sendOTP('sms', phone, generatedSMSOTP)
+                ]);
+                
+                document.getElementById('signupStep1').classList.add('hidden');
+                document.getElementById('signupStep2').classList.remove('hidden');
+                
+                startOTPCountdown('email');
+                startOTPCountdown('sms');
+            } catch (error) {
+                showNotification('Error', 'Failed to send OTP. Please try again.', 'error');
+            }
+        }
+
+        function startOTPCountdown(type) {
+            const countdownElement = document.getElementById(`${type}Countdown`);
+            const timerElement = document.getElementById(`${type}OtpTimer`);
+            const resendButton = document.getElementById(`resend${type === 'email' ? 'Email' : 'Sms'}Btn`);
+            
+            let timeLeft = 60;
+            timerElement.classList.remove('hidden');
+            resendButton.disabled = true;
+            resendButton.classList.add('opacity-50', 'cursor-not-allowed');
+            
+            const timer = setInterval(() => {
+                timeLeft--;
+                countdownElement.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    timerElement.classList.add('hidden');
+                    resendButton.disabled = false;
+                    resendButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            }, 1000);
+        }
+
+        async function resendOTP(type) {
+            const spinner = document.getElementById(`${type}ResendSpinner`);
+            const button = document.getElementById(`resend${type === 'email' ? 'Email' : 'Sms'}Btn`);
+            
+            spinner.classList.remove('hidden');
+            button.disabled = true;
+            
+            try {
+                if (type === 'email') {
+                    generatedEmailOTP = generateRealOTP();
+                    emailOTPExpiry = new Date(Date.now() + 10 * 60 * 1000);
+                    await sendOTP('email', pendingUser.email, generatedEmailOTP);
+                } else {
+                    generatedSMSOTP = generateRealOTP();
+                    smsOTPExpiry = new Date(Date.now() + 10 * 60 * 1000);
+                    await sendOTP('sms', pendingUser.phone, generatedSMSOTP);
+                }
+                
+                startOTPCountdown(type);
+                showNotification('Success', `New ${type.toUpperCase()} OTP sent!`, 'success');
+            } catch (error) {
+                showNotification('Error', `Failed to resend ${type.toUpperCase()} OTP`, 'error');
+            } finally {
+                spinner.classList.add('hidden');
+            }
+        }
+
+        function handleOTPPaste(event, type) {
+            event.preventDefault();
+            const pastedData = event.clipboardData.getData('text');
+            const otpDigits = pastedData.replace(/\D/g, '').slice(0, 6);
+            
+            const inputs = document.querySelectorAll(type === 'email' ? '.otp-input' : '.sms-otp-input');
+            
+            for (let i = 0; i < otpDigits.length && i < inputs.length; i++) {
+                inputs[i].value = otpDigits[i];
+            }
+        }
+
+        async function handleOTPVerification(event) {
+            event.preventDefault();
+            
+            const spinner = document.getElementById('verifySpinner');
+            const button = document.getElementById('verifyBtn');
+            
+            spinner.classList.remove('hidden');
+            button.disabled = true;
+            
+            try {
+                const emailOTP = Array.from(document.querySelectorAll('.otp-input')).map(input => input.value).join('');
+                const smsOTP = Array.from(document.querySelectorAll('.sms-otp-input')).map(input => input.value).join('');
+                
+                const now = new Date();
+                if (now > emailOTPExpiry || now > smsOTPExpiry) {
+                    showNotification('Error', 'OTP codes have expired. Please request new ones.', 'error');
+                    return;
+                }
+                
+                if (emailOTP === generatedEmailOTP && smsOTP === generatedSMSOTP) {
+                    users.push(pendingUser);
+                    localStorage.setItem('snackesterUsers', JSON.stringify(users));
+                    currentUser = pendingUser;
+                    
+                    showNotification('Success', 'Account created successfully! Welcome to the spice club!', 'success');
+                    setTimeout(() => goToStep(2), 1500);
+                } else {
+                    showNotification('Error', 'Invalid OTP codes. Please check and try again.', 'error');
+                }
+            } catch (error) {
+                showNotification('Error', 'Verification failed. Please try again.', 'error');
+            } finally {
+                spinner.classList.add('hidden');
+                button.disabled = false;
+            }
+        }
+
+        function moveToNext(current, index) {
+            if (current.value.length === 1 && index < 5) {
+                const nextInput = document.querySelectorAll('.otp-input')[index + 1];
+                if (nextInput) nextInput.focus();
+            }
+        }
+
+        function moveToNextSMS(current, index) {
+            if (current.value.length === 1 && index < 5) {
+                const nextInput = document.querySelectorAll('.sms-otp-input')[index + 1];
+                if (nextInput) nextInput.focus();
+            }
+        }
+
+        function backToSignupStep1() {
+            document.getElementById('signupStep2').classList.add('hidden');
+            document.getElementById('signupStep1').classList.remove('hidden');
+        }
+
+        function showForgotPassword() {
+            showNotification('Forgot Password', 'Password reset functionality would be implemented here', 'info');
+        }
+
+        // Address Functions
+        function handlePincodeChange(event) {
+            if (event.key === 'Enter') {
+                checkPincode();
+            }
+        }
+
+        function checkPincode() {
+            const pincode = document.getElementById('pincode').value;
+            if (pincode.length === 6) {
+                showNotification('Pincode Verified', 'Spicy delivery available in this area! 🌶️', 'success');
+            }
+        }
+
+        function handleAddressSubmit(event) {
+            event.preventDefault();
+            
+            const addressData = {
+                fullName: document.getElementById('fullName').value,
+                mobileNumber: document.getElementById('mobileNumber').value,
+                pincode: document.getElementById('pincode').value,
+                locality: document.getElementById('locality').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                landmark: document.getElementById('landmark').value,
+                alternatePhone: document.getElementById('alternatePhone').value,
+                addressType: document.querySelector('input[name="addressType"]:checked').value
+            };
+            
+            deliveryAddress = addressData;
+            
+            // Save address to user profile if logged in
+            if (currentUser) {
+                currentUser.address = addressData;
+                const userIndex = users.findIndex(u => u.id === currentUser.id);
+                if (userIndex !== -1) {
+                    users[userIndex] = currentUser;
+                    localStorage.setItem('snackesterUsers', JSON.stringify(users));
+                }
+            }
+            
+            showNotification('Address Saved', 'Delivery address saved! Your spicy treats are coming!', 'success');
+            setTimeout(() => goToStep(3), 1000);
+        }
+
+        function prefillAddressForm(address) {
+            document.getElementById('fullName').value = address.fullName || '';
+            document.getElementById('mobileNumber').value = address.mobileNumber || '';
+            document.getElementById('pincode').value = address.pincode || '';
+            document.getElementById('locality').value = address.locality || '';
+            document.getElementById('address').value = address.address || '';
+            document.getElementById('city').value = address.city || '';
+            document.getElementById('state').value = address.state || '';
+            document.getElementById('landmark').value = address.landmark || '';
+            document.getElementById('alternatePhone').value = address.alternatePhone || '';
+            
+            if (address.addressType) {
+                document.querySelector(`input[name="addressType"][value="${address.addressType}"]`).checked = true;
+            }
+        }
+
+        // Order Summary Functions
+        function updateOrderQuantity(change) {
+            const newQuantity = orderData.quantity + change;
+            if (newQuantity >= 1 && newQuantity <= 10) {
+                orderData.quantity = newQuantity;
+                orderData.total = orderData.price * newQuantity;
+                
+                document.getElementById('orderQuantity').textContent = newQuantity;
+                document.getElementById('itemPrice').textContent = orderData.total;
+                document.getElementById('summaryQuantity').textContent = newQuantity;
+                document.getElementById('summaryPrice').textContent = orderData.total;
+                document.getElementById('totalAmount').textContent = orderData.total;
+                
+                updateAddressSummary();
+            }
+        }
+
+        function updateAddressSummary() {
+            if (deliveryAddress) {
+                const addressSummary = document.getElementById('addressSummary');
+                addressSummary.innerHTML = `
+                    <div class="space-y-1">
+                        <div class="font-semibold">${deliveryAddress.fullName}</div>
+                        <div>${deliveryAddress.address}</div>
+                        <div>${deliveryAddress.locality}, ${deliveryAddress.city}</div>
+                        <div>${deliveryAddress.state} - ${deliveryAddress.pincode}</div>
+                        <div class="text-sm text-gray-600">📱 ${deliveryAddress.mobileNumber}</div>
+                        <div class="text-sm text-orange-600">${deliveryAddress.addressType === 'home' ? '🏠 Home' : '🏢 Work'} - ${deliveryAddress.addressType === 'home' ? 'All day delivery' : 'Delivery 10AM-5PM'}</div>
+                    </div>
+                `;
+            }
+        }
+
+        // Payment Functions
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            
+            // Remove selected class from all options
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Hide all payment forms
+            document.querySelectorAll('.payment-form').forEach(form => {
+                form.classList.add('hidden');
+            });
+            
+            // Select current option and show its form
+            event.currentTarget.classList.add('selected');
+            document.getElementById(`${method}Form`).classList.remove('hidden');
+            
+            // Check the radio button
+            document.querySelector(`input[name="paymentMethod"][value="${method}"]`).checked = true;
+            
+            // Update pay button
+            const payButton = document.getElementById('payButton');
+            payButton.disabled = false;
+            payButton.className = 'w-full mt-6 peri-peri-gradient text-white py-4 rounded-xl font-semibold text-lg hover:shadow-xl transition-all transform hover:scale-105';
+            payButton.textContent = `Pay ₹${orderData.total}`;
+        }
+
+        function updatePaymentSummary() {
+            document.getElementById('paymentQuantity').textContent = orderData.quantity;
+            document.getElementById('paymentPrice').textContent = orderData.total;
+            document.getElementById('paymentSubtotal').textContent = orderData.total;
+            document.getElementById('paymentTotal').textContent = orderData.total;
+            
+            updateAddressSummary();
+        }
+
+        // Card formatting functions
+        function formatCardNumber(input) {
+            let value = input.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            input.value = formattedValue;
+        }
+
+        function formatExpiryDate(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            input.value = value;
+        }
+
+        // Payment Processing
+        function processPayment() {
+            if (!selectedPaymentMethod) {
+                showNotification('Error', 'Please select a payment method', 'error');
+                return;
+            }
+            
+            // Validate payment method specific fields
+            if (!validatePaymentFields()) {
+                return;
+            }
+            
+            // Show loading state
+            const payButton = document.getElementById('payButton');
+            payButton.innerHTML = '<span class="loading-spinner mr-2"></span>Processing...';
+            payButton.disabled = true;
+            
+            // Process payment based on selected method
+            switch (selectedPaymentMethod) {
+                case 'upi':
+                    processUPIPayment();
+                    break;
+                case 'card':
+                    processCardPayment();
+                    break;
+                case 'netbanking':
+                    processNetBankingPayment();
+                    break;
+                case 'giftcard':
+                    processGiftCardPayment();
+                    break;
+                default:
+                    showNotification('Error', 'Invalid payment method', 'error');
+                    resetPayButton();
+            }
+        }
+
+        function validatePaymentFields() {
+            switch (selectedPaymentMethod) {
+                case 'upi':
+                    const upiId = document.getElementById('upiId').value;
+                    if (!upiId || !upiId.includes('@')) {
+                        showNotification('Error', 'Please enter a valid UPI ID', 'error');
+                        return false;
+                    }
+                    break;
+                case 'card':
+                    const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+                    const expiryDate = document.getElementById('expiryDate').value;
+                    const cvv = document.getElementById('cvv').value;
+                    const cardholderName = document.getElementById('cardholderName').value;
+                    
+                    if (!cardNumber || cardNumber.length < 16) {
+                        showNotification('Error', 'Please enter a valid card number', 'error');
+                        return false;
+                    }
+                    if (!expiryDate || expiryDate.length < 5) {
+                        showNotification('Error', 'Please enter a valid expiry date', 'error');
+                        return false;
+                    }
+                    if (!cvv || cvv.length < 3) {
+                        showNotification('Error', 'Please enter a valid CVV', 'error');
+                        return false;
+                    }
+                    if (!cardholderName) {
+                        showNotification('Error', 'Please enter cardholder name', 'error');
+                        return false;
+                    }
+                    break;
+                case 'netbanking':
+                    const bankSelect = document.getElementById('bankSelect').value;
+                    if (!bankSelect) {
+                        showNotification('Error', 'Please select your bank', 'error');
+                        return false;
+                    }
+                    break;
+                case 'giftcard':
+                    const giftCardNumber = document.getElementById('giftCardNumber').value;
+                    if (!giftCardNumber) {
+                        showNotification('Error', 'Please enter gift card number', 'error');
+                        return false;
+                    }
+                    break;
+            }
+            return true;
+        }
+
+        function processUPIPayment() {
+            setTimeout(() => {
+                initiateRazorpayPayment('upi');
+            }, 2000);
+        }
+
+        function processCardPayment() {
+            setTimeout(() => {
+                initiateRazorpayPayment('card');
+            }, 2000);
+        }
+
+        function processNetBankingPayment() {
+            setTimeout(() => {
+                initiateRazorpayPayment('netbanking');
+            }, 2000);
+        }
+
+        function processGiftCardPayment() {
+            setTimeout(() => {
+                showNotification('Error', 'Insufficient gift card balance. Please choose another payment method.', 'error');
+                resetPayButton();
+            }, 2000);
+        }
+
+        async function initiateRazorpayPayment(method) {
+            try {
+                const options = {
+                    key: RAZORPAY_KEY_ID,
+                    amount: orderData.total * 100,
+                    currency: 'INR',
+                    name: 'Snackester',
+                    description: 'Peri Peri Masala Makhana - Fiery & Delicious',
+                    image: 'https://your-domain.com/logo.png',
+                    order_id: `order_${Date.now()}`,
+                    handler: function (response) {
+                        handlePaymentSuccess(response, method);
+                    },
+                    prefill: {
+                        name: deliveryAddress?.fullName || currentUser?.name || 'Guest User',
+                        email: currentUser?.email || 'guest@snackester.com',
+                        contact: deliveryAddress?.mobileNumber || currentUser?.phone || '9999999999'
+                    },
+                    notes: {
+                        address: deliveryAddress ? `${deliveryAddress.address}, ${deliveryAddress.city}` : 'Guest Address',
+                        product: orderData.product,
+                        quantity: orderData.quantity,
+                        spice_level: 'Hot'
+                    },
+                    theme: {
+                        color: '#ff6b35'
+                    },
+                    modal: {
+                        ondismiss: function() {
+                            resetPayButton();
+                            showNotification('Payment Cancelled', 'Payment was cancelled by user', 'error');
+                        }
+                    },
+                    callback_url: 'https://your-domain.com/payment-callback',
+                    redirect: true
+                };
+
+                const rzp = new Razorpay(options);
+                rzp.open();
+            } catch (error) {
+                console.error('Payment initialization failed:', error);
+                showNotification('Error', 'Failed to initialize payment. Please try again.', 'error');
+                resetPayButton();
+            }
+        }
+
+        async function handlePaymentSuccess(response, method) {
+            try {
+                const verificationResult = await verifyPaymentOnServer(response);
+                
+                if (verificationResult.success) {
+                    const orderId = verificationResult.orderId || `SNK-${new Date().getFullYear()}-${String(Date.now()).slice(-6)}`;
+                    
+                    document.getElementById('orderId').textContent = orderId;
+                    document.getElementById('paymentId').textContent = response.razorpay_payment_id;
+                    document.getElementById('paidAmount').textContent = orderData.total;
+                    document.getElementById('paymentMethodUsed').textContent = method.toUpperCase();
+                    
+                    const orderDetails = {
+                        orderId,
+                        paymentId: response.razorpay_payment_id,
+                        razorpayOrderId: response.razorpay_order_id,
+                        signature: response.razorpay_signature,
+                        amount: orderData.total,
+                        quantity: orderData.quantity,
+                        product: orderData.product,
+                        paymentMethod: method,
+                        deliveryAddress,
+                        user: currentUser,
+                        timestamp: new Date().toISOString(),
+                        status: 'confirmed'
+                    };
+                    
+                    await saveOrderToServer(orderDetails);
+                    
+                    const orders = JSON.parse(localStorage.getItem('snackesterOrders') || '[]');
+                    orders.push(orderDetails);
+                    localStorage.setItem('snackesterOrders', JSON.stringify(orders));
+                    
+                    showNotification('Payment Successful', 'Your spicy order has been placed successfully! 🌶️', 'success');
+                    
+                    setTimeout(() => {
+                        document.querySelectorAll('.step-content').forEach(content => {
+                            content.classList.add('hidden');
+                        });
+                        document.getElementById('successPage').classList.remove('hidden');
+                    }, 1500);
+                } else {
+                    throw new Error('Payment verification failed');
+                }
+            } catch (error) {
+                console.error('Payment verification failed:', error);
+                showNotification('Payment Error', 'Payment verification failed. Please contact support.', 'error');
+            }
+        }
+        
+        // Server communication functions
+        async function createRazorpayOrder(amount) {
+            try {
+                const response = await fetch(`${SERVER_BASE_URL}/create-order`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        amount: amount * 100,
+                        currency: 'INR',
+                        receipt: `receipt_${Date.now()}`,
+                        notes: {
+                            product: orderData.product,
+                            quantity: orderData.quantity,
+                            spice_level: 'Hot'
+                        }
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to create order');
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('Error creating Razorpay order:', error);
+                throw error;
+            }
+        }
+        
+        async function verifyPaymentOnServer(paymentResponse) {
+            try {
+                const response = await fetch(`${SERVER_BASE_URL}/verify-payment`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        razorpay_payment_id: paymentResponse.razorpay_payment_id,
+                        razorpay_order_id: paymentResponse.razorpay_order_id,
+                        razorpay_signature: paymentResponse.razorpay_signature
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Payment verification failed');
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('Error verifying payment:', error);
+                return { success: false, error: error.message };
+            }
+        }
+        
+        async function saveOrderToServer(orderDetails) {
+            try {
+                const response = await fetch(`${SERVER_BASE_URL}/save-order`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderDetails)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to save order');
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('Error saving order:', error);
+                throw error;
+            }
+        }
+
+        function resetPayButton() {
+            const payButton = document.getElementById('payButton');
+            payButton.innerHTML = `Pay ₹${orderData.total}`;
+            payButton.disabled = false;
+            payButton.className = 'w-full mt-6 peri-peri-gradient text-white py-4 rounded-xl font-semibold text-lg hover:shadow-xl transition-all transform hover:scale-105';
+        }
+
+        // Success page functions
+        function downloadInvoice() {
+            showNotification('Download Started', 'Spicy invoice is being downloaded...', 'success');
+        }
+
+        function trackOrder() {
+            showNotification('Redirecting', 'Opening spicy order tracking page...', 'info');
+        }
+
+        function continueShopping() {
+            showNotification('Redirecting', 'Back to explore more spicy treats...', 'info');
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1000);
+        }
+
+        // Notification function
+        function showNotification(title, message, type = 'info') {
+            const notification = document.getElementById('notification');
+            const icon = document.getElementById('notificationIcon');
+            const titleEl = document.getElementById('notificationTitle');
+            const messageEl = document.getElementById('notificationMessage');
+            
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+            
+            switch(type) {
+                case 'success':
+                    icon.className = 'w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center';
+                    icon.textContent = '✓';
+                    break;
+                case 'error':
+                    icon.className = 'w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center';
+                    icon.textContent = '✕';
+                    break;
+                case 'info':
+                    icon.className = 'w-8 h-8 peri-peri-gradient text-white rounded-full flex items-center justify-center';
+                    icon.textContent = 'i';
+                    break;
+            }
+            
+            notification.classList.remove('translate-x-full');
+            
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+            }, 4000);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedUser = localStorage.getItem('snackesterCurrentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                if (currentUser.address) {
+                    deliveryAddress = currentUser.address;
+                }
+            }
+            
+            updateStepIndicators(1);
+            
+            const agreeTerms = document.getElementById('agreeTerms');
+            if (agreeTerms) {
+                agreeTerms.addEventListener('change', updateSignupButton);
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98b8fd45102591ec',t:'MTc1OTk2MTY0Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
