@@ -505,15 +505,15 @@
                         </div>
                         
                         <div id="pincodeResult" class="mb-4">
-                            <div class="text-sm text-gray-600">📍 Abohar, Punjab - 148106</div>
+                            <div class="text-sm text-gray-600">📍 Longowal, Punjab - 148106</div>
                         </div>
                         
                         <div class="bg-white rounded-lg p-4 border border-blue-200">
                             <div class="flex items-center justify-between mb-2">
                                 <div class="font-semibold text-gray-800">Delivery by</div>
-                                <div class="text-green-600 font-bold">12 Oct, Sunday</div>
+                                <div class="text-green-600 font-bold">10 Oct, Sunday</div>
                             </div>
-                            <div class="text-sm text-gray-600 mb-3">if ordered before 2:25 AM</div>
+                            <div class="text-sm text-gray-600 mb-3">if ordered before 12:05 AM</div>
                             <button onclick="showDeliveryDetails()" class="text-blue-600 hover:text-blue-800 font-medium text-sm">
                                 View Details
                             </button>
@@ -1329,21 +1329,21 @@
                     name: "Dinesh Kumar",
                     rating: 5,
                     text: "Absolutely delicious! The tangy tomato flavor is perfect. Will definitely order again.",
-                    date: "2024-01-15",
+                    date: "2025-10-01",
                     verified: true
                 },
                 {
                     name: "Sumar Sneh",
                     rating: 4,
                     text: "Great quality makhana with amazing taste. Healthy snacking option for the family.",
-                    date: "2024-01-14",
+                    date: "2025-10-02",
                     verified: true
                 },
                 {
                     name: "Manish Kumar",
                     rating: 5,
                     text: "Best makhana I've ever tasted! The packaging is also very good. Highly recommended.",
-                    date: "2024-01-13",
+                    date: "2025-10-03",
                     verified: true
                 }
             ];
@@ -1891,11 +1891,111 @@
             
             // Mock pincode database
             const pincodeData = {
-                '148106': 'Abohar, Punjab',
-                '110001': 'New Delhi, Delhi',
+               '148106': 'Longowal, Punjab',
+                '824232': 'Fatehpur, Gaya, Bihar',
                 '400001': 'Mumbai, Maharashtra',
                 '560001': 'Bangalore, Karnataka',
-                '700001': 'Kolkata, West Bengal'
+                '700001': 'Kolkata, West Bengal',
+                '110001': 'New Delhi, Delhi',
+'400001': 'Mumbai, Maharashtra',
+'700001': 'Kolkata, West Bengal',
+'600001': 'Chennai, Tamil Nadu',
+'560001': 'Bengaluru, Karnataka',
+'500001': 'Hyderabad, Telangana',
+'411001': 'Pune, Maharashtra',
+'380001': 'Ahmedabad, Gujarat',
+'395003': 'Surat, Gujarat',
+'226001': 'Lucknow, Uttar Pradesh',
+'302001': 'Jaipur, Rajasthan',
+'208001': 'Kanpur, Uttar Pradesh',
+'440001': 'Nagpur, Maharashtra',
+'452001': 'Indore, Madhya Pradesh',
+'462001': 'Bhopal, Madhya Pradesh',
+'800001': 'Patna, Bihar',
+'390001': 'Vadodara, Gujarat',
+'141001': 'Ludhiana, Punjab',
+'282001': 'Agra, Uttar Pradesh',
+'221001': 'Varanasi, Uttar Pradesh',
+'250001': 'Meerut, Uttar Pradesh',
+'160017': 'Chandigarh, Chandigarh',
+'360001': 'Rajkot, Gujarat',
+'143001': 'Amritsar, Punjab',
+'625001': 'Madurai, Tamil Nadu',
+'834001': 'Ranchi, Jharkhand',
+'831001': 'Jamshedpur, Jharkhand',
+'641001': 'Coimbatore, Tamil Nadu',
+'520001': 'Vijayawada, Andhra Pradesh',
+'530001': 'Visakhapatnam, Andhra Pradesh',
+'570001': 'Mysore, Karnataka',
+'695001': 'Thiruvananthapuram, Kerala',
+'682001': 'Kochi, Kerala',
+'673001': 'Kozhikode, Kerala',
+'781001': 'Guwahati, Assam',
+'400013': 'Navi Mumbai, Maharashtra',
+'160036': 'Panchkula, Haryana',
+'600006': 'Chennai (T. Nagar), Tamil Nadu',
+'411014': 'Hinjewadi (Pune suburb), Maharashtra',
+'500081': 'Gachibowli (Hyderabad suburb), Telangana',
+'395007': 'Varachha (Surat suburb), Gujarat',
+'201001': 'Ghaziabad, Uttar Pradesh',
+'110006': 'R.K. Puram (New Delhi), Delhi',
+'395010': 'Surat G.P.O. area, Gujarat',
+'400701': 'Thane, Maharashtra',
+'380015': 'Gandhinagar, Gujarat',
+'144001': 'Jalandhar, Punjab',
+'560002': 'Bengaluru (City GPO area), Karnataka',
+'201010': 'Noida, Uttar Pradesh',
+'600028': 'Kanchipuram, Tamil Nadu',
+'500034': 'Secunderabad, Telangana',
+'400601': 'Kalyan, Maharashtra',
+'700016': 'Howrah, West Bengal',
+'110055': 'Dwarka, New Delhi, Delhi',
+'452010': 'Indore (Rau/around), Madhya Pradesh',
+'302019': 'Jaipur (Shivaji Nagar area), Rajasthan',
+'302017': 'Jaipur (Malviya Nagar area), Rajasthan',
+'400050': 'Bandra East, Mumbai, Maharashtra',
+'500045': 'Hitech City PO, Hyderabad, Telangana',
+'110092': 'Rohini, New Delhi, Delhi',
+'380005': 'Maninagar (Ahmedabad suburb), Gujarat',
+'226002': 'Hazratganj (Lucknow), Uttar Pradesh',
+'110049': 'Janakpuri, New Delhi, Delhi',
+'411038': 'Ambegaon (Pune), Maharashtra',
+'250002': 'Saharanpur/Meerut region, Uttar Pradesh',
+'141008': 'Ferozepur Road area (Ludhiana), Punjab',
+'600017': 'Perambur (Chennai), Tamil Nadu',
+'641018': 'Peelamedu (Coimbatore), Tamil Nadu',
+'110024': 'Connaught Place (New Delhi), Delhi',
+'302020': 'Jaipur Central, Rajasthan',
+'700091': 'Salt Lake (Kolkata), West Bengal',
+'560076': 'Whitefield (Bengaluru), Karnataka',
+'380009': 'Jamnagar (main), Gujarat',
+'250010': 'Modinagar/Meerut area, Uttar Pradesh',
+'452008': 'Indore (Main), Madhya Pradesh',
+'462016': 'Bhopal (Nirala Nagar area), Madhya Pradesh',
+'395004': 'Udhana (Surat), Gujarat',
+'500020': 'Kukatpally, Hyderabad, Telangana',
+'201301': 'Greater Noida, Uttar Pradesh',
+'110015': 'Connaught Place extension (New Delhi), Delhi',
+'400058': 'Andheri East, Mumbai, Maharashtra',
+'700070': 'Kolkata GPO surrounding area, West Bengal',
+'600079': 'Ambattur (Chennai), Tamil Nadu',
+'411045': 'Pune (Khadakwasla/nearby), Maharashtra',
+'380025': 'Ahmedabad (SG Highway area), Gujarat',
+'226010': 'Kanpur (Civil Lines), Uttar Pradesh',
+'302015': 'Mansarovar (Jaipur), Rajasthan',
+'110014': 'Barakhamba Road (New Delhi), Delhi',
+'500072': 'Malkajgiri, Hyderabad, Telangana',
+'400604': 'Dombivli, Maharashtra',
+'411028': 'Pune (Koregaon Park area), Maharashtra',
+'380027': 'Ahmedabad (Gota area), Gujarat',
+'700013': 'Kolkata (Ballygunge area), West Bengal',
+'110046': 'Defence Colony, New Delhi, Delhi',
+'560066': 'Electronic City (Bengaluru), Karnataka',
+'400069': 'Andheri West, Mumbai, Maharashtra',
+'600042': 'Chromepet (Chennai), Tamil Nadu',
+'302016': 'Tonk Road (Jaipur), Rajasthan',
+'452001': 'Indore GPO (duplicate included as common head PIN), Madhya Pradesh',
+'226017': 'Kanpur City (duplicate head PIN example), Uttar Pradesh'
             };
             
             if (pincodeData[pincode]) {
