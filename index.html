@@ -1190,6 +1190,76 @@
             }, 3000);
         }
 
+
+
+        //google outh automatically
+
+
+        // 🔹 Replace this with your real Client ID from Google Cloud Console
+  const clientId = "240405294683-u1e8ugc9hebbrij9ju8037vv3lken7tf.apps.googleusercontent.com";
+  // 🔹 Replace with your actual website domain (must match what you set in Google Console)
+  const redirectUri = "https://snackester.com/";
+
+  // When user clicks Google button
+  document.querySelector(".social-btn").addEventListener("click", () => {
+    const scope = "openid email profile";
+    const responseType = "token";
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}&prompt=select_account`;
+
+    // Redirect to Google login
+    window.location.href = authUrl;
+  });
+
+  // If user redirected back after login (URL contains #access_token)
+  const params = new URLSearchParams(window.location.hash.substr(1));
+  const accessToken = params.get("access_token");
+
+  if (accessToken) {
+    // Fetch user info from Google API
+    fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+      headers: { "Authorization": `Bearer ${accessToken}` }
+    })
+    .then(res => res.json())
+    .then(user => {
+      console.log("✅ Google User Info:", user);
+      localStorage.setItem("googleUser", JSON.stringify(user));
+      showUser(user);
+      // Remove the access token from the URL (clean up)
+      history.replaceState({}, document.title, window.location.pathname);
+    })
+    .catch(err => console.error("Login error:", err));
+  } else {
+    // If already logged in, show stored info
+    const user = JSON.parse(localStorage.getItem("googleUser"));
+    if (user) showUser(user);
+  }
+
+  // Display user info
+  function showUser(user) {
+    const btn = document.querySelector(".social-btn");
+    btn.style.display = "none";
+
+    const info = document.createElement("div");
+    info.innerHTML = `
+      <img src="${user.picture}" width="100" style="border-radius:50%;margin-top:20px;">
+      <h2>Welcome, ${user.name}</h2>
+      <p>${user.email}</p>
+      <button onclick="logout()" style="margin-top:10px;">Logout</button>
+    `;
+    document.body.appendChild(info);
+  }
+
+  // Logout
+  function logout() {
+    localStorage.removeItem("googleUser");
+    location.reload();
+  }
+
+
+
+
+        
+
         // Sample order data for demo
         const sampleOrders = {
             'SNK2024001': {
